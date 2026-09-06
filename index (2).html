@@ -1,0 +1,4445 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width,initial-scale=1.0,viewport-fit=cover">
+<meta name="theme-color" content="#07111f">
+<title>Controle de Ferramentas — 3D V6.0</title>
+
+<style>
+:root{
+  --bg1:#06101e;
+  --bg2:#153e62;
+  --bg3:#08757a;
+  --card:rgba(7,20,35,.75);
+  --card2:rgba(255,255,255,.08);
+  --line:rgba(255,255,255,.14);
+  --txt:#f5fbff;
+  --muted:#b8ced9;
+  --ok:#27d17c;
+  --warn:#ffca4b;
+  --bad:#ff647c;
+  --blue:#24b8e6;
+  --purple:#8d5cff;
+  --pink:#ff6b9d;
+  --orange:#f5a623;
+  --shadow:0 15px 50px rgba(0,0,0,0.5);
+  --radius:16px;
+  --transition:0.6s cubic-bezier(0.34,1.56,0.64,1);
+}
+
+*{box-sizing:border-box}
+
+html,body{
+  margin:0;
+  min-height:100%;
+  font-family:'Inter','Segoe UI',system-ui,sans-serif;
+  color:var(--txt)
+}
+
+body{
+  min-height:100vh;
+  overflow-x:hidden;
+  background:var(--bg1);
+  perspective:1400px;
+}
+
+/* =====================================================
+   FUNDO ANIMADO 3D DIVERTIDO
+===================================================== */
+#fx{
+  position:fixed;
+  inset:0;
+  z-index:-3;
+  overflow:hidden;
+  pointer-events:none;
+  transform-style:preserve-3d;
+  perspective:1000px;
+}
+
+/* Grade 3D */
+.gridfx{
+  position:absolute;
+  inset:-50%;
+  background-image:
+    linear-gradient(rgba(255,255,255,.05) 1px, transparent 1px),
+    linear-gradient(90deg, rgba(255,255,255,.05) 1px, transparent 1px);
+  background-size:48px 48px;
+  transform:perspective(600px) rotateX(55deg) rotateY(5deg);
+  animation:gridMove3D 16s linear infinite;
+}
+
+@keyframes gridMove3D{
+  0%{
+    transform:perspective(600px) rotateX(55deg) rotateY(5deg) translateY(0) translateZ(0);
+  }
+  100%{
+    transform:perspective(600px) rotateX(55deg) rotateY(5deg) translateY(48px) translateZ(20px);
+  }
+}
+
+/* Orbes 3D saltitantes */
+.orb{
+  position:absolute;
+  border-radius:50%;
+  filter:blur(80px);
+  opacity:0.35;
+  animation:orbBounce3D 22s ease-in-out infinite alternate;
+  transform-style:preserve-3d;
+}
+
+.orb::after{
+  content:'';
+  position:absolute;
+  inset:15%;
+  border-radius:50%;
+  background:radial-gradient(circle at 30% 30%, rgba(255,255,255,0.15), transparent 70%);
+  animation:orbShine3D 5s ease-in-out infinite alternate;
+}
+
+@keyframes orbShine3D{
+  0%{
+    transform:scale(0.7) translateZ(0px);
+    opacity:0.4;
+  }
+  100%{
+    transform:scale(1.4) translateZ(80px);
+    opacity:1;
+  }
+}
+
+.o1{
+  width:350px;
+  height:350px;
+  left:-80px;
+  top:10%;
+  background:radial-gradient(circle at 30% 30%, #15d8ff, transparent 70%);
+  animation-duration:18s;
+  transform:translateZ(-150px);
+}
+.o2{
+  width:400px;
+  height:400px;
+  right:-120px;
+  top:40%;
+  background:radial-gradient(circle at 70% 70%, var(--purple), transparent 70%);
+  animation-duration:24s;
+  animation-delay:-6s;
+  transform:translateZ(-80px);
+}
+.o3{
+  width:280px;
+  height:280px;
+  left:40%;
+  bottom:-80px;
+  background:radial-gradient(circle at 50% 50%, var(--ok), transparent 70%);
+  animation-duration:20s;
+  animation-delay:-12s;
+  transform:translateZ(60px);
+}
+.o4{
+  width:220px;
+  height:220px;
+  top:55%;
+  right:10%;
+  background:radial-gradient(circle at 40% 60%, var(--orange), transparent 70%);
+  animation-duration:16s;
+  animation-delay:-18s;
+  transform:translateZ(40px);
+}
+.o5{
+  width:200px;
+  height:200px;
+  top:8%;
+  left:35%;
+  background:radial-gradient(circle at 50% 50%, var(--pink), transparent 70%);
+  animation-duration:26s;
+  animation-delay:-8s;
+  transform:translateZ(30px);
+}
+
+@keyframes orbBounce3D{
+  0%{
+    transform:translate(0,0) scale(1) rotateX(0deg) rotateY(0deg) rotateZ(0deg);
+  }
+  25%{
+    transform:translate(80px,-120px) scale(1.15) rotateX(8deg) rotateY(15deg) rotateZ(5deg);
+  }
+  50%{
+    transform:translate(-100px,70px) scale(0.85) rotateX(-6deg) rotateY(-12deg) rotateZ(-8deg);
+  }
+  75%{
+    transform:translate(120px,100px) scale(1.1) rotateX(10deg) rotateY(18deg) rotateZ(7deg);
+  }
+  100%{
+    transform:translate(-60px,-80px) scale(0.92) rotateX(-5deg) rotateY(-8deg) rotateZ(-4deg);
+  }
+}
+
+/* Emojis 3D flutuantes */
+.float-emoji{
+  position:absolute;
+  font-size:38px;
+  animation:floatEmoji3D 18s ease-in-out infinite alternate;
+  will-change:transform;
+  filter:drop-shadow(0 4px 30px rgba(255,255,255,0.08));
+  transform-style:preserve-3d;
+}
+
+.e1{top:12%;left:5%;animation-duration:14s;animation-delay:-2s;font-size:44px;}
+.e2{top:78%;left:88%;animation-duration:20s;animation-delay:-6s;font-size:32px;}
+.e3{top:42%;left:18%;animation-duration:16s;animation-delay:-10s;font-size:36px;}
+.e4{top:6%;left:72%;animation-duration:22s;animation-delay:-4s;font-size:48px;}
+.e5{top:88%;left:8%;animation-duration:13s;animation-delay:-8s;font-size:40px;}
+.e6{top:50%;left:55%;animation-duration:17s;animation-delay:-14s;font-size:30px;}
+.e7{top:28%;left:45%;animation-duration:19s;animation-delay:-3s;font-size:42px;}
+.e8{top:62%;left:72%;animation-duration:15s;animation-delay:-7s;font-size:34px;}
+.e9{top:18%;left:55%;animation-duration:21s;animation-delay:-11s;font-size:28px;}
+.e10{top:70%;left:25%;animation-duration:16s;animation-delay:-5s;font-size:46px;}
+
+@keyframes floatEmoji3D{
+  0%{
+    transform:translateY(0px) translateX(0px) scale(1) rotateZ(0deg) translateZ(0px) rotateY(0deg);
+  }
+  25%{
+    transform:translateY(-40px) translateX(25px) scale(1.2) rotateZ(12deg) translateZ(40px) rotateY(10deg);
+  }
+  50%{
+    transform:translateY(25px) translateX(-20px) scale(0.9) rotateZ(-10deg) translateZ(-30px) rotateY(-8deg);
+  }
+  75%{
+    transform:translateY(-30px) translateX(40px) scale(1.15) rotateZ(18deg) translateZ(50px) rotateY(15deg);
+  }
+  100%{
+    transform:translateY(15px) translateX(-15px) scale(1) rotateZ(-6deg) translateZ(0px) rotateY(0deg);
+  }
+}
+
+/* Estrelas 3D cintilantes */
+.star{
+  position:absolute;
+  border-radius:50%;
+  background:white;
+  animation:starTwinkle3D 4s ease-in-out infinite alternate;
+  will-change:transform;
+  transform-style:preserve-3d;
+}
+
+.star::after{
+  content:'';
+  position:absolute;
+  inset:-100%;
+  border-radius:50%;
+  background:radial-gradient(circle at center, rgba(255,255,255,0.2), transparent 70%);
+  animation:starGlow 2s ease-in-out infinite alternate;
+}
+
+@keyframes starGlow{
+  0%{
+    transform:scale(0.5) translateZ(0px);
+    opacity:0.3;
+  }
+  100%{
+    transform:scale(2) translateZ(30px);
+    opacity:1;
+  }
+}
+
+.s1{width:5px;height:5px;top:12%;left:18%;animation-delay:0s;box-shadow:0 0 20px rgba(255,255,255,0.2);}
+.s2{width:3px;height:3px;top:82%;left:92%;animation-delay:0.6s;}
+.s3{width:6px;height:6px;top:38%;left:32%;animation-delay:1.2s;box-shadow:0 0 25px rgba(255,255,255,0.25);}
+.s4{width:4px;height:4px;top:5%;left:78%;animation-delay:1.8s;}
+.s5{width:5px;height:5px;top:92%;left:15%;animation-delay:2.4s;box-shadow:0 0 20px rgba(255,255,255,0.2);}
+.s6{width:3px;height:3px;top:55%;left:65%;animation-delay:3s;}
+
+@keyframes starTwinkle3D{
+  0%{
+    transform:scale(0.3) translateZ(0px) rotateY(0deg);
+    opacity:0.2;
+  }
+  100%{
+    transform:scale(1.8) translateZ(40px) rotateY(180deg);
+    opacity:1;
+  }
+}
+
+/* Ferramentas 3D flutuantes */
+.toolfx{
+  position:absolute;
+  font-size:34px;
+  opacity:0.12;
+  animation:drift3D 20s linear infinite;
+  transform-style:preserve-3d;
+}
+
+.t1{left:6%;top:22%;animation-duration:18s;transform:translateZ(20px);}
+.t2{left:80%;top:15%;animation-duration:22s;animation-delay:-6s;transform:translateZ(-10px);}
+.t3{left:50%;top:72%;animation-duration:16s;animation-delay:-12s;transform:translateZ(30px);}
+.t4{left:18%;top:80%;animation-duration:24s;animation-delay:-8s;transform:translateZ(-20px);}
+.t5{left:65%;top:55%;animation-duration:20s;animation-delay:-15s;transform:translateZ(10px);}
+
+@keyframes drift3D{
+  0%{
+    transform:translateY(20px) rotate(0deg) translateZ(0px) rotateX(0deg);
+  }
+  25%{
+    transform:translateY(-40px) rotate(90deg) translateZ(20px) rotateX(10deg);
+  }
+  50%{
+    transform:translateY(60px) rotate(180deg) translateZ(-10px) rotateX(-8deg);
+  }
+  75%{
+    transform:translateY(-20px) rotate(270deg) translateZ(30px) rotateX(12deg);
+  }
+  100%{
+    transform:translateY(20px) rotate(360deg) translateZ(0px) rotateX(0deg);
+  }
+}
+
+*{
+  scrollbar-width:thin;
+}
+
+/* =====================================================
+   CABEÇALHO 3D
+===================================================== */
+header{
+  position:sticky;
+  top:0;
+  z-index:20;
+  padding:14px 16px 10px;
+  background:rgba(3,10,20,.85);
+  backdrop-filter:blur(20px);
+  border-bottom:1px solid var(--line);
+  transform-style:preserve-3d;
+  transform:translateZ(40px);
+  transition:transform 0.5s ease;
+}
+
+header:hover{
+  transform:translateZ(55px) rotateX(1.5deg);
+}
+
+.top{
+  max-width:1200px;
+  margin:auto;
+  display:flex;
+  gap:14px;
+  align-items:center;
+  justify-content:space-between
+}
+
+.brand{
+  display:flex;
+  align-items:center;
+  gap:12px;
+  transform-style:preserve-3d;
+}
+
+.logo{
+  font-size:40px;
+  filter:drop-shadow(0 0 30px rgba(34,207,255,0.25));
+  animation:logoSpin3D 8s ease-in-out infinite alternate;
+  transform-style:preserve-3d;
+  display:inline-block;
+}
+
+@keyframes logoSpin3D{
+  0%{
+    transform:rotateY(0deg) translateZ(10px) scale(1);
+  }
+  50%{
+    transform:rotateY(180deg) translateZ(25px) scale(1.1);
+  }
+  100%{
+    transform:rotateY(360deg) translateZ(10px) scale(1);
+  }
+}
+
+h1{
+  font-size:22px;
+  margin:0;
+  background:linear-gradient(135deg, #fff 30%, var(--blue), var(--purple), var(--pink));
+  -webkit-background-clip:text;
+  -webkit-text-fill-color:transparent;
+  background-clip:text;
+  background-size:300% 300%;
+  animation:titleShimmer3D 6s ease-in-out infinite alternate;
+  transform:translateZ(5px);
+}
+
+@keyframes titleShimmer3D{
+  0%{
+    background-position:0% 50%;
+    transform:translateZ(5px) rotateX(0deg);
+  }
+  100%{
+    background-position:100% 50%;
+    transform:translateZ(15px) rotateX(2deg);
+  }
+}
+
+.sub{
+  font-size:12px;
+  color:var(--muted);
+  margin-top:3px;
+  transform:translateZ(3px);
+}
+
+.userbox{
+  font-size:12px;
+  color:var(--muted);
+  text-align:right;
+  transform:translateZ(5px);
+}
+
+/* =====================================================
+   MENU 3D
+===================================================== */
+nav{
+  max-width:1200px;
+  margin:8px auto 0;
+  display:flex;
+  gap:6px;
+  overflow:auto;
+  transform-style:preserve-3d;
+}
+
+nav button{
+  border:1px solid var(--line);
+  background:var(--card2);
+  color:var(--txt);
+  border-radius:30px;
+  padding:9px 16px;
+  font-weight:600;
+  font-size:12.5px;
+  cursor:pointer;
+  transition:var(--transition);
+  transform-style:preserve-3d;
+  transform:translateZ(0px);
+  backdrop-filter:blur(4px);
+}
+
+nav button:hover{
+  transform:translateY(-3px) translateZ(15px) scale(1.04);
+  filter:brightness(1.12);
+  border-color:rgba(255,255,255,0.2);
+}
+
+nav button.active{
+  background:linear-gradient(135deg, var(--blue), var(--purple));
+  border-color:transparent;
+  box-shadow:0 4px 35px rgba(36,184,230,0.25);
+  transform:translateY(-2px) translateZ(20px) scale(1.05);
+  animation:btnGlow3D 3s ease-in-out infinite alternate;
+}
+
+@keyframes btnGlow3D{
+  0%{
+    box-shadow:0 4px 35px rgba(36,184,230,0.25);
+    transform:translateY(-2px) translateZ(20px) scale(1.05);
+  }
+  100%{
+    box-shadow:0 4px 50px rgba(141,92,255,0.35);
+    transform:translateY(-3px) translateZ(30px) scale(1.07);
+  }
+}
+
+/* =====================================================
+   CONTEÚDO
+===================================================== */
+.wrap{
+  max-width:1200px;
+  margin:auto;
+  padding:16px;
+  transform-style:preserve-3d;
+}
+
+.grid{
+  display:grid;
+  grid-template-columns:repeat(auto-fit,minmax(190px,1fr));
+  gap:14px;
+  transform-style:preserve-3d;
+}
+
+/* =====================================================
+   CARTÕES 3D
+===================================================== */
+.card{
+  background:var(--card);
+  border:1px solid var(--line);
+  border-radius:var(--radius);
+  padding:16px 18px;
+  box-shadow:var(--shadow);
+  backdrop-filter:blur(12px);
+  transition:var(--transition);
+  transform-style:preserve-3d;
+  transform:rotateX(0deg) rotateY(0deg) translateZ(0px);
+  animation:cardFloat3D 7s ease-in-out infinite alternate;
+}
+
+.card:nth-child(2){animation-delay:0.5s}
+.card:nth-child(3){animation-delay:1s}
+.card:nth-child(4){animation-delay:1.5s}
+.card:nth-child(5){animation-delay:2s}
+.card:nth-child(6){animation-delay:2.5s}
+
+@keyframes cardFloat3D{
+  0%{
+    transform:translateY(0px) rotateX(0deg) rotateY(0deg) translateZ(0px);
+  }
+  100%{
+    transform:translateY(-8px) rotateX(2deg) rotateY(3deg) translateZ(20px);
+  }
+}
+
+.card:hover{
+  transform:rotateX(4deg) rotateY(8deg) translateY(-12px) translateZ(35px) scale(1.02);
+  border-color:rgba(255,255,255,0.18);
+  box-shadow:0 30px 80px rgba(0,0,0,0.5),0 0 60px rgba(36,184,230,0.03);
+  animation-play-state:paused;
+}
+
+.card::before{
+  content:'';
+  position:absolute;
+  inset:0;
+  background:linear-gradient(135deg, rgba(255,255,255,0.04), transparent 60%);
+  pointer-events:none;
+  border-radius:var(--radius);
+  transform:translateZ(-1px);
+}
+
+.stat{
+  min-height:105px;
+  text-align:center;
+}
+
+.stat .icon{
+  font-size:32px;
+  display:block;
+  animation:iconWiggle3D 3s ease-in-out infinite alternate;
+  transform-style:preserve-3d;
+}
+
+.stat:nth-child(2) .icon{animation-delay:0.5s}
+.stat:nth-child(3) .icon{animation-delay:1s}
+.stat:nth-child(4) .icon{animation-delay:1.5s}
+.stat:nth-child(5) .icon{animation-delay:2s}
+
+@keyframes iconWiggle3D{
+  0%{
+    transform:translateZ(5px) rotateZ(0deg) scale(1);
+  }
+  100%{
+    transform:translateZ(25px) rotateZ(15deg) scale(1.15);
+  }
+}
+
+.stat b{
+  display:block;
+  font-size:34px;
+  margin-top:4px;
+  background:linear-gradient(135deg, #fff 20%, var(--blue), var(--purple));
+  -webkit-background-clip:text;
+  -webkit-text-fill-color:transparent;
+  background-clip:text;
+  background-size:300% 300%;
+  animation:counterRainbow3D 5s ease-in-out infinite alternate;
+  transform:translateZ(15px);
+}
+
+@keyframes counterRainbow3D{
+  0%{
+    background-position:0% 50%;
+    filter:drop-shadow(0 0 15px rgba(36,184,230,0.1));
+    transform:translateZ(10px);
+  }
+  100%{
+    background-position:100% 50%;
+    filter:drop-shadow(0 0 30px rgba(141,92,255,0.15));
+    transform:translateZ(25px);
+  }
+}
+
+.kpi{
+  font-size:12px;
+  color:var(--muted);
+}
+
+.muted{color:var(--muted)}
+
+/* =====================================================
+   BADGES 3D
+===================================================== */
+.badge{
+  display:inline-block;
+  border-radius:999px;
+  padding:4px 10px;
+  font-size:11px;
+  font-weight:500;
+  background:#ffffff13;
+  margin:2px;
+  border:1px solid transparent;
+  transition:var(--transition);
+  transform:translateZ(2px);
+}
+
+.badge:hover{
+  transform:scale(1.08) translateZ(12px);
+}
+
+.ok{background:#17784d;border-color:#27d17c33}
+.warn{background:#886714;border-color:#ffca4b33}
+.danger{background:#9d304b;border-color:#ff647c33}
+.primary{background:#119dad}
+.blue{background:#126a98}
+.purple{background:#5a2d8a;border-color:#8d5cff33}
+
+/* =====================================================
+   BOTÕES 3D
+===================================================== */
+button,.btn{
+  border:1px solid var(--line);
+  background:var(--card2);
+  color:var(--txt);
+  border-radius:30px;
+  padding:9px 17px;
+  font-weight:600;
+  font-size:12.5px;
+  cursor:pointer;
+  transition:var(--transition);
+  transform-style:preserve-3d;
+  transform:translateZ(0px);
+  backdrop-filter:blur(4px);
+}
+
+button:hover{
+  transform:translateY(-3px) translateZ(15px) scale(1.04);
+  filter:brightness(1.12);
+  border-color:rgba(255,255,255,0.2);
+}
+
+button:active{
+  transform:scale(0.95) translateZ(5px);
+}
+
+.primary{background:linear-gradient(135deg, var(--blue), var(--purple));border-color:transparent;box-shadow:0 4px 30px rgba(36,184,230,0.15);}
+.primary:hover{box-shadow:0 6px 45px rgba(36,184,230,0.25);}
+
+.ok{background:linear-gradient(135deg, #17784d, var(--ok));border-color:transparent;}
+.ok:hover{box-shadow:0 6px 40px rgba(39,209,124,0.2);}
+
+.danger{background:linear-gradient(135deg, #9d304b, var(--bad));border-color:transparent;}
+.danger:hover{box-shadow:0 6px 40px rgba(255,100,124,0.2);}
+
+.blue{background:linear-gradient(135deg, #126a98, var(--blue));border-color:transparent;}
+.blue:hover{box-shadow:0 6px 40px rgba(36,184,230,0.2);}
+
+.warn{background:linear-gradient(135deg, #886714, var(--warn));border-color:transparent;}
+.warn:hover{box-shadow:0 6px 40px rgba(255,202,75,0.2);}
+
+.section-title{
+  display:flex;
+  justify-content:space-between;
+  align-items:center;
+  gap:10px;
+  margin:10px 0
+}
+
+.section-title h2{
+  font-weight:700;
+  font-size:18px;
+  background:linear-gradient(135deg, #fff 30%, var(--blue), var(--purple));
+  -webkit-background-clip:text;
+  -webkit-text-fill-color:transparent;
+  background-clip:text;
+  transform:translateZ(5px);
+}
+
+input,select,textarea{
+  width:100%;
+  padding:12px;
+  border-radius:12px;
+  border:1px solid var(--line);
+  background:#061321cc;
+  color:var(--txt);
+  outline:none;
+  margin:5px 0 10px;
+  transition:var(--transition);
+  transform:translateZ(5px);
+}
+
+input:focus,select:focus,textarea:focus{
+  border-color:var(--blue);
+  box-shadow:0 0 0 4px rgba(36,184,230,0.06);
+  transform:translateZ(12px);
+}
+
+label{
+  font-size:11px;
+  color:var(--muted);
+  text-transform:uppercase;
+  letter-spacing:0.5px;
+  font-weight:500;
+}
+
+.actions{
+  display:flex;
+  gap:8px;
+  flex-wrap:wrap;
+}
+
+.tool{
+  display:grid;
+  grid-template-columns:92px 1fr auto;
+  gap:12px;
+  align-items:center
+}
+
+.thumb{
+  width:92px;
+  height:74px;
+  object-fit:cover;
+  border-radius:12px;
+  background:#061321;
+  border:1px solid var(--line);
+  transition:var(--transition);
+  transform:translateZ(5px);
+}
+
+.thumb:hover{
+  transform:scale(1.05) translateZ(15px) rotateY(5deg);
+  border-color:var(--blue);
+}
+
+.hidden{display:none!important}
+
+.empty{
+  text-align:center;
+  padding:30px;
+  color:var(--muted)
+}
+
+.small{font-size:12px}
+.tiny{font-size:10px;color:var(--muted)}
+
+.progress{
+  height:9px;
+  border-radius:999px;
+  background:#ffffff12;
+  overflow:hidden;
+  margin-top:8px;
+  transform:translateZ(3px);
+}
+
+.progress i{
+  display:block;
+  height:100%;
+  background:linear-gradient(90deg, var(--blue), var(--ok));
+  width:0;
+  transition:width 0.8s ease;
+}
+
+.alert{
+  padding:12px;
+  border:1px solid #ffca4b55;
+  background:#ffca4b12;
+  border-radius:14px;
+  margin-bottom:12px;
+  transform:translateZ(5px);
+}
+
+.dangerbox{
+  border-color:#ff647c66;
+  background:#ff647c10;
+}
+
+/* =====================================================
+   MODAIS 3D
+===================================================== */
+dialog{
+  width:min(780px,95vw);
+  max-height:90vh;
+  overflow:auto;
+  border:1px solid var(--line);
+  border-radius:24px;
+  background:rgba(9,23,39,0.97);
+  backdrop-filter:blur(40px);
+  color:var(--txt);
+  padding:0;
+  box-shadow:0 50px 120px rgba(0,0,0,0.9);
+  animation:modalBounce3D 0.6s cubic-bezier(0.34,1.56,0.64,1);
+  transform-style:preserve-3d;
+}
+
+@keyframes modalBounce3D{
+  from{
+    opacity:0;
+    transform:rotateX(12deg) rotateY(-8deg) scale(0.85) translateY(60px) translateZ(-60px);
+  }
+  to{
+    opacity:1;
+    transform:rotateX(0deg) rotateY(0deg) scale(1) translateY(0) translateZ(0px);
+  }
+}
+
+dialog::backdrop{
+  background:rgba(0,0,0,0.8);
+  backdrop-filter:blur(12px);
+  animation:backdropPop3D 0.5s ease-out;
+}
+
+@keyframes backdropPop3D{
+  from{
+    opacity:0;
+    transform:scale(0.9) translateZ(-100px);
+  }
+  to{
+    opacity:1;
+    transform:scale(1) translateZ(0px);
+  }
+}
+
+.modal{
+  padding:20px 24px;
+  transform-style:preserve-3d;
+}
+
+.modal h2{
+  margin-top:0;
+  font-size:21px;
+  font-weight:700;
+  background:linear-gradient(135deg, #fff 30%, var(--blue), var(--purple));
+  -webkit-background-clip:text;
+  -webkit-text-fill-color:transparent;
+  background-clip:text;
+  transform:translateZ(10px);
+  animation:modalTitleWiggle 5s ease-in-out infinite alternate;
+  background-size:300% 300%;
+}
+
+@keyframes modalTitleWiggle{
+  0%{
+    background-position:0% 50%;
+    transform:translateZ(8px) rotateX(0deg);
+  }
+  100%{
+    background-position:100% 50%;
+    transform:translateZ(18px) rotateX(2deg);
+  }
+}
+
+video{
+  width:100%;
+  border-radius:15px;
+  background:#000;
+  max-height:52vh;
+  border:1px solid var(--line);
+  transform:translateZ(5px);
+}
+
+.preview{
+  display:grid;
+  grid-template-columns:repeat(auto-fit,minmax(120px,1fr));
+  gap:8px;
+}
+
+.preview img,
+.preview video{
+  width:100%;
+  height:110px;
+  object-fit:cover;
+  border-radius:12px;
+  transition:var(--transition);
+  transform:translateZ(3px);
+}
+
+.preview img:hover,
+.preview video:hover{
+  transform:scale(1.04) translateZ(12px);
+}
+
+.tablewrap{overflow:auto}
+
+table{
+  width:100%;
+  border-collapse:collapse;
+  min-width:680px;
+}
+
+th,td{
+  text-align:left;
+  padding:9px;
+  border-bottom:1px solid var(--line);
+  font-size:12px;
+}
+
+footer{
+  text-align:center;
+  padding:25px;
+  color:var(--muted);
+  font-size:12px;
+  opacity:0.4;
+  transition:var(--transition);
+  transform:translateZ(0px);
+}
+
+footer:hover{
+  opacity:0.7;
+  transform:translateZ(8px);
+}
+
+.toast{
+  position:fixed;
+  right:15px;
+  bottom:15px;
+  z-index:99;
+  background:#071827ee;
+  border:1px solid var(--line);
+  padding:12px 18px;
+  border-radius:13px;
+  display:none;
+  backdrop-filter:blur(12px);
+  transform:translateZ(20px);
+  box-shadow:0 10px 40px rgba(0,0,0,0.3);
+}
+
+@media(max-width:650px){
+  .top{align-items:flex-start}
+  .userbox{display:none}
+  .tool{grid-template-columns:70px 1fr}
+  .thumb{width:70px;height:65px}
+  .tool .actions{grid-column:1/-1}
+  .float-emoji{font-size:24px !important;}
+  .logo{font-size:30px;}
+  nav button{font-size:11px;padding:6px 12px;}
+}
+
+@media(max-width:420px){
+  .grid{grid-template-columns:1fr}
+  .top{flex-direction:column;align-items:flex-start}
+  .brand{gap:8px}
+  .float-emoji{font-size:18px !important;}
+  .orb{width:150px !important;height:150px !important;}
+}
+</style>
+</head>
+
+<body>
+
+<!-- =====================================================
+   FUNDO ANIMADO 3D DIVERTIDO
+===================================================== -->
+<div id="fx">
+
+  <div class="gridfx"></div>
+
+  <div class="orb o1"></div>
+  <div class="orb o2"></div>
+  <div class="orb o3"></div>
+  <div class="orb o4"></div>
+  <div class="orb o5"></div>
+
+  <div class="float-emoji e1">🚀</div>
+  <div class="float-emoji e2">⚡</div>
+  <div class="float-emoji e3">🌟</div>
+  <div class="float-emoji e4">🎯</div>
+  <div class="float-emoji e5">💪</div>
+  <div class="float-emoji e6">🔥</div>
+  <div class="float-emoji e7">🌈</div>
+  <div class="float-emoji e8">🎉</div>
+  <div class="float-emoji e9">✨</div>
+  <div class="float-emoji e10">⭐</div>
+
+  <div class="star s1"></div>
+  <div class="star s2"></div>
+  <div class="star s3"></div>
+  <div class="star s4"></div>
+  <div class="star s5"></div>
+  <div class="star s6"></div>
+
+  <div class="toolfx t1">🔧</div>
+  <div class="toolfx t2">⚙️</div>
+  <div class="toolfx t3">🛠️</div>
+  <div class="toolfx t4">🔩</div>
+  <div class="toolfx t5">🔨</div>
+
+</div>
+
+<header>
+
+<div class="top">
+
+  <div class="brand">
+
+    <div class="logo">🛠️</div>
+
+    <div>
+
+      <h1>
+        Controle de Ferramentas — 3D V6.0
+      </h1>
+
+      <div class="sub">
+        🚀 PCM • inventário • empréstimos • manutenção • ativos • mídia • relatórios
+      </div>
+
+    </div>
+
+  </div>
+
+  <div class="userbox">
+    👤 <span id="userLabel">Operador</span>
+    <br>
+    <span id="clock"></span>
+  </div>
+
+</div>
+
+<nav id="nav">
+
+  <button class="active" data-tab="painel">
+    📊 Painel
+  </button>
+
+  <button data-tab="ferramentas">
+    🔧 Ferramentas
+  </button>
+
+  <button data-tab="movimentos">
+    📤 Movimentos
+  </button>
+
+  <button data-tab="setores">
+    🏭 Setores
+  </button>
+
+  <button data-tab="manutencao">
+    🧰 Manutenção
+  </button>
+
+  <button data-tab="ativos">
+    🏢 Ativos
+  </button>
+
+  <button data-tab="historico">
+    🕘 Histórico
+  </button>
+
+  <button data-tab="config">
+    ⚙️ Config.
+  </button>
+
+</nav>
+
+</header>
+
+<main class="wrap">
+
+<div id="alerts"></div>
+
+<!-- PAINEL -->
+<section id="painel">
+
+  <div class="grid" id="stats"></div>
+
+  <div class="section-title">
+
+    <h2>Visão geral</h2>
+
+    <div class="actions">
+
+      <button
+        class="primary"
+        onclick="openTool()">
+        ＋ Nova ferramenta
+      </button>
+
+      <button
+        class="ok"
+        onclick="openMove()">
+        📤 Registrar empréstimo
+      </button>
+
+    </div>
+
+  </div>
+
+  <div class="grid" id="sectorCards"></div>
+
+  <div class="grid" style="margin-top:12px">
+
+    <div class="card">
+
+      <b>📈 Disponibilidade</b>
+
+      <div class="progress">
+        <i id="availabilityBar"></i>
+      </div>
+
+      <div
+        class="small muted"
+        id="availabilityText">
+      </div>
+
+    </div>
+
+    <div class="card">
+
+      <b>🧰 Pendências de manutenção</b>
+
+      <div
+        style="font-size:28px;margin-top:8px;background:linear-gradient(135deg,#fff 30%,var(--orange));-webkit-background-clip:text;-webkit-text-fill-color:transparent;background-clip:text;"
+        id="pendingMaint">
+        0
+      </div>
+
+      <div class="small muted">
+        Ferramentas/serviços com manutenção pendente
+      </div>
+
+    </div>
+
+    <div class="card">
+
+      <b>🏢 Ativos cadastrados</b>
+
+      <div
+        style="font-size:28px;margin-top:8px;background:linear-gradient(135deg,#fff 30%,var(--purple));-webkit-background-clip:text;-webkit-text-fill-color:transparent;background-clip:text;"
+        id="assetCount">
+        0
+      </div>
+
+      <div class="small muted">
+        Máquinas, equipamentos e outros ativos
+      </div>
+
+    </div>
+
+  </div>
+
+  <div
+    class="card"
+    style="margin-top:12px">
+
+    <b>📲 Relatórios rápidos</b>
+
+    <p class="muted small">
+      Compartilhe um resumo pelo WhatsApp ou
+      exporte todos os dados para backup.
+    </p>
+
+    <div class="actions">
+
+      <button
+        class="ok"
+        onclick="shareReport()">
+        WhatsApp
+      </button>
+
+      <button
+        class="blue"
+        onclick="exportData()">
+        💾 Backup JSON
+      </button>
+
+      <button onclick="window.print()">
+        🖨️ Imprimir
+      </button>
+
+    </div>
+
+  </div>
+
+</section>
+
+
+<!-- FERRAMENTAS -->
+<section id="ferramentas" class="hidden">
+
+  <div class="section-title">
+
+    <h2>Ferramentas</h2>
+
+    <button
+      class="primary"
+      onclick="openTool()">
+      ＋ Cadastrar
+    </button>
+
+  </div>
+
+  <input
+    id="search"
+    placeholder="🔎 Buscar ferramenta, patrimônio, setor ou responsável..."
+    oninput="renderTools()">
+
+  <div
+    id="toolList"
+    class="grid">
+  </div>
+
+</section>
+
+
+<!-- MOVIMENTOS -->
+<section id="movimentos" class="hidden">
+
+  <div class="section-title">
+
+    <h2>Empréstimos / devoluções</h2>
+
+    <button
+      class="primary"
+      onclick="openMove()">
+      ＋ Novo movimento
+    </button>
+
+  </div>
+
+  <div class="card">
+
+    <label>Filtrar</label>
+
+    <select
+      id="moveFilter"
+      onchange="renderMoves()">
+
+      <option value="all">
+        Todos
+      </option>
+
+      <option value="open">
+        Em aberto
+      </option>
+
+      <option value="closed">
+        Devolvidos
+      </option>
+
+    </select>
+
+  </div>
+
+  <div
+    id="moveList"
+    class="grid"
+    style="margin-top:12px">
+  </div>
+
+</section>
+
+
+<!-- SETORES -->
+<section id="setores" class="hidden">
+
+  <h2>Mapa dos setores</h2>
+
+  <div
+    class="grid"
+    id="sectorMap">
+  </div>
+
+</section>
+
+
+<!-- MANUTENÇÃO -->
+<section id="manutencao" class="hidden">
+
+  <div class="section-title">
+
+    <h2>Manutenção</h2>
+
+    <button
+      class="primary"
+      onclick="openMaint()">
+      ＋ Nova ordem
+    </button>
+
+  </div>
+
+  <div
+    class="grid"
+    id="maintList">
+  </div>
+
+</section>
+
+
+<!-- ATIVOS -->
+<section id="ativos" class="hidden">
+
+  <div class="section-title">
+
+    <h2>Ativos da empresa</h2>
+
+    <button
+      class="primary"
+      onclick="openAsset()">
+      ＋ Novo ativo
+    </button>
+
+  </div>
+
+  <input
+    id="assetSearch"
+    placeholder="🔎 Buscar ativo, patrimônio ou setor..."
+    oninput="renderAssets()">
+
+  <div
+    id="assetList"
+    class="grid">
+  </div>
+
+</section>
+
+
+<!-- HISTÓRICO -->
+<section id="historico" class="hidden">
+
+  <div class="section-title">
+
+    <h2>Histórico</h2>
+
+    <button
+      class="danger"
+      onclick="clearHistory()">
+      Limpar histórico
+    </button>
+
+  </div>
+
+  <div
+    id="historyList"
+    class="grid">
+  </div>
+
+</section>
+
+
+<!-- CONFIGURAÇÕES -->
+<section id="config" class="hidden">
+
+  <h2>Configurações e dados</h2>
+
+  <div class="grid">
+
+    <div class="card">
+
+      <b>🔔 Lembrete diário do painel</b>
+
+      <label>Ativar lembrete</label>
+
+      <select
+        id="reminderOn"
+        onchange="saveSettings()">
+
+        <option value="1">
+          Ativado
+        </option>
+
+        <option value="0">
+          Desativado
+        </option>
+
+      </select>
+
+      <label>Horário</label>
+
+      <input
+        id="reminderTime"
+        type="time"
+        onchange="saveSettings()">
+
+      <p class="small muted">
+        O navegador precisa estar aberto/permissão
+        disponível para mostrar a notificação.
+      </p>
+
+      <button onclick="testReminder()">
+        🔔 Testar lembrete
+      </button>
+
+    </div>
+
+
+    <div class="card">
+
+      <b>👤 Identificação do operador</b>
+
+      <input
+        id="operatorName"
+        placeholder="Nome do operador">
+
+      <button
+        class="primary"
+        onclick="saveOperator()">
+        Salvar nome
+      </button>
+
+    </div>
+
+
+    <div class="card">
+
+      <b>📦 Backup / restauração</b>
+
+      <p class="small muted">
+        O backup inclui ferramentas,
+        movimentos, manutenção, ativos e histórico.
+      </p>
+
+      <div class="actions">
+
+        <button
+          class="blue"
+          onclick="exportData()">
+          Exportar
+        </button>
+
+        <button
+          onclick="$('importInput').click()">
+          Importar
+        </button>
+
+      </div>
+
+      <input
+        id="importInput"
+        class="hidden"
+        type="file"
+        accept=".json,application/json"
+        onchange="importData(this.files[0])">
+
+    </div>
+
+
+    <div class="card">
+
+      <b>🧹 Dados locais</b>
+
+      <p class="small muted">
+        Os dados ficam no armazenamento
+        do navegador deste aparelho.
+      </p>
+
+      <button
+        class="danger"
+        onclick="resetAll()">
+        Apagar todos os dados
+      </button>
+
+    </div>
+
+  </div>
+
+</section>
+
+</main>
+
+
+<!-- CADASTRO DE FERRAMENTA -->
+<dialog id="toolDialog">
+
+<div class="modal">
+
+  <h2 id="toolTitle">
+    Cadastrar ferramenta
+  </h2>
+
+  <input
+    type="hidden"
+    id="editId">
+
+  <label>
+    Nome da ferramenta
+  </label>
+
+  <input
+    id="name"
+    placeholder="Ex.: Furadeira">
+
+
+  <label>
+    Patrimônio / código
+  </label>
+
+  <input
+    id="code"
+    placeholder="Ex.: FER-001">
+
+
+  <label>
+    Setor
+  </label>
+
+  <select id="sector"></select>
+
+
+  <label>
+    Status
+  </label>
+
+  <select id="status">
+
+    <option>
+      Disponível
+    </option>
+
+    <option>
+      Emprestada
+    </option>
+
+    <option>
+      Manutenção
+    </option>
+
+    <option>
+      Fora da empresa
+    </option>
+
+    <option>
+      Baixada
+    </option>
+
+  </select>
+
+
+  <label>
+    Responsável atual
+  </label>
+
+  <input
+    id="responsible"
+    placeholder="Nome do responsável, se aplicável">
+
+
+  <label>
+    Observações
+  </label>
+
+  <textarea
+    id="notes"
+    rows="3"
+    placeholder="Detalhes, defeitos, identificação...">
+  </textarea>
+
+
+  <div class="actions">
+
+    <button
+      onclick="$('photoInput').click()">
+      📷 Foto
+    </button>
+
+    <button
+      onclick="startCamera()">
+      📹 Câmera
+    </button>
+
+    <button
+      onclick="$('videoInput').click()">
+      🎬 Vídeo
+    </button>
+
+    <button
+      onclick="showQRForCurrent()">
+      ▦ QR Code
+    </button>
+
+  </div>
+
+
+  <input
+    id="photoInput"
+    class="hidden"
+    type="file"
+    accept="image/*"
+    capture="environment"
+    multiple
+    onchange="addPhotos(this.files)">
+
+
+  <input
+    id="videoInput"
+    class="hidden"
+    type="file"
+    accept="video/*"
+    capture="environment"
+    onchange="addVideo(this.files[0])">
+
+
+  <div
+    id="mediaPreview"
+    class="preview"
+    style="margin-top:10px">
+  </div>
+
+
+  <div
+    class="actions"
+    style="margin-top:15px">
+
+    <button
+      onclick="$('toolDialog').close()">
+      Cancelar
+    </button>
+
+    <button
+      class="primary"
+      onclick="saveTool()">
+      Salvar
+    </button>
+
+  </div>
+
+</div>
+
+</dialog>
+
+
+<!-- CÂMERA -->
+<dialog id="cameraDialog">
+
+<div class="modal">
+
+  <h2>📹 Câmera</h2>
+
+  <video
+    id="camera"
+    autoplay
+    playsinline>
+  </video>
+
+  <div
+    class="actions"
+    style="margin-top:10px">
+
+    <button
+      class="primary"
+      onclick="takePhoto()">
+      📸 Capturar foto
+    </button>
+
+    <button
+      onclick="stopCamera()">
+      Fechar
+    </button>
+
+  </div>
+
+</div>
+
+</dialog>
+
+
+<!-- MOVIMENTO -->
+<dialog id="moveDialog">
+
+<div class="modal">
+
+  <h2>
+    📤 Empréstimo / devolução
+  </h2>
+
+  <input
+    type="hidden"
+    id="moveId">
+
+  <label>
+    Ferramenta
+  </label>
+
+  <select id="moveTool"></select>
+
+
+  <label>
+    Responsável
+  </label>
+
+  <input
+    id="movePerson"
+    placeholder="Quem retirou?">
+
+
+  <label>
+    Destino / local
+  </label>
+
+  <input
+    id="moveDest"
+    placeholder="Setor, obra, manutenção externa...">
+
+
+  <label>
+    Previsão de devolução
+  </label>
+
+  <input
+    id="moveDue"
+    type="date">
+
+
+  <label>
+    Observação
+  </label>
+
+  <textarea
+    id="moveNote"
+    rows="2">
+  </textarea>
+
+
+  <div class="actions">
+
+    <button
+      onclick="$('moveDialog').close()">
+      Cancelar
+    </button>
+
+    <button
+      class="primary"
+      onclick="saveMove()">
+      Registrar saída
+    </button>
+
+  </div>
+
+</div>
+
+</dialog>
+
+
+<!-- MANUTENÇÃO -->
+<dialog id="maintDialog">
+
+<div class="modal">
+
+  <h2>
+    🧰 Ordem de manutenção
+  </h2>
+
+  <input
+    type="hidden"
+    id="maintId">
+
+
+  <label>
+    Descrição
+  </label>
+
+  <input
+    id="maintDesc"
+    placeholder="Ex.: Troca de rolamento">
+
+
+  <label>
+    Ferramenta relacionada
+  </label>
+
+  <select id="maintTool"></select>
+
+
+  <label>
+    Tipo
+  </label>
+
+  <select id="maintType">
+
+    <option>
+      Preventiva
+    </option>
+
+    <option>
+      Corretiva
+    </option>
+
+    <option>
+      Inspeção
+    </option>
+
+    <option>
+      Manutenção externa
+    </option>
+
+  </select>
+
+
+  <label>
+    Prioridade
+  </label>
+
+  <select id="maintPriority">
+
+    <option>
+      Baixa
+    </option>
+
+    <option>
+      Média
+    </option>
+
+    <option>
+      Alta
+    </option>
+
+    <option>
+      Crítica
+    </option>
+
+  </select>
+
+
+  <label>
+    Prazo
+  </label>
+
+  <input
+    id="maintDue"
+    type="date">
+
+
+  <label>
+    Responsável
+  </label>
+
+  <input id="maintResp">
+
+
+  <label>
+    Observações
+  </label>
+
+  <textarea
+    id="maintNotes"
+    rows="3">
+  </textarea>
+
+
+  <div class="actions">
+
+    <button
+      onclick="$('maintDialog').close()">
+      Cancelar
+    </button>
+
+    <button
+      class="primary"
+      onclick="saveMaint()">
+      Salvar
+    </button>
+
+  </div>
+
+</div>
+
+</dialog>
+
+
+<!-- ATIVO -->
+<dialog id="assetDialog">
+
+<div class="modal">
+
+  <h2>
+    🏢 Ativo da empresa
+  </h2>
+
+  <input
+    type="hidden"
+    id="assetId">
+
+
+  <label>
+    Nome do ativo
+  </label>
+
+  <input
+    id="assetName"
+    placeholder="Ex.: Compressor 01">
+
+
+  <label>
+    Patrimônio / tag
+  </label>
+
+  <input
+    id="assetCode"
+    placeholder="Ex.: AT-001">
+
+
+  <label>
+    Setor
+  </label>
+
+  <select id="assetSector"></select>
+
+
+  <label>
+    Categoria
+  </label>
+
+  <input
+    id="assetCategory"
+    placeholder="Máquina, equipamento, instalação...">
+
+
+  <label>
+    Status
+  </label>
+
+  <select id="assetStatus">
+
+    <option>
+      Operando
+    </option>
+
+    <option>
+      Parado
+    </option>
+
+    <option>
+      Em manutenção
+    </option>
+
+    <option>
+      Baixado
+    </option>
+
+  </select>
+
+
+  <label>
+    Observações
+  </label>
+
+  <textarea
+    id="assetNotes"
+    rows="3">
+  </textarea>
+
+
+  <div class="actions">
+
+    <button
+      onclick="$('assetDialog').close()">
+      Cancelar
+    </button>
+
+    <button
+      class="primary"
+      onclick="saveAsset()">
+      Salvar
+    </button>
+
+  </div>
+
+</div>
+
+</dialog>
+
+
+<!-- QR CODE -->
+<dialog id="qrDialog">
+
+<div class="modal">
+
+  <h2>
+    ▦ QR Code da ferramenta
+  </h2>
+
+  <div style="text-align:center">
+
+    <img
+      id="qrImage"
+      alt="QR Code"
+      style="
+        max-width:280px;
+        width:100%;
+        background:white;
+        padding:10px;
+        border-radius:15px;
+        transform:translateZ(10px);
+        box-shadow:0 10px 40px rgba(0,0,0,0.3);">
+
+  </div>
+
+  <p
+    id="qrText"
+    class="small muted">
+  </p>
+
+  <p class="tiny">
+    O QR é gerado por um serviço online;
+    é necessário internet para carregá-lo.
+  </p>
+
+  <div class="actions">
+
+    <button
+      onclick="$('qrDialog').close()">
+      Fechar
+    </button>
+
+  </div>
+
+</div>
+
+</dialog>
+
+
+<div id="toast" class="toast"></div>
+
+<footer>
+  🚀 Controle de Ferramentas 3D V6.0 •
+  HTML + CSS + JavaScript •
+  dados locais no aparelho
+</footer>
+
+
+<script>
+
+/* ==========================================
+   CONFIGURAÇÕES
+========================================== */
+
+const SECTORS=[
+  "Acabamento 01",
+  "Acabamento 02",
+  "Laminação 01",
+  "Laminação 02",
+  "Marcenaria",
+  "CNC",
+  "Tecelagem",
+  "Manutenção"
+];
+
+const KEY="toolsMaintV5";
+
+let db=
+JSON.parse(
+  localStorage.getItem(KEY)||"null"
+)||
+{
+  tools:[],
+  history:[],
+  moves:[],
+  maint:[],
+  assets:[],
+  settings:{
+    reminderOn:"1",
+    reminderTime:"08:00",
+    operator:"Operador"
+  }
+};
+
+let mediaTemp=[];
+let stream=null;
+
+
+/* ==========================================
+   FUNÇÕES BÁSICAS
+========================================== */
+
+const $=id=>document.getElementById(id);
+
+function esc(s=""){
+  return String(s).replace(
+    /[&<>"']/g,
+    m=>({
+      "&":"&amp;",
+      "<":"&lt;",
+      ">":"&gt;",
+      '"':"&quot;",
+      "'":"&#039;"
+    }[m])
+  );
+}
+
+function saveDB(){
+  localStorage.setItem(
+    KEY,
+    JSON.stringify(db)
+  );
+}
+
+function uid(){
+  return (
+    crypto.randomUUID
+      ? crypto.randomUUID()
+      : Date.now()+"-"+Math.random()
+  );
+}
+
+function now(){
+  return new Date().toISOString();
+}
+
+function toast(msg){
+
+  let t=$("toast");
+
+  t.textContent=msg;
+  t.style.display="block";
+
+  clearTimeout(window._toast);
+
+  window._toast=setTimeout(
+    ()=>{
+      t.style.display="none"
+    },
+    2600
+  );
+}
+
+function addHistory(name,action){
+
+  db.history.push({
+    id:uid(),
+    name,
+    action,
+    date:now(),
+    operator:db.settings.operator
+  });
+
+  if(db.history.length>500){
+    db.history.shift();
+  }
+}
+
+function statusBadge(s){
+
+  let cls=
+    s==="Disponível" ||
+    s==="Operando"
+      ? "ok"
+      :
+    (
+      s==="Manutenção" ||
+      s==="Em manutenção" ||
+      s==="Emprestada" ||
+      s==="Parado"
+    )
+      ? "warn"
+      : "danger";
+
+  return `
+    <span class="badge ${cls}">
+      ${esc(s)}
+    </span>
+  `;
+}
+
+
+/* ==========================================
+   INICIALIZAÇÃO
+========================================== */
+
+function init(){
+
+  $("sector").innerHTML=
+    SECTORS
+      .map(
+        s=>`<option>${s}</option>`
+      )
+      .join("");
+
+  $("assetSector").innerHTML=
+    SECTORS
+      .map(
+        s=>`<option>${s}</option>`
+      )
+      .join("");
+
+  document
+    .querySelectorAll("nav button")
+    .forEach(b=>{
+
+      b.onclick=()=>{
+
+        document
+          .querySelectorAll("nav button")
+          .forEach(
+            x=>x.classList.remove("active")
+          );
+
+        b.classList.add("active");
+
+        document
+          .querySelectorAll("main section")
+          .forEach(
+            x=>x.classList.add("hidden")
+          );
+
+        $(b.dataset.tab)
+          .classList
+          .remove("hidden");
+
+        renderAll();
+      };
+
+    });
+
+  $("userLabel").textContent=
+    db.settings.operator ||
+    "Operador";
+
+  $("operatorName").value=
+    db.settings.operator ||
+    "";
+
+  $("reminderOn").value=
+    db.settings.reminderOn ||
+    "1";
+
+  $("reminderTime").value=
+    db.settings.reminderTime ||
+    "08:00";
+
+  setInterval(
+    ()=>{
+      $("clock").textContent=
+        new Date().toLocaleString("pt-BR")
+    },
+    1000
+  );
+
+  renderAll();
+
+  checkReminder();
+}
+
+
+function renderAll(){
+
+  renderStats();
+  renderSectors();
+  renderTools();
+  renderMoves();
+  renderMaint();
+  renderAssets();
+  renderHistory();
+  renderAlerts();
+
+}
+
+
+/* ==========================================
+   PAINEL
+========================================== */
+
+function renderStats(){
+
+  let t=db.tools;
+
+  let av=
+    t.filter(
+      x=>x.status==="Disponível"
+    ).length;
+
+  let loan=
+    t.filter(
+      x=>x.status==="Emprestada"
+    ).length;
+
+  let maint=
+    t.filter(
+      x=>
+        x.status==="Manutenção" ||
+        x.status==="Fora da empresa"
+    ).length;
+
+  $("stats").innerHTML=[
+
+    ["🔧 Total",t.length],
+
+    ["🟢 Disponíveis",av],
+
+    ["📤 Emprestadas",loan],
+
+    ["🧰 Manutenção",maint],
+
+    ["🏢 Ativos",db.assets.length]
+
+  ]
+  .map(
+    a=>`
+      <div class="card stat">
+        <span class="icon">
+          ${a[0].split(" ")[0]}
+        </span>
+        <span class="kpi">
+          ${a[0].split(" ").slice(1).join(" ")}
+        </span>
+        <b>
+          ${a[1]}
+        </b>
+      </div>
+    `
+  )
+  .join("");
+
+  let pct=
+    t.length
+      ? Math.round(av/t.length*100)
+      : 0;
+
+  $("availabilityBar")
+    .style.width=pct+"%";
+
+  $("availabilityText")
+    .textContent=
+      `${pct}% das ferramentas estão disponíveis`;
+
+  $("pendingMaint")
+    .textContent=
+      db.maint.filter(
+        m=>m.status!=="Concluída"
+      ).length;
+
+  $("assetCount")
+    .textContent=
+      db.assets.length;
+}
+
+
+/* ==========================================
+   SETORES
+========================================== */
+
+function renderSectors(){
+
+  const html=
+    SECTORS
+      .map(s=>{
+
+        let a=
+          db.tools.filter(
+            x=>x.sector===s
+          );
+
+        return `
+          <div class="card sector">
+
+            <h3>
+              ${esc(s)}
+            </h3>
+
+            <b>
+              ${a.length}
+            </b>
+            ferramenta(s)
+
+            <br>
+
+            ${statusBadge("Disponível")}
+            ${a.filter(
+              x=>x.status==="Disponível"
+            ).length}
+
+            ${statusBadge("Emprestada")}
+            ${a.filter(
+              x=>x.status==="Emprestada"
+            ).length}
+
+            ${statusBadge("Manutenção")}
+            ${a.filter(
+              x=>x.status==="Manutenção"
+            ).length}
+
+          </div>
+        `;
+
+      })
+      .join("");
+
+  $("sectorCards").innerHTML=html;
+
+  $("sectorMap").innerHTML=html;
+}
+
+
+/* ==========================================
+   FERRAMENTAS
+========================================== */
+
+function renderTools(){
+
+  let q=
+    (
+      $("search")?.value ||
+      ""
+    ).toLowerCase();
+
+  let list=
+    db.tools.filter(
+      x=>
+        (
+          x.name+" "+
+          x.code+" "+
+          x.sector+" "+
+          (x.responsible||"")
+        )
+        .toLowerCase()
+        .includes(q)
+    );
+
+  $("toolList").innerHTML=
+    list.length
+
+      ? list
+        .map(
+          x=>`
+
+          <div class="card tool">
+
+            ${
+              x.photos?.[0]
+
+              ? `
+                <img
+                  class="thumb"
+                  src="${x.photos[0]}">
+              `
+
+              : `
+                <div
+                  class="thumb"
+                  style="
+                    display:grid;
+                    place-items:center;
+                    font-size:28px">
+                    🛠️
+                </div>
+              `
+            }
+
+            <div>
+
+              <b>
+                ${esc(x.name)}
+              </b>
+
+              <div class="muted small">
+
+                ${esc(
+                  x.code ||
+                  "Sem código"
+                )}
+
+                •
+
+                ${esc(x.sector)}
+
+              </div>
+
+              ${statusBadge(x.status)}
+
+              ${
+                x.responsible
+
+                ? `
+                  <span class="badge">
+                    👤
+                    ${esc(x.responsible)}
+                  </span>
+                `
+
+                : ""
+              }
+
+              ${
+                x.video
+
+                ? `
+                  <span class="badge">
+                    🎬 vídeo
+                  </span>
+                `
+
+                : ""
+              }
+
+              <div class="tiny">
+                ${esc(x.notes||"")}
+              </div>
+
+            </div>
+
+            <div class="actions">
+
+              <button
+                onclick="openTool('${x.id}')">
+                ✏️
+              </button>
+
+              <button
+                class="blue"
+                onclick="openMove('${x.id}')">
+                📤
+              </button>
+
+              <button
+                onclick="showQR('${x.id}')">
+                ▦
+              </button>
+
+              <button
+                class="ok"
+                onclick="shareTool('${x.id}')">
+                📲
+              </button>
+
+              <button
+                class="danger"
+                onclick="deleteTool('${x.id}')">
+                🗑️
+              </button>
+
+            </div>
+
+          </div>
+
+        `
+        )
+        .join("")
+
+      :
+
+      `
+        <div class="card empty">
+          Nenhuma ferramenta cadastrada.
+        </div>
+      `;
+}
+
+
+/* ==========================================
+   CADASTRAR / EDITAR FERRAMENTA
+========================================== */
+
+function openTool(id=null){
+
+  mediaTemp=[];
+
+  $("editId").value=id||"";
+
+  $("toolTitle").textContent=
+    id
+      ? "Editar ferramenta"
+      : "Cadastrar ferramenta";
+
+  if(id){
+
+    let x=
+      db.tools.find(
+        t=>t.id===id
+      );
+
+    if(!x)return;
+
+    $("name").value=x.name;
+
+    $("code").value=
+      x.code||"";
+
+    $("sector").value=
+      x.sector;
+
+    $("status").value=
+      x.status;
+
+    $("responsible").value=
+      x.responsible||"";
+
+    $("notes").value=
+      x.notes||"";
+
+    mediaTemp=
+      (x.photos||[])
+      .map(
+        src=>({
+          type:"photo",
+          src
+        })
+      );
+
+    if(x.video){
+
+      mediaTemp.push({
+        type:"video",
+        src:x.video
+      });
+
+    }
+
+  }else{
+
+    $("name").value=
+    $("code").value=
+    $("responsible").value=
+    $("notes").value="";
+
+    $("sector").value=
+      SECTORS[0];
+
+    $("status").value=
+      "Disponível";
+  }
+
+  renderPreview();
+
+  $("toolDialog").showModal();
+}
+
+
+/* ==========================================
+   FOTOS
+========================================== */
+
+function addPhotos(files){
+
+  [...files].forEach(
+    f=>{
+
+      let r=
+        new FileReader();
+
+      r.onload=()=>{
+
+        mediaTemp.push({
+          type:"photo",
+          src:r.result
+        });
+
+        renderPreview();
+      };
+
+      r.readAsDataURL(f);
+
+    }
+  );
+}
+
+
+/* ==========================================
+   VÍDEO
+========================================== */
+
+function addVideo(file){
+
+  if(!file)return;
+
+  let r=
+    new FileReader();
+
+  r.onload=()=>{
+
+    mediaTemp=
+      mediaTemp.filter(
+        m=>m.type!=="video"
+      );
+
+    mediaTemp.push({
+      type:"video",
+      src:r.result
+    });
+
+    renderPreview();
+
+  };
+
+  r.readAsDataURL(file);
+}
+
+
+function renderPreview(){
+
+  $("mediaPreview").innerHTML=
+    mediaTemp
+      .map(
+        (m,i)=>
+
+          m.type==="photo"
+
+          ?
+
+          `
+            <img
+              src="${m.src}"
+              title="Foto ${i+1}">
+          `
+
+          :
+
+          `
+            <video
+              src="${m.src}"
+              controls>
+            </video>
+          `
+      )
+      .join("");
+}
+
+
+/* ==========================================
+   CÂMERA
+========================================== */
+
+async function startCamera(){
+
+  try{
+
+    stream=
+      await navigator.mediaDevices
+        .getUserMedia({
+          video:{
+            facingMode:"environment"
+          },
+          audio:false
+        });
+
+    $("camera").srcObject=
+      stream;
+
+    $("cameraDialog").showModal();
+
+  }catch(e){
+
+    alert(
+      "Não foi possível acessar a câmera. " +
+      "Verifique a permissão do navegador."
+    );
+
+  }
+
+}
+
+
+function stopCamera(){
+
+  if(stream){
+
+    stream
+      .getTracks()
+      .forEach(
+        t=>t.stop()
+      );
+
+    stream=null;
+  }
+
+  $("cameraDialog").close();
+}
+
+
+function takePhoto(){
+
+  let v=$("camera");
+
+  let c=
+    document.createElement("canvas");
+
+  c.width=v.videoWidth;
+  c.height=v.videoHeight;
+
+  c.getContext("2d")
+    .drawImage(
+      v,
+      0,
+      0
+    );
+
+  mediaTemp.push({
+    type:"photo",
+    src:c.toDataURL(
+      "image/jpeg",
+      .82
+    )
+  });
+
+  renderPreview();
+
+  stopCamera();
+}
+
+
+/* ==========================================
+   SALVAR FERRAMENTA
+========================================== */
+
+function saveTool(){
+
+  let name=
+    $("name").value.trim();
+
+  if(!name){
+
+    alert(
+      "Informe o nome da ferramenta."
+    );
+
+    return;
+  }
+
+  let id=
+    $("editId").value ||
+    uid();
+
+  let old=
+    db.tools.find(
+      t=>t.id===id
+    );
+
+  let x={
+
+    id,
+
+    name,
+
+    code:
+      $("code").value.trim(),
+
+    sector:
+      $("sector").value,
+
+    status:
+      $("status").value,
+
+    responsible:
+      $("responsible").value.trim(),
+
+    notes:
+      $("notes").value.trim(),
+
+    photos:
+      mediaTemp
+        .filter(
+          m=>m.type==="photo"
+        )
+        .map(
+          m=>m.src
+        ),
+
+    video:
+      (
+        mediaTemp.find(
+          m=>m.type==="video"
+        )||{}
+      ).src||null,
+
+    updated:now()
+
+  };
+
+  if(old){
+
+    db.tools=
+      db.tools.map(
+        t=>t.id===id
+          ? x
+          : t
+      );
+
+    addHistory(
+      name,
+      `Atualização — ${x.status}`
+    );
+
+  }else{
+
+    db.tools.push(x);
+
+    addHistory(
+      name,
+      `Cadastro — ${x.sector}`
+    );
+
+  }
+
+  saveDB();
+
+  $("toolDialog").close();
+
+  renderAll();
+
+  toast(
+    "Ferramenta salva com sucesso."
+  );
+}
+
+
+/* ==========================================
+   EXCLUIR FERRAMENTA
+========================================== */
+
+function deleteTool(id){
+
+  let x=
+    db.tools.find(
+      t=>t.id===id
+    );
+
+  if(
+    x &&
+    confirm(
+      `Excluir ${x.name}?`
+    )
+  ){
+
+    db.tools=
+      db.tools.filter(
+        t=>t.id!==id
+      );
+
+    addHistory(
+      x.name,
+      "Exclusão"
+    );
+
+    saveDB();
+
+    renderAll();
+  }
+}
+
+
+/* ==========================================
+   EMPRÉSTIMOS
+========================================== */
+
+function openMove(toolId=null){
+
+  $("moveId").value="";
+
+  $("moveTool").innerHTML=
+    db.tools
+      .filter(
+        x=>x.status!=="Baixada"
+      )
+      .map(
+        x=>`
+          <option value="${x.id}">
+            ${esc(x.name)}
+            —
+            ${esc(x.code||"-")}
+            (${esc(x.status)})
+          </option>
+        `
+      )
+      .join("");
+
+  if(toolId){
+
+    $("moveTool").value=
+      toolId;
+  }
+
+  $("movePerson").value=
+  $("moveDest").value=
+  $("moveNote").value="";
+
+  $("moveDue").value="";
+
+  $("moveDialog").showModal();
+}
+
+
+function saveMove(){
+
+  let tool=
+    db.tools.find(
+      x=>x.id===
+        $("moveTool").value
+    );
+
+  let person=
+    $("movePerson")
+      .value
+      .trim();
+
+  if(!tool||!person){
+
+    alert(
+      "Selecione a ferramenta e informe o responsável."
+    );
+
+    return;
+  }
+
+  let m={
+
+    id:uid(),
+
+    toolId:
+      tool.id,
+
+    tool:
+      tool.name,
+
+    person,
+
+    dest:
+      $("moveDest")
+        .value
+        .trim(),
+
+    due:
+      $("moveDue")
+        .value,
+
+    note:
+      $("moveNote")
+        .value
+        .trim(),
+
+    out:now(),
+
+    returned:null
+  };
+
+  db.moves.push(m);
+
+  tool.status=
+    "Emprestada";
+
+  tool.responsible=
+    person;
+
+  addHistory(
+    tool.name,
+    `Empréstimo para ${person}`
+  );
+
+  saveDB();
+
+  $("moveDialog").close();
+
+  renderAll();
+
+  toast(
+    "Empréstimo registrado."
+  );
+}
+
+
+function renderMoves(){
+
+  let f=
+    $("moveFilter")?.value ||
+    "all";
+
+  let list=
+    db.moves
+      .filter(
+        m=>
+          f==="open"
+            ? !m.returned
+            : f==="closed"
+              ? !!m.returned
+              : true
+      )
+      .slice()
+      .reverse();
+
+  $("moveList").innerHTML=
+    list.length
+
+    ?
+
+    list.map(
+      m=>`
+
+      <div class="card">
+
+        <b>
+          ${esc(m.tool)}
+        </b>
+
+        ${
+          m.returned
+          ? statusBadge("Devolvida")
+          : statusBadge("Emprestada")
+        }
+
+        <div class="small muted">
+
+          👤
+          ${esc(m.person)}
+
+          •
+
+          📍
+          ${esc(m.dest||"-")}
+
+        </div>
+
+        <div class="small">
+
+          Saída:
+          ${new Date(m.out)
+            .toLocaleString("pt-BR")}
+
+          ${
+            m.due
+            ?
+            `
+              • Prevista:
+              ${
+                new Date(
+                  m.due+"T12:00"
+                )
+                .toLocaleDateString(
+                  "pt-BR"
+                )
+              }
+            `
+            : ""
+          }
+
+        </div>
+
+        ${
+          m.note
+          ?
+          `
+            <div class="small muted">
+              Obs.: ${esc(m.note)}
+            </div>
+          `
+          : ""
+        }
+
+        ${
+          !m.returned
+          ?
+          `
+            <div
+              class="actions"
+              style="margin-top:8px">
+
+              <button
+                class="ok"
+                onclick="returnMove('${m.id}')">
+
+                ↩️ Registrar devolução
+
+              </button>
+
+            </div>
+          `
+          : ""
+        }
+
+      </div>
+
+      `
+    )
+    .join("")
+
+    :
+
+    `
+      <div class="card empty">
+        Nenhum movimento encontrado.
+      </div>
+    `;
+}
+
+
+function returnMove(id){
+
+  let m=
+    db.moves.find(
+      x=>x.id===id
+    );
+
+  if(!m||m.returned)return;
+
+  m.returned=
+    now();
+
+  let t=
+    db.tools.find(
+      x=>x.id===m.toolId
+    );
+
+  if(t){
+
+    t.status=
+      "Disponível";
+
+    t.responsible="";
+  }
+
+  addHistory(
+    m.tool,
+    `Devolução por ${m.person}`
+  );
+
+  saveDB();
+
+  renderAll();
+
+  toast(
+    "Devolução registrada."
+  );
+}
+
+
+/* ==========================================
+   MANUTENÇÃO
+========================================== */
+
+function openMaint(id=null){
+
+  $("maintId").value=
+    id||"";
+
+  $("maintTool").innerHTML=
+    `<option value="">
+      — Sem ferramenta —
+    </option>`+
+
+    db.tools
+      .map(
+        x=>`
+          <option value="${x.id}">
+            ${esc(x.name)}
+            —
+            ${esc(x.code||"-")}
+          </option>
+        `
+      )
+      .join("");
+
+  if(id){
+
+    let m=
+      db.maint.find(
+        x=>x.id===id
+      );
+
+    if(!m)return;
+
+    $("maintDesc").value=
+      m.desc;
+
+    $("maintTool").value=
+      m.toolId||"";
+
+    $("maintType").value=
+      m.type;
+
+    $("maintPriority").value=
+      m.priority;
+
+    $("maintDue").value=
+      m.due||"";
+
+    $("maintResp").value=
+      m.resp||"";
+
+    $("maintNotes").value=
+      m.notes||"";
+
+  }else{
+
+    $("maintDesc").value=
+    $("maintResp").value=
+    $("maintNotes").value="";
+
+    $("maintTool").value="";
+
+    $("maintDue").value="";
+
+    $("maintType").value=
+      "Preventiva";
+
+    $("maintPriority").value=
+      "Média";
+  }
+
+  $("maintDialog").showModal();
+}
+
+
+function saveMaint(){
+
+  let desc=
+    $("maintDesc")
+      .value
+      .trim();
+
+  if(!desc){
+
+    alert(
+      "Informe a descrição da manutenção."
+    );
+
+    return;
+  }
+
+  let id=
+    $("maintId").value ||
+    uid();
+
+  let old=
+    db.maint.find(
+      x=>x.id===id
+    );
+
+  let m={
+
+    id,
+
+    desc,
+
+    toolId:
+      $("maintTool").value,
+
+    type:
+      $("maintType").value,
+
+    priority:
+      $("maintPriority").value,
+
+    due:
+      $("maintDue").value,
+
+    resp:
+      $("maintResp")
+        .value
+        .trim(),
+
+    notes:
+      $("maintNotes")
+        .value
+        .trim(),
+
+    status:
+      old?.status ||
+      "Aberta",
+
+    updated:
+      now()
+  };
+
+  if(old){
+
+    db.maint=
+      db.maint.map(
+        x=>x.id===id
+          ? m
+          : x
+      );
+
+  }else{
+
+    db.maint.push(m);
+  }
+
+  if(m.toolId){
+
+    let t=
+      db.tools.find(
+        x=>x.id===m.toolId
+      );
+
+    if(
+      t &&
+      m.status!=="Concluída"
+    ){
+
+      t.status=
+        "Manutenção";
+    }
+  }
+
+  addHistory(
+    desc,
+    old
+      ? "Atualização de manutenção"
+      : "Nova ordem de manutenção"
+  );
+
+  saveDB();
+
+  $("maintDialog").close();
+
+  renderAll();
+
+  toast(
+    "Ordem de manutenção salva."
+  );
+}
+
+
+function renderMaint(){
+
+  let list=
+    db.maint
+      .slice()
+      .sort(
+        (a,b)=>
+          (a.status==="Concluída")-
+          (b.status==="Concluída")
+      );
+
+  $("maintList").innerHTML=
+    list.length
+
+    ?
+
+    list.map(
+      m=>`
+
+      <div class="card">
+
+        <b>
+          ${esc(m.desc)}
+        </b>
+
+        ${statusBadge(m.status)}
+
+        <div class="small muted">
+
+          🔧
+          ${esc(
+            db.tools.find(
+              t=>t.id===m.toolId
+            )?.name ||
+            "Sem ferramenta"
+          )}
+
+          •
+
+          ${esc(m.type)}
+
+          •
+
+          Prioridade:
+          ${esc(m.priority)}
+
+        </div>
+
+        <div class="small">
+
+          ${
+            m.due
+            ?
+            "Prazo: "+
+            new Date(
+              m.due+"T12:00"
+            )
+            .toLocaleDateString(
+              "pt-BR"
+            )
+            :
+            "Sem prazo"
+          }
+
+          ${
+            m.resp
+            ?
+            " • 👤 "+esc(m.resp)
+            :
+            ""
+          }
+
+        </div>
+
+        <div
+          class="actions"
+          style="margin-top:8px">
+
+          <button
+            onclick="openMaint('${m.id}')">
+
+            ✏️ Editar
+
+          </button>
+
+          ${
+            m.status!=="Concluída"
+
+            ?
+
+            `
+              <button
+                class="ok"
+                onclick="finishMaint('${m.id}')">
+
+                ✅ Concluir
+
+              </button>
+            `
+
+            : ""
+          }
+
+        </div>
+
+      </div>
+
+      `
+    )
+    .join("")
+
+    :
+
+    `
+      <div class="card empty">
+        Nenhuma ordem de manutenção.
+      </div>
+    `;
+}
+
+
+function finishMaint(id){
+
+  let m=
+    db.maint.find(
+      x=>x.id===id
+    );
+
+  if(!m)return;
+
+  m.status=
+    "Concluída";
+
+  m.updated=
+    now();
+
+  if(m.toolId){
+
+    let t=
+      db.tools.find(
+        x=>x.id===m.toolId
+      );
+
+    if(
+      t &&
+      t.status==="Manutenção"
+    ){
+
+      t.status=
+        "Disponível";
+    }
+  }
+
+  addHistory(
+    m.desc,
+    "Manutenção concluída"
+  );
+
+  saveDB();
+
+  renderAll();
+
+  toast(
+    "Manutenção concluída."
+  );
+}
+
+
+/* ==========================================
+   ATIVOS
+========================================== */
+
+function renderAssets(){
+
+  let q=
+    (
+      $("assetSearch")?.value ||
+      ""
+    ).toLowerCase();
+
+  let list=
+    db.assets.filter(
+      x=>
+        (
+          x.name+" "+
+          x.code+" "+
+          x.sector+" "+
+          x.category
+        )
+        .toLowerCase()
+        .includes(q)
+    );
+
+  $("assetList").innerHTML=
+    list.length
+
+    ?
+
+    list.map(
+      x=>`
+
+      <div class="card">
+
+        <h3
+          style="margin-top:0">
+
+          ${esc(x.name)}
+
+        </h3>
+
+        <div class="small muted">
+
+          ${esc(
+            x.code ||
+            "Sem tag"
+          )}
+
+          •
+
+          ${esc(x.sector)}
+
+        </div>
+
+        ${statusBadge(x.status)}
+
+        <span class="badge">
+          ${esc(
+            x.category ||
+            "Ativo"
+          )}
+        </span>
+
+        <p class="small muted">
+          ${esc(x.notes||"")}
+        </p>
+
+        <div class="actions">
+
+          <button
+            onclick="openAsset('${x.id}')">
+
+            ✏️ Editar
+
+          </button>
+
+          <button
+            class="danger"
+            onclick="deleteAsset('${x.id}')">
+
+            🗑️
+
+          </button>
+
+        </div>
+
+      </div>
+
+      `
+    )
+    .join("")
+
+    :
+
+    `
+      <div class="card empty">
+        Nenhum ativo cadastrado.
+      </div>
+    `;
+}
+
+
+function openAsset(id=null){
+
+  $("assetId").value=
+    id||"";
+
+  if(id){
+
+    let x=
+      db.assets.find(
+        a=>a.id===id
+      );
+
+    $("assetName").value=
+      x.name;
+
+    $("assetCode").value=
+      x.code||"";
+
+    $("assetSector").value=
+      x.sector;
+
+    $("assetCategory").value=
+      x.category||"";
+
+    $("assetStatus").value=
+      x.status;
+
+    $("assetNotes").value=
+      x.notes||"";
+
+  }else{
+
+    $("assetName").value=
+    $("assetCode").value=
+    $("assetCategory").value=
+    $("assetNotes").value="";
+
+    $("assetSector").value=
+      SECTORS[0];
+
+    $("assetStatus").value=
+      "Operando";
+  }
+
+  $("assetDialog").showModal();
+}
+
+
+function saveAsset(){
+
+  let name=
+    $("assetName")
+      .value
+      .trim();
+
+  if(!name){
+
+    alert(
+      "Informe o nome do ativo."
+    );
+
+    return;
+  }
+
+  let id=
+    $("assetId").value ||
+    uid();
+
+  let old=
+    db.assets.find(
+      x=>x.id===id
+    );
+
+  let x={
+
+    id,
+
+    name,
+
+    code:
+      $("assetCode")
+        .value
+        .trim(),
+
+    sector:
+      $("assetSector")
+        .value,
+
+    category:
+      $("assetCategory")
+        .value
+        .trim(),
+
+    status:
+      $("assetStatus")
+        .value,
+
+    notes:
+      $("assetNotes")
+        .value
+        .trim(),
+
+    updated:
+      now()
+  };
+
+  if(old){
+
+    db.assets=
+      db.assets.map(
+        a=>a.id===id
+          ? x
+          : a
+      );
+
+  }else{
+
+    db.assets.push(x);
+  }
+
+  addHistory(
+    name,
+    old
+      ? "Atualização de ativo"
+      : "Cadastro de ativo"
+  );
+
+  saveDB();
+
+  $("assetDialog").close();
+
+  renderAll();
+
+  toast(
+    "Ativo salvo."
+  );
+}
+
+
+function deleteAsset(id){
+
+  let x=
+    db.assets.find(
+      a=>a.id===id
+    );
+
+  if(
+    x &&
+    confirm(
+      `Excluir o ativo ${x.name}?`
+    )
+  ){
+
+    db.assets=
+      db.assets.filter(
+        a=>a.id!==id
+      );
+
+    addHistory(
+      x.name,
+      "Exclusão de ativo"
+    );
+
+    saveDB();
+
+    renderAll();
+  }
+}
+
+
+/* ==========================================
+   HISTÓRICO
+========================================== */
+
+function renderHistory(){
+
+  $("historyList").innerHTML=
+
+    db.history.length
+
+    ?
+
+    db.history
+      .slice()
+      .reverse()
+      .map(
+        h=>`
+
+        <div class="card">
+
+          <b>
+            ${esc(h.name)}
+          </b>
+
+          <div class="small muted">
+
+            ${esc(h.action)}
+
+            •
+
+            ${
+              new Date(h.date)
+                .toLocaleString("pt-BR")
+            }
+
+            •
+
+            👤
+            ${esc(h.operator||"-")}
+
+          </div>
+
+        </div>
+
+        `
+      )
+      .join("")
+
+    :
+
+    `
+      <div class="card empty">
+        Nenhum registro.
+      </div>
+    `;
+}
+
+
+function clearHistory(){
+
+  if(
+    confirm(
+      "Limpar todo o histórico?"
+    )
+  ){
+
+    db.history=[];
+
+    saveDB();
+
+    renderHistory();
+  }
+}
+
+
+/* ==========================================
+   ALERTAS
+========================================== */
+
+function renderAlerts(){
+
+  let overdue=
+    db.moves.filter(
+      m=>
+        !m.returned &&
+        m.due &&
+        new Date(
+          m.due+"T23:59:59"
+        ) <
+        new Date()
+    );
+
+  let maintDue=
+    db.maint.filter(
+      m=>
+        m.status!=="Concluída" &&
+        m.due &&
+        new Date(
+          m.due+"T23:59:59"
+        ) <
+        new Date()
+    );
+
+  let h="";
+
+  if(overdue.length){
+
+    h+=`
+
+      <div
+        class="alert dangerbox">
+
+        ⚠️
+
+        <b>
+          ${overdue.length}
+          empréstimo(s) atrasado(s)
+        </b>
+
+        — confira a aba Movimentos.
+
+      </div>
+
+    `;
+  }
+
+  if(maintDue.length){
+
+    h+=`
+
+      <div class="alert">
+
+        🔔
+
+        <b>
+          ${maintDue.length}
+          manutenção(ões) com prazo vencido
+        </b>
+
+        — confira a aba Manutenção.
+
+      </div>
+
+    `;
+  }
+
+  $("alerts").innerHTML=h;
+}
+
+
+/* ==========================================
+   WHATSAPP
+========================================== */
+
+function shareTool(id){
+
+  let x=
+    db.tools.find(
+      t=>t.id===id
+    );
+
+  if(x)
+    openWhatsApp(
+      toolText(x)
+    );
+}
+
+
+function toolText(x){
+
+  return `
+🛠️ CONTROLE DE FERRAMENTAS 3D V6.0
+
+Ferramenta: ${x.name}
+Código: ${x.code||"-"}
+Setor: ${x.sector}
+Status: ${x.status}
+Responsável: ${x.responsible||"-"}
+Obs.: ${x.notes||"-"}
+`;
+}
+
+
+function shareReport(){
+
+  let t=
+    db.tools;
+
+  let text=`
+
+🛠️ RELATÓRIO DE FERRAMENTAS 3D V6.0
+
+Total:
+${t.length}
+
+Disponíveis:
+${
+  t.filter(
+    x=>x.status==="Disponível"
+  ).length
+}
+
+Emprestadas:
+${
+  t.filter(
+    x=>x.status==="Emprestada"
+  ).length
+}
+
+Manutenção:
+${
+  t.filter(
+    x=>x.status==="Manutenção"
+  ).length
+}
+
+Fora da empresa:
+${
+  t.filter(
+    x=>x.status==="Fora da empresa"
+  ).length
+}
+
+Ativos:
+${db.assets.length}
+
+${SECTORS
+  .map(
+    s=>
+      `${s}: ${
+        t.filter(
+          x=>x.sector===s
+        ).length
+      }`
+  )
+  .join("\n")}
+`;
+
+  openWhatsApp(text);
+}
+
+
+function openWhatsApp(text){
+
+  location.href=
+    "https://wa.me/?text="+
+    encodeURIComponent(text);
+}
+
+
+/* ==========================================
+   QR CODE
+========================================== */
+
+function showQR(id){
+
+  let x=
+    db.tools.find(
+      t=>t.id===id
+    );
+
+  if(!x)return;
+
+  let data=
+    toolText(x);
+
+  $("qrImage").src=
+    "https://api.qrserver.com/v1/create-qr-code/?size=500x500&data="+
+    encodeURIComponent(data);
+
+  $("qrText").textContent=
+    `QR de: ${x.name} • ${x.code||"sem código"}`;
+
+  $("qrDialog").showModal();
+}
+
+
+function showQRForCurrent(){
+
+  let name=
+    $("name")
+      .value
+      .trim() ||
+    "Nova ferramenta";
+
+  let code=
+    $("code")
+      .value
+      .trim() ||
+    "-";
+
+  let sector=
+    $("sector").value;
+
+  let data=`
+
+Ferramenta: ${name}
+
+Código: ${code}
+
+Setor: ${sector}
+`;
+
+  $("qrImage").src=
+    "https://api.qrserver.com/v1/create-qr-code/?size=500x500&data="+
+    encodeURIComponent(data);
+
+  $("qrText").textContent=
+    `QR de: ${name}`;
+
+  $("qrDialog").showModal();
+}
+
+
+/* ==========================================
+   BACKUP
+========================================== */
+
+function exportData(){
+
+  let blob=
+    new Blob(
+      [
+        JSON.stringify(
+          db,
+          null,
+          2
+        )
+      ],
+      {
+        type:"application/json"
+      }
+    );
+
+  let a=
+    document.createElement("a");
+
+  a.href=
+    URL.createObjectURL(blob);
+
+  a.download=
+    "backup_controle_ferramentas_3d_v6.json";
+
+  a.click();
+
+  URL.revokeObjectURL(
+    a.href
+  );
+
+  toast(
+    "Backup exportado."
+  );
+}
+
+
+function importData(file){
+
+  if(!file)return;
+
+  let r=
+    new FileReader();
+
+  r.onload=()=>{
+
+    try{
+
+      let x=
+        JSON.parse(
+          r.result
+        );
+
+      if(
+        !x.tools ||
+        !x.history
+      )
+        throw Error();
+
+      db={
+        ...db,
+        ...x,
+        settings:{
+          ...db.settings,
+          ...(x.settings||{})
+        }
+      };
+
+      saveDB();
+
+      init();
+
+      toast(
+        "Backup importado com sucesso."
+      );
+
+    }catch(e){
+
+      alert(
+        "Arquivo de backup inválido."
+      );
+
+    }
+
+  };
+
+  r.readAsText(file);
+}
+
+
+/* ==========================================
+   RESET
+========================================== */
+
+function resetAll(){
+
+  if(
+    confirm(
+      "ATENÇÃO: apagar todas as ferramentas, movimentos, manutenção, ativos e histórico?"
+    )
+  ){
+
+    localStorage.removeItem(KEY);
+
+    location.reload();
+  }
+}
+
+
+/* ==========================================
+   CONFIGURAÇÕES
+========================================== */
+
+function saveSettings(){
+
+  db.settings.reminderOn=
+    $("reminderOn").value;
+
+  db.settings.reminderTime=
+    $("reminderTime").value;
+
+  saveDB();
+
+  toast(
+    "Configuração salva."
+  );
+}
+
+
+function saveOperator(){
+
+  let n=
+    $("operatorName")
+      .value
+      .trim() ||
+    "Operador";
+
+  db.settings.operator=n;
+
+  $("userLabel")
+    .textContent=n;
+
+  saveDB();
+
+  toast(
+    "Operador atualizado."
+  );
+}
+
+
+/* ==========================================
+   NOTIFICAÇÕES
+========================================== */
+
+function testReminder(){
+
+  showNotification(
+    "🔔 Painel de ferramentas 3D",
+    "Hora de conferir o painel, empréstimos e manutenções."
+  );
+}
+
+
+function showNotification(title,body){
+
+  if(
+    "Notification" in window &&
+    Notification.permission==="granted"
+  ){
+
+    new Notification(
+      title,
+      {
+        body
+      }
+    );
+
+  }
+
+  else if(
+    "Notification" in window &&
+    Notification.permission!=="denied"
+  ){
+
+    Notification
+      .requestPermission()
+      .then(
+        p=>{
+
+          if(
+            p==="granted"
+          ){
+
+            new Notification(
+              title,
+              {
+                body
+              }
+            );
+
+          }else{
+
+            alert(
+              title+
+              "\n"+
+              body
+            );
+
+          }
+
+        }
+      );
+
+  }
+
+  else{
+
+    alert(
+      title+
+      "\n"+
+      body
+    );
+  }
+}
+
+
+/* ==========================================
+   LEMBRETE DIÁRIO
+========================================== */
+
+function checkReminder(){
+
+  if(
+    db.settings.reminderOn!=="1"
+  )
+    return;
+
+  let today=
+    new Date()
+      .toISOString()
+      .slice(0,10);
+
+  let mark=
+    localStorage.getItem(
+      "v5ReminderDate"
+    );
+
+  let time=
+    db.settings.reminderTime ||
+    "08:00";
+
+  if(mark!==today){
+
+    let parts=
+      time
+        .split(":")
+        .map(Number);
+
+    let nowD=
+      new Date();
+
+    let target=
+      new Date();
+
+    target.setHours(
+      parts[0],
+      parts[1],
+      0,
+      0
+    );
+
+    let wait=
+      Math.max(
+        0,
+        target-nowD
+      );
+
+    setTimeout(
+      ()=>{
+
+        showNotification(
+          "🛠️ Lembrete diário 3D",
+          "Confira o painel de controle das ferramentas."
+        );
+
+        localStorage.setItem(
+          "v5ReminderDate",
+          today
+        );
+
+      },
+      wait
+    );
+  }
+}
+
+
+/* ==========================================
+   INICIAR APLICAÇÃO
+========================================== */
+
+init();
+
+</script>
+
+</body>
+</html>
