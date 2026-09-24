@@ -1,11 +1,25 @@
-
 <!DOCTYPE html>
 <html lang="pt-BR">
 <head>
 <meta charset="UTF-8">
-<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
 <meta name="theme-color" content="#0066cc">
-<title>OS Digital - Manutenção</title>
+<meta name="apple-mobile-web-app-capable" content="yes">
+<meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
+<title>OS Digital 2.0 — Manutenção</title>
+
+<link rel="manifest" href="data:application/json,{
+  \"name\":\"OS Digital - Manutenção\",
+  \"short_name\":\"OS Digital\",
+  \"start_url\":\"./\",
+  \"display\":\"standalone\",
+  \"background_color\":\"#0066cc\",
+  \"theme_color\":\"#0066cc\",
+  \"icons\":[{
+    \"src\":\"data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 192 192'%3E%3Crect width='192' height='192' rx='32' fill='%230066cc'/%3E%3Ctext x='96' y='125' font-size='100' text-anchor='middle' fill='white'%3E%F0%9F%94%A7%3C/text%3E%3C/svg%3E\",
+    \"sizes\":\"192x192\",\"type\":\"image/svg+xml\"
+  }]
+}">
 
 <script src="https://cdnjs.cloudflare.com/ajax/libs/jspdf/2.5.1/jspdf.umd.min.js"></script>
 <script src="https://cdnjs.cloudflare.com/ajax/libs/qrcodejs/1.0.0/qrcode.min.js"></script>
@@ -16,287 +30,167 @@
 
 body {
   font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Arial, sans-serif;
-  background: #eef2f7;
-  color: #222;
-  padding-bottom: 80px;
-  min-height: 100vh;
+  background: #eef2f7; color: #222; padding-bottom: 80px; min-height: 100vh;
 }
 
 /* ===== HEADER ===== */
 .app-header {
   background: linear-gradient(135deg, #0066cc 0%, #004a99 100%);
-  color: #fff;
-  padding: 18px 20px 24px;
+  color: #fff; padding: 18px 20px 24px;
   border-radius: 0 0 24px 24px;
   box-shadow: 0 4px 12px rgba(0,102,204,0.25);
   position: relative;
 }
-.app-header h1 {
-  font-size: 20px;
-  font-weight: 600;
-  margin-bottom: 4px;
-}
-.app-header p {
-  font-size: 12px;
-  opacity: 0.85;
-}
+.app-header h1 { font-size: 20px; font-weight: 600; margin-bottom: 4px; }
+.app-header p { font-size: 12px; opacity: 0.85; }
 .app-header .data-hoje {
-  position: absolute;
-  top: 20px;
-  right: 20px;
-  font-size: 12px;
-  opacity: 0.9;
-  background: rgba(255,255,255,0.15);
-  padding: 4px 10px;
-  border-radius: 12px;
+  position: absolute; top: 20px; right: 20px; font-size: 12px; opacity: 0.9;
+  background: rgba(255,255,255,0.15); padding: 4px 10px; border-radius: 12px;
 }
 
-/* ===== CONTAINER ===== */
-.container {
-  padding: 16px;
-  max-width: 900px;
-  margin: 0 auto;
-}
+.container { padding: 16px; max-width: 900px; margin: 0 auto; }
+.view { display: none; }
+.view.active { display: block; }
 
 /* ===== KPI RESUMO ===== */
 .resumo-grid {
-  display: grid;
-  grid-template-columns: repeat(2, 1fr);
-  gap: 10px;
-  margin-top: -10px;
-  margin-bottom: 20px;
+  display: grid; grid-template-columns: repeat(2, 1fr); gap: 10px;
+  margin-top: -10px; margin-bottom: 20px;
 }
 .resumo-card {
-  background: #fff;
-  border-radius: 14px;
-  padding: 14px;
+  background: #fff; border-radius: 14px; padding: 14px;
   box-shadow: 0 2px 8px rgba(0,0,0,0.06);
-  display: flex;
-  align-items: center;
-  gap: 10px;
+  display: flex; align-items: center; gap: 10px;
 }
 .resumo-card .icone {
-  width: 42px;
-  height: 42px;
-  border-radius: 12px;
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  font-size: 20px;
-  flex-shrink: 0;
+  width: 42px; height: 42px; border-radius: 12px;
+  display: flex; align-items: center; justify-content: center;
+  font-size: 20px; flex-shrink: 0;
 }
 .resumo-card .icone.azul { background: #e6f0ff; color: #0066cc; }
 .resumo-card .icone.laranja { background: #fff3e6; color: #fd7e14; }
 .resumo-card .icone.verde { background: #e6f7ec; color: #28a745; }
 .resumo-card .icone.vermelho { background: #ffe6e6; color: #dc3545; }
 .resumo-card .info { flex: 1; min-width: 0; }
-.resumo-card .num {
-  font-size: 22px;
-  font-weight: bold;
-  color: #222;
-  line-height: 1;
-}
+.resumo-card .num { font-size: 22px; font-weight: bold; color: #222; line-height: 1; }
 .resumo-card .lbl {
-  font-size: 11px;
-  color: #888;
-  margin-top: 4px;
-  text-transform: uppercase;
-  letter-spacing: 0.3px;
+  font-size: 11px; color: #888; margin-top: 4px;
+  text-transform: uppercase; letter-spacing: 0.3px;
 }
 
 /* ===== BOTÃO PRINCIPAL ===== */
 .btn-nova-os {
   width: 100%;
   background: linear-gradient(135deg, #28a745 0%, #1e7e34 100%);
-  color: #fff;
-  border: none;
-  padding: 18px;
-  border-radius: 16px;
-  font-size: 16px;
-  font-weight: 600;
-  cursor: pointer;
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  gap: 10px;
+  color: #fff; border: none; padding: 18px; border-radius: 16px;
+  font-size: 16px; font-weight: 600; cursor: pointer;
+  display: flex; align-items: center; justify-content: center; gap: 10px;
   margin-bottom: 20px;
   box-shadow: 0 4px 14px rgba(40,167,69,0.35);
   transition: transform 0.15s;
 }
 .btn-nova-os:active { transform: scale(0.98); }
 .btn-nova-os .plus {
-  background: rgba(255,255,255,0.25);
-  width: 32px;
-  height: 32px;
-  border-radius: 50%;
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  font-size: 20px;
-  font-weight: bold;
+  background: rgba(255,255,255,0.25); width: 32px; height: 32px;
+  border-radius: 50%; display: flex; align-items: center; justify-content: center;
+  font-size: 20px; font-weight: bold;
 }
 
 /* ===== SEÇÕES ===== */
 .secao-titulo {
-  font-size: 13px;
-  color: #666;
-  text-transform: uppercase;
-  letter-spacing: 0.5px;
-  font-weight: 600;
-  margin: 20px 0 12px 4px;
+  font-size: 13px; color: #666; text-transform: uppercase;
+  letter-spacing: 0.5px; font-weight: 600; margin: 20px 0 12px 4px;
 }
 
 /* ===== MENU CARDS ===== */
-.menu-grid {
-  display: grid;
-  grid-template-columns: repeat(2, 1fr);
-  gap: 12px;
-}
+.menu-grid { display: grid; grid-template-columns: repeat(2, 1fr); gap: 12px; }
 .menu-card {
-  background: #fff;
-  border-radius: 16px;
-  padding: 18px 14px;
-  box-shadow: 0 2px 8px rgba(0,0,0,0.06);
-  cursor: pointer;
+  background: #fff; border-radius: 16px; padding: 18px 14px;
+  box-shadow: 0 2px 8px rgba(0,0,0,0.06); cursor: pointer;
   transition: transform 0.15s, box-shadow 0.15s;
-  text-align: center;
-  border: 2px solid transparent;
+  text-align: center; border: 2px solid transparent;
 }
-.menu-card:active {
-  transform: scale(0.97);
-  box-shadow: 0 1px 4px rgba(0,0,0,0.1);
-}
-.menu-card .emoji {
-  font-size: 34px;
-  margin-bottom: 8px;
-  display: block;
-}
-.menu-card .titulo {
-  font-size: 14px;
-  font-weight: 600;
-  color: #333;
-  margin-bottom: 4px;
-}
-.menu-card .sub {
-  font-size: 11px;
-  color: #999;
-}
+.menu-card:active { transform: scale(0.97); box-shadow: 0 1px 4px rgba(0,0,0,0.1); }
+.menu-card .emoji { font-size: 34px; margin-bottom: 8px; display: block; }
+.menu-card .titulo { font-size: 14px; font-weight: 600; color: #333; margin-bottom: 4px; }
+.menu-card .sub { font-size: 11px; color: #999; }
 .menu-card.azul { border-color: #e6f0ff; }
 .menu-card.laranja { border-color: #fff3e6; }
 .menu-card.roxo { border-color: #ede6ff; }
 .menu-card.cinza { border-color: #eee; }
 
-/* ===== TABS INTERNAS ===== */
-.tab-content { display: none; }
-.tab-content.active { display: block; }
-
 /* ===== VOLTAR ===== */
 .btn-voltar {
-  background: #fff;
-  border: none;
-  padding: 10px 14px;
-  border-radius: 10px;
-  font-size: 14px;
-  color: #0066cc;
-  cursor: pointer;
-  display: inline-flex;
-  align-items: center;
-  gap: 6px;
-  margin-bottom: 14px;
-  box-shadow: 0 1px 3px rgba(0,0,0,0.08);
+  background: #fff; border: none; padding: 10px 14px; border-radius: 10px;
+  font-size: 14px; color: #0066cc; cursor: pointer;
+  display: inline-flex; align-items: center; gap: 6px;
+  margin-bottom: 14px; box-shadow: 0 1px 3px rgba(0,0,0,0.08);
   font-weight: 500;
 }
 
 /* ===== CARDS ===== */
 .card {
-  background: #fff;
-  border-radius: 14px;
-  padding: 16px;
-  margin-bottom: 14px;
-  box-shadow: 0 2px 8px rgba(0,0,0,0.06);
+  background: #fff; border-radius: 14px; padding: 16px;
+  margin-bottom: 14px; box-shadow: 0 2px 8px rgba(0,0,0,0.06);
 }
 .card h2 {
-  font-size: 15px;
-  margin-bottom: 12px;
-  color: #0066cc;
-  display: flex;
-  align-items: center;
-  gap: 6px;
+  font-size: 15px; margin-bottom: 12px; color: #0066cc;
+  display: flex; align-items: center; gap: 6px;
 }
 
 label {
-  display: block;
-  font-size: 13px;
-  margin-bottom: 10px;
-  color: #555;
-  font-weight: 500;
+  display: block; font-size: 13px; margin-bottom: 10px;
+  color: #555; font-weight: 500;
 }
 label.req::after { content: " *"; color: #c00; font-weight: bold; }
 
 input, select, textarea {
-  width: 100%;
-  padding: 11px 12px;
-  border: 1.5px solid #e0e6ed;
-  border-radius: 10px;
-  font-size: 14px;
-  margin-top: 5px;
-  font-family: inherit;
-  background: #fafbfc;
+  width: 100%; padding: 11px 12px; border: 1.5px solid #e0e6ed;
+  border-radius: 10px; font-size: 14px; margin-top: 5px;
+  font-family: inherit; background: #fafbfc;
   transition: border-color 0.2s, background 0.2s;
 }
 input:focus, select:focus, textarea:focus {
-  outline: none;
-  border-color: #0066cc;
-  background: #fff;
+  outline: none; border-color: #0066cc; background: #fff;
 }
 input.invalido, select.invalido, textarea.invalido {
-  border-color: #c00;
-  background: #fff5f5;
+  border-color: #c00; background: #fff5f5;
 }
 textarea { resize: vertical; }
-
 button { cursor: pointer; font-size: 14px; font-family: inherit; }
 
-.btn-primary {
-  background: #0066cc; color: #fff; border: none;
-  padding: 12px 18px; border-radius: 10px; font-weight: 500;
+.btn-primary { background: #0066cc; color: #fff; border: none; padding: 12px 18px; border-radius: 10px; font-weight: 500; }
+.btn-secondary { background: #e6f0ff; color: #0066cc; border: 1.5px solid #0066cc; padding: 10px 16px; border-radius: 10px; margin-top: 8px; font-weight: 500; }
+.btn-success { background: #28a745; color: #fff; border: none; padding: 12px 18px; border-radius: 10px; font-weight: 500; }
+.btn-danger { background: #dc3545; color: #fff; border: none; padding: 10px 16px; border-radius: 10px; font-weight: 500; }
+
+.btn-loading { position: relative; pointer-events: none; opacity: 0.7; }
+.btn-loading::after {
+  content: ""; position: absolute; right: 12px; top: 50%; width: 14px; height: 14px;
+  margin-top: -7px; border: 2px solid #fff; border-top-color: transparent;
+  border-radius: 50%; animation: spin 0.8s linear infinite;
 }
-.btn-secondary {
-  background: #e6f0ff; color: #0066cc; border: 1.5px solid #0066cc;
-  padding: 10px 16px; border-radius: 10px; margin-top: 8px; font-weight: 500;
-}
-.btn-success {
-  background: #28a745; color: #fff; border: none;
-  padding: 12px 18px; border-radius: 10px; font-weight: 500;
-}
-.btn-danger {
-  background: #dc3545; color: #fff; border: none;
-  padding: 10px 16px; border-radius: 10px; font-weight: 500;
-}
+@keyframes spin { to { transform: rotate(360deg); } }
 
 .actions { display: flex; gap: 10px; margin-top: 18px; flex-wrap: wrap; }
 .actions button { flex: 1; min-width: 140px; padding: 14px; font-size: 15px; }
 
 /* ===== CANVAS ===== */
 canvas.assinatura {
-  border: 2px dashed #ccc; border-radius: 10px;
-  touch-action: none; width: 100%; max-width: 400px;
-  background: #fafafa; margin-bottom: 8px; display: block;
+  border: 2px dashed #ccc; border-radius: 10px; touch-action: none;
+  width: 100%; max-width: 400px; background: #fafafa;
+  margin-bottom: 8px; display: block;
+  transition: border-color 0.2s, box-shadow 0.2s;
+}
+canvas.assinatura.ativa {
+  border-color: #0066cc; background: #fff;
+  box-shadow: 0 0 0 3px rgba(0,102,204,0.15);
 }
 
 /* ===== MÍDIA ===== */
-.midia-grid {
-  display: grid;
-  grid-template-columns: repeat(auto-fill, minmax(90px, 1fr));
-  gap: 8px; margin-top: 10px;
-}
-.midia-item {
-  position: relative; border-radius: 8px;
-  overflow: hidden; border: 1px solid #ddd;
-}
-.midia-item img, .midia-item video {
-  width: 100%; height: 90px; object-fit: cover; display: block;
-}
+.midia-grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(90px, 1fr)); gap: 8px; margin-top: 10px; }
+.midia-item { position: relative; border-radius: 8px; overflow: hidden; border: 1px solid #ddd; }
+.midia-item img, .midia-item video { width: 100%; height: 90px; object-fit: cover; display: block; }
 .midia-item button {
   position: absolute; top: 2px; right: 2px;
   background: rgba(255,0,0,.85); color: #fff; border: none;
@@ -304,32 +198,17 @@ canvas.assinatura {
 }
 
 /* ===== LINHA DINÂMICA ===== */
-.linha-dinamica {
-  display: grid; grid-template-columns: 2fr 1fr 1fr auto;
-  gap: 6px; margin-bottom: 6px;
-}
+.linha-dinamica { display: grid; grid-template-columns: 2fr 1fr 1fr auto; gap: 6px; margin-bottom: 6px; }
 .linha-dinamica input { margin: 0; padding: 8px; font-size: 13px; }
-.linha-dinamica button {
-  background: #ff4444; color: #fff; border: none;
-  border-radius: 8px; padding: 0 10px;
-}
+.linha-dinamica button { background: #ff4444; color: #fff; border: none; border-radius: 8px; padding: 0 10px; }
 
 /* ===== LISTA OS ===== */
 .lista-os { display: flex; flex-direction: column; gap: 10px; }
-.os-item {
-  background: #fff; padding: 14px; border-radius: 14px;
-  box-shadow: 0 2px 8px rgba(0,0,0,0.06);
-}
+.os-item { background: #fff; padding: 14px; border-radius: 14px; box-shadow: 0 2px 8px rgba(0,0,0,0.06); }
 .os-item h3 { font-size: 14px; margin-bottom: 6px; color: #222; }
-.os-item small {
-  color: #666; display: block; margin-bottom: 3px; font-size: 12px;
-}
-.os-item .botoes {
-  margin-top: 12px; display: flex; gap: 8px; flex-wrap: wrap;
-}
-.os-item .botoes button {
-  flex: 1; min-width: 90px; padding: 9px; font-size: 12px;
-}
+.os-item small { color: #666; display: block; margin-bottom: 3px; font-size: 12px; }
+.os-item .botoes { margin-top: 12px; display: flex; gap: 8px; flex-wrap: wrap; }
+.os-item .botoes button { flex: 1; min-width: 90px; padding: 9px; font-size: 12px; }
 
 /* ===== STATUS ===== */
 .status-badge {
@@ -342,27 +221,20 @@ canvas.assinatura {
 .status-Concluída { background: #28a745; }
 .status-Encerrada { background: #6c757d; }
 
-.os-item.aguardando-pecas {
-  border-left: 5px solid #fd7e14; background: #fff7ef;
-}
+.os-item.aguardando-pecas { border-left: 5px solid #fd7e14; background: #fff7ef; }
 
 .quadro-pecas {
   background: #fff7ef; border: 2px solid #fd7e14;
   border-radius: 12px; padding: 14px; margin-top: 10px;
 }
-.quadro-pecas h3 {
-  color: #d35400; font-size: 14px; margin-bottom: 10px;
-}
+.quadro-pecas h3 { color: #d35400; font-size: 14px; margin-bottom: 10px; }
 
 .filtros { display: flex; gap: 8px; flex-wrap: wrap; margin-bottom: 12px; }
 .filtro-btn {
   padding: 8px 14px; border: 1.5px solid #ddd; border-radius: 20px;
-  background: #fff; font-size: 12px; cursor: pointer; color: #555;
-  font-weight: 500;
+  background: #fff; font-size: 12px; cursor: pointer; color: #555; font-weight: 500;
 }
-.filtro-btn.active {
-  background: #0066cc; color: #fff; border-color: #0066cc;
-}
+.filtro-btn.active { background: #0066cc; color: #fff; border-color: #0066cc; }
 
 /* ===== DASHBOARD ===== */
 .dash-filtro {
@@ -374,19 +246,11 @@ canvas.assinatura {
   background: #fff; font-size: 12px; cursor: pointer; color: #555;
   white-space: nowrap; font-weight: 500;
 }
-.dash-filtro button.active {
-  background: #0066cc; color: #fff; border-color: #0066cc;
-}
+.dash-filtro button.active { background: #0066cc; color: #fff; border-color: #0066cc; }
 
-.dash-acoes {
-  display: flex; gap: 8px; flex-wrap: wrap; margin-bottom: 15px;
-}
+.dash-acoes { display: flex; gap: 8px; flex-wrap: wrap; margin-bottom: 15px; }
 
-.kpi-grid {
-  display: grid;
-  grid-template-columns: repeat(auto-fill, minmax(150px, 1fr));
-  gap: 10px; margin-bottom: 15px;
-}
+.kpi-grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(150px, 1fr)); gap: 10px; margin-bottom: 15px; }
 .kpi-card {
   background: #fff; border-radius: 12px; padding: 14px;
   box-shadow: 0 2px 8px rgba(0,0,0,0.06);
@@ -407,10 +271,7 @@ canvas.assinatura {
 .kpi-sub { font-size: 11px; color: #888; margin-top: 4px; }
 .kpi-icone { position: absolute; top: 10px; right: 10px; font-size: 20px; opacity: 0.35; }
 
-.kpi-meta {
-  font-size: 11px; margin-top: 6px; padding-top: 6px;
-  border-top: 1px dashed #eee;
-}
+.kpi-meta { font-size: 11px; margin-top: 6px; padding-top: 6px; border-top: 1px dashed #eee; }
 .kpi-meta .atingiu { color: #28a745; font-weight: bold; }
 .kpi-meta .nao-atingiu { color: #dc3545; font-weight: bold; }
 .kpi-meta small { color: #888; }
@@ -430,9 +291,7 @@ canvas.assinatura {
   background: #fff; border-radius: 12px; padding: 15px;
   box-shadow: 0 2px 8px rgba(0,0,0,0.06); margin-bottom: 12px;
 }
-.chart-box h3 {
-  font-size: 13px; color: #444; margin-bottom: 10px; font-weight: 600;
-}
+.chart-box h3 { font-size: 13px; color: #444; margin-bottom: 10px; font-weight: 600; }
 
 .ranking-list {
   background: #fff; border-radius: 12px; padding: 15px;
@@ -486,8 +345,7 @@ canvas.assinatura {
   position: fixed; bottom: 90px; left: 50%; transform: translateX(-50%);
   background: #333; color: #fff; padding: 12px 20px; border-radius: 10px;
   font-size: 14px; z-index: 999; box-shadow: 0 4px 12px rgba(0,0,0,.3);
-  opacity: 0; transition: opacity .3s; pointer-events: none;
-  max-width: 90%;
+  opacity: 0; transition: opacity .3s; pointer-events: none; max-width: 90%;
 }
 .toast.show { opacity: 1; }
 .toast.erro { background: #c00; }
@@ -501,9 +359,7 @@ canvas.assinatura {
   max-height: 200px; overflow-y: auto; z-index: 5; display: none;
   box-shadow: 0 4px 12px rgba(0,0,0,0.1);
 }
-#listaTags div {
-  padding: 10px 12px; cursor: pointer; font-size: 13px;
-}
+#listaTags div { padding: 10px 12px; cursor: pointer; font-size: 13px; }
 #listaTags div:hover { background: #e6f0ff; }
 
 .info-tempo {
@@ -516,42 +372,20 @@ canvas.assinatura {
 
 /* ===== MENU INFERIOR ===== */
 .bottom-nav {
-  position: fixed;
-  bottom: 0;
-  left: 0;
-  right: 0;
-  background: #fff;
-  display: flex;
-  justify-content: space-around;
-  padding: 8px 0 12px;
-  box-shadow: 0 -2px 12px rgba(0,0,0,0.08);
-  z-index: 100;
-  border-radius: 20px 20px 0 0;
+  position: fixed; bottom: 0; left: 0; right: 0;
+  background: #fff; display: flex; justify-content: space-around;
+  padding: 8px 0 12px; box-shadow: 0 -2px 12px rgba(0,0,0,0.08);
+  z-index: 100; border-radius: 20px 20px 0 0;
 }
 .bottom-nav button {
-  background: none;
-  border: none;
-  display: flex;
-  flex-direction: column;
-  align-items: center;
-  gap: 3px;
-  font-size: 10px;
-  color: #999;
-  padding: 6px 12px;
-  cursor: pointer;
-  font-weight: 500;
+  background: none; border: none; display: flex; flex-direction: column;
+  align-items: center; gap: 3px; font-size: 10px; color: #999;
+  padding: 6px 12px; cursor: pointer; font-weight: 500;
   transition: color 0.2s;
 }
-.bottom-nav button .icone {
-  font-size: 20px;
-  transition: transform 0.2s;
-}
-.bottom-nav button.active {
-  color: #0066cc;
-}
-.bottom-nav button.active .icone {
-  transform: scale(1.1);
-}
+.bottom-nav button .icone { font-size: 20px; transition: transform 0.2s; }
+.bottom-nav button.active { color: #0066cc; }
+.bottom-nav button.active .icone { transform: scale(1.1); }
 
 /* ===== RESPONSIVO ===== */
 @media (min-width: 700px) {
@@ -562,33 +396,61 @@ canvas.assinatura {
   .resumo-card .num { font-size: 18px; }
   .kpi-valor { font-size: 20px; }
 }
+
+/* ===== DARK MODE ===== */
+@media (prefers-color-scheme: dark) {
+  body { background: #121417; color: #e6e6e6; }
+  .app-header { background: linear-gradient(135deg, #003b80 0%, #002855 100%); }
+  .card, .os-item, .menu-card, .resumo-card, .kpi-card,
+  .chart-box, .ranking-list, .equip-detalhe, .modal {
+    background: #1e2227; color: #e6e6e6; box-shadow: 0 2px 8px rgba(0,0,0,0.4);
+  }
+  input, select, textarea { background: #2a2f36; color: #e6e6e6; border-color: #3a4048; }
+  input:focus, select:focus, textarea:focus { background: #2f343b; border-color: #4d9fff; }
+  .btn-secondary { background: #1a3a5c; color: #7eb8ff; border-color: #2c5c8f; }
+  .btn-voltar { background: #1e2227; color: #7eb8ff; }
+  .bottom-nav { background: #1e2227; }
+  .kpi-titulo, .kpi-sub { color: #aaa; }
+  .kpi-valor { color: #e6e6e6; }
+  .os-item small { color: #aaa; }
+  .os-item h3 { color: #e6e6e6; }
+  .filtro-btn, .dash-filtro button { background: #1e2227; color: #ccc; border-color: #3a4048; }
+  .toast { background: #2a2f36; }
+  #listaTags { background: #1e2227; border-color: #3a4048; }
+  #listaTags div:hover { background: #2a3a4a; }
+  .info-tempo { background: #0d2b45; color: #7eb8ff; border-color: #2c5c8f; }
+  .quadro-pecas { background: #3a2410; }
+  .os-item.aguardando-pecas { background: #2a1f14; }
+  .dash-section h2 { border-bottom-color: #2c5c8f; }
+  .card h2 { color: #7eb8ff; }
+  .secao-titulo { color: #aaa; }
+  label { color: #ccc; }
+}
 </style>
 </head>
 <body>
 
-<!-- ============ HEADER ============ -->
+<a href="#mainContent" style="position:absolute;left:-9999px;background:#000;color:#fff;padding:8px;z-index:9999"
+   onfocus="this.style.left='10px';this.style.top='10px'"
+   onblur="this.style.left='-9999px'">Pular para conteúdo</a>
+
 <header class="app-header" id="appHeader">
-  <h1 id="headerTitulo">📋 OS Digital</h1>
+  <h1 id="headerTitulo">📋 OS Digital 2.0</h1>
   <p id="headerSubtitulo">Sistema de Manutenção</p>
   <div class="data-hoje" id="headerData"></div>
 </header>
 
-<!-- ============ CONTEÚDO ============ -->
-<main class="container">
+<main class="container" id="mainContent">
 
   <!-- ============ HOME ============ -->
   <section id="view-home" class="view active">
-
-    <!-- Resumo rápido -->
     <div class="resumo-grid" id="resumoGrid"></div>
 
-    <!-- Botão principal -->
-    <button class="btn-nova-os" onclick="abrirNovaOS()">
+    <button class="btn-nova-os" onclick="abrirNovaOS()" aria-label="Abrir nova ordem de serviço">
       <span class="plus">+</span>
       Abrir Nova Ordem de Serviço
     </button>
 
-    <!-- Menu de seções -->
     <div class="secao-titulo">📂 Acesso Rápido</div>
     <div class="menu-grid">
       <div class="menu-card azul" onclick="irPara('lista')">
@@ -615,7 +477,6 @@ canvas.assinatura {
 
     <div class="secao-titulo">🕐 Últimas OS</div>
     <div id="homeListaOS" class="lista-os"></div>
-
   </section>
 
   <!-- ============ FORMULÁRIO ============ -->
@@ -648,6 +509,7 @@ canvas.assinatura {
         <label>Data prevista <input type="date" id="osDataPrevista"></label>
         <label>Observações <textarea id="osObsPecas" rows="2"></textarea></label>
       </div>
+      <div id="historicoOS" style="font-size:11px;color:#666;margin-top:10px"></div>
     </div>
 
     <div class="card">
@@ -712,10 +574,12 @@ canvas.assinatura {
     <div class="card">
       <h2>✍️ Assinaturas</h2>
       <label>Assinatura do Executante</label>
-      <canvas id="canvasExec" class="assinatura" width="400" height="120"></canvas>
+      <canvas id="canvasExec" class="assinatura" width="400" height="120"
+              aria-label="Área para assinatura do executante" role="img"></canvas>
       <button type="button" class="btn-secondary" onclick="limparCanvas('canvasExec')">Limpar</button>
       <label style="margin-top:12px">Assinatura do Responsável</label>
-      <canvas id="canvasResp" class="assinatura" width="400" height="120"></canvas>
+      <canvas id="canvasResp" class="assinatura" width="400" height="120"
+              aria-label="Área para assinatura do responsável" role="img"></canvas>
       <button type="button" class="btn-secondary" onclick="limparCanvas('canvasResp')">Limpar</button>
     </div>
 
@@ -736,7 +600,21 @@ canvas.assinatura {
     <button class="btn-voltar" onclick="voltarHome()">← Voltar</button>
 
     <div class="card">
-      <h2>🔎 Filtrar por Status</h2>
+      <h2>🔎 Filtros</h2>
+      <input type="text" id="buscaOS" placeholder="🔍 Buscar por nº, TAG, equipamento, solicitante..." oninput="renderLista()">
+      <div style="display:grid;grid-template-columns:1fr 1fr;gap:8px;margin-top:8px">
+        <label>De <input type="date" id="filtroDataDe" onchange="renderLista()"></label>
+        <label>Até <input type="date" id="filtroDataAte" onchange="renderLista()"></label>
+      </div>
+      <label>Tipo
+        <select id="filtroTipoOS" onchange="renderLista()">
+          <option value="">Todos</option>
+          <option>Corretiva</option>
+          <option>Preventiva</option>
+          <option>Melhoria</option>
+          <option>Predial</option>
+        </select>
+      </label>
       <div class="filtros" id="filtrosStatus">
         <button class="filtro-btn active" data-status="todos" onclick="filtrarStatus('todos')">Todas</button>
         <button class="filtro-btn" data-status="Aberta" onclick="filtrarStatus('Aberta')">🔵 Aberta</button>
@@ -745,6 +623,11 @@ canvas.assinatura {
         <button class="filtro-btn" data-status="Concluída" onclick="filtrarStatus('Concluída')">🟢 Concluída</button>
         <button class="filtro-btn" data-status="Encerrada" onclick="filtrarStatus('Encerrada')">⚫ Encerrada</button>
       </div>
+      <div style="display:flex;gap:8px;margin-top:10px;flex-wrap:wrap">
+        <button class="btn-secondary" onclick="limparFiltros()">🧹 Limpar filtros</button>
+        <button class="btn-success" onclick="exportarCSV()">📊 Exportar CSV</button>
+      </div>
+      <p id="contadorOS" style="font-size:12px;color:#666;margin-top:10px"></p>
     </div>
     <div id="listaOS" class="lista-os"></div>
   </section>
@@ -754,7 +637,8 @@ canvas.assinatura {
     <button class="btn-voltar" onclick="voltarHome()">← Voltar</button>
 
     <div class="card">
-      <h2>➕ Cadastrar Equipamento</h2>
+      <h2 id="eqFormTitulo">➕ Cadastrar Equipamento</h2>
+      <input type="hidden" id="eqId">
       <label class="req">TAG <input type="text" id="eqTag"></label>
       <label class="req">Nome / Descrição <input type="text" id="eqNome"></label>
       <label>Marca / Modelo <input type="text" id="eqMarca"></label>
@@ -764,6 +648,7 @@ canvas.assinatura {
       <button class="btn-primary" onclick="salvarEquip()">💾 Salvar Equipamento</button>
       <button class="btn-secondary" onclick="limparFormEquip()">Limpar</button>
     </div>
+
     <div class="card">
       <h2>📚 Equipamentos Cadastrados</h2>
       <input type="text" id="buscaEquip" placeholder="🔍 Buscar por TAG ou nome..." oninput="renderEquipamentos()">
@@ -784,6 +669,11 @@ canvas.assinatura {
       <button data-periodo="tudo" onclick="setPeriodo('tudo')">Tudo</button>
     </div>
 
+    <label style="font-size:12px;display:flex;align-items:center;gap:6px;margin-bottom:10px">
+      <input type="checkbox" id="usarDataOcorrencia" onchange="renderDashboard()" style="width:auto;margin:0">
+      Filtrar pela data da ocorrência (em vez de criação)
+    </label>
+
     <div class="dash-acoes">
       <button class="btn-secondary" onclick="abrirModalMetas()">🎯 Metas</button>
       <button class="btn-success" onclick="exportarRelatorioPDF()">📄 Relatório PDF</button>
@@ -796,9 +686,7 @@ canvas.assinatura {
 
     <div class="dash-section">
       <h2>📊 Comparativo</h2>
-      <div class="chart-box">
-        <canvas id="grafComparativo" height="130"></canvas>
-      </div>
+      <div class="chart-box"><canvas id="grafComparativo" height="130"></canvas></div>
     </div>
 
     <div class="dash-section">
@@ -871,8 +759,9 @@ canvas.assinatura {
     <div class="card">
       <h2>ℹ️ Sobre</h2>
       <p style="font-size:12px;color:#666;line-height:1.6">
-        <b>OS Digital</b> — Sistema de gestão de manutenção<br>
-        Funciona 100% offline. Dados salvos no seu dispositivo.
+        <b>OS Digital 2.0</b> — Sistema de gestão de manutenção<br>
+        Funciona 100% offline. Dados salvos no seu dispositivo.<br>
+        <span style="color:#999">Atalhos: Ctrl+S salva OS | ESC fecha modais</span>
       </p>
     </div>
   </section>
@@ -899,26 +788,11 @@ canvas.assinatura {
 
 <!-- ============ MENU INFERIOR ============ -->
 <nav class="bottom-nav">
-  <button data-view="home" class="active" onclick="irPara('home')">
-    <span class="icone">🏠</span>
-    Início
-  </button>
-  <button data-view="form" onclick="abrirNovaOS()">
-    <span class="icone">➕</span>
-    Nova
-  </button>
-  <button data-view="lista" onclick="irPara('lista')">
-    <span class="icone">📋</span>
-    OS
-  </button>
-  <button data-view="dash" onclick="irPara('dash')">
-    <span class="icone">📊</span>
-    Produção
-  </button>
-  <button data-view="config" onclick="irPara('config')">
-    <span class="icone">⚙️</span>
-    Config
-  </button>
+  <button data-view="home" class="active" onclick="irPara('home')"><span class="icone">🏠</span>Início</button>
+  <button data-view="form" onclick="abrirNovaOS()"><span class="icone">➕</span>Nova</button>
+  <button data-view="lista" onclick="irPara('lista')"><span class="icone">📋</span>OS</button>
+  <button data-view="dash" onclick="irPara('dash')"><span class="icone">📊</span>Produção</button>
+  <button data-view="config" onclick="irPara('config')"><span class="icone">⚙️</span>Config</button>
 </nav>
 
 <div class="toast" id="toast"></div>
@@ -962,7 +836,7 @@ function formatarDuracao(horas) {
 }
 
 // ========================================================
-// 🗄️ INDEXEDDB
+// 🗄️ INDEXEDDB (com tratamento de erros)
 // ========================================================
 let db;
 const DB_NAME = "osDigital";
@@ -984,43 +858,66 @@ function abrirDB() {
   });
 }
 
+function dbTx(store, mode = "readonly") {
+  const tx = db.transaction(store, mode);
+  tx.onerror = e => {
+    console.error("Erro IndexedDB:", e.target.error);
+    toast("⚠️ Erro ao acessar dados locais.", "erro");
+  };
+  tx.onabort = e => console.warn("Transação abortada:", e.target.error);
+  return tx;
+}
+
 function dbPut(store, obj) {
-  return new Promise(resolve => {
-    const tx = db.transaction(store, "readwrite");
-    tx.objectStore(store).put(obj);
-    tx.oncomplete = () => resolve();
+  return new Promise((resolve, reject) => {
+    try {
+      const tx = dbTx(store, "readwrite");
+      const req = tx.objectStore(store).put(obj);
+      req.onsuccess = () => resolve(req.result);
+      req.onerror = () => reject(req.error);
+    } catch (e) { reject(e); }
   });
 }
 
 function dbGet(store, chave) {
-  return new Promise(resolve => {
-    const tx = db.transaction(store, "readonly");
-    const req = tx.objectStore(store).get(chave);
-    req.onsuccess = () => resolve(req.result);
+  return new Promise((resolve, reject) => {
+    try {
+      const req = dbTx(store).objectStore(store).get(chave);
+      req.onsuccess = () => resolve(req.result);
+      req.onerror = () => reject(req.error);
+    } catch (e) { reject(e); }
   });
 }
 
 function dbAll(store) {
-  return new Promise(resolve => {
-    const tx = db.transaction(store, "readonly");
-    const req = tx.objectStore(store).getAll();
-    req.onsuccess = () => resolve(req.result);
+  return new Promise((resolve, reject) => {
+    try {
+      const req = dbTx(store).objectStore(store).getAll();
+      req.onsuccess = () => resolve(req.result || []);
+      req.onerror = () => reject(req.error);
+    } catch (e) { reject(e); }
   });
 }
 
 function dbDel(store, id) {
-  return new Promise(resolve => {
-    const tx = db.transaction(store, "readwrite");
-    tx.objectStore(store).delete(id);
-    tx.oncomplete = () => resolve();
+  return new Promise((resolve, reject) => {
+    try {
+      const tx = dbTx(store, "readwrite");
+      tx.objectStore(store).delete(id);
+      tx.oncomplete = () => resolve();
+      tx.onerror = () => reject(tx.error);
+    } catch (e) { reject(e); }
   });
 }
 
 function dbClear(store) {
-  return new Promise(resolve => {
-    const tx = db.transaction(store, "readwrite");
-    tx.objectStore(store).clear();
-    tx.oncomplete = () => resolve();
+  return new Promise((resolve, reject) => {
+    try {
+      const tx = dbTx(store, "readwrite");
+      tx.objectStore(store).clear();
+      tx.oncomplete = () => resolve();
+      tx.onerror = () => reject(tx.error);
+    } catch (e) { reject(e); }
   });
 }
 
@@ -1055,14 +952,12 @@ function irPara(view) {
   const el = document.getElementById("view-" + view);
   if (el) el.classList.add("active");
 
-  // Atualiza menu inferior
   document.querySelectorAll(".bottom-nav button").forEach(b => {
     b.classList.toggle("active", b.dataset.view === view);
   });
 
-  // Header
   const titulos = {
-    home: ["📋 OS Digital", "Sistema de Manutenção"],
+    home: ["📋 OS Digital 2.0", "Sistema de Manutenção"],
     form: ["📝 Ordem de Serviço", "Preencha os dados"],
     lista: ["📋 OS Salvas", "Histórico de ordens"],
     equip: ["🔧 Equipamentos", "Cadastro de máquinas"],
@@ -1074,7 +969,6 @@ function irPara(view) {
     document.getElementById("headerSubtitulo").textContent = titulos[view][1];
   }
 
-  // Ações por view
   if (view === "home") renderHome();
   if (view === "lista") renderLista();
   if (view === "dash") renderDashboard();
@@ -1100,35 +994,45 @@ async function renderHome() {
   document.getElementById("resumoGrid").innerHTML = `
     <div class="resumo-card">
       <div class="icone azul">📋</div>
-      <div class="info">
-        <div class="num">${total}</div>
-        <div class="lbl">Total OS</div>
-      </div>
+      <div class="info"><div class="num">${total}</div><div class="lbl">Total OS</div></div>
     </div>
     <div class="resumo-card">
       <div class="icone laranja">⏳</div>
-      <div class="info">
-        <div class="num">${backlog}</div>
-        <div class="lbl">Backlog</div>
-      </div>
+      <div class="info"><div class="num">${backlog}</div><div class="lbl">Backlog</div></div>
     </div>
     <div class="resumo-card">
       <div class="icone verde">🟢</div>
-      <div class="info">
-        <div class="num">${lista.filter(o => (o.status||"") === "Concluída").length}</div>
-        <div class="lbl">Concluídas</div>
-      </div>
+      <div class="info"><div class="num">${lista.filter(o => (o.status||"") === "Concluída").length}</div><div class="lbl">Concluídas</div></div>
     </div>
     <div class="resumo-card">
       <div class="icone vermelho">🟠</div>
-      <div class="info">
-        <div class="num">${aguardando}</div>
-        <div class="lbl">Aguardando</div>
-      </div>
+      <div class="info"><div class="num">${aguardando}</div><div class="lbl">Aguardando</div></div>
     </div>
   `;
 
-  // Últimas 3 OS
+  // Alerta de peças vencidas
+  const vencidas = lista.filter(o =>
+    (o.status || "") === "Aguardando Peças" &&
+    o.dataPrevista && new Date(o.dataPrevista) < new Date()
+  );
+  const oldAlerta = document.getElementById("alertaVencidas");
+  if (oldAlerta) oldAlerta.remove();
+  if (vencidas.length) {
+    const alerta = document.createElement("div");
+    alerta.id = "alertaVencidas";
+    alerta.style.cssText = "background:#fff0f0;border:2px solid #dc3545;border-radius:12px;padding:12px;margin-bottom:14px";
+    alerta.innerHTML = `
+      <div style="color:#c00;font-weight:bold;font-size:13px;margin-bottom:6px">
+        🔴 ${vencidas.length} OS com peças em atraso
+      </div>
+      <div style="font-size:12px;color:#666">
+        ${vencidas.slice(0,3).map(o => `• OS ${o.numero} — ${o.pecaAguardada || "peça"}`).join("<br>")}
+      </div>
+    `;
+    const grid = document.getElementById("resumoGrid");
+    grid.parentNode.insertBefore(alerta, grid.nextSibling);
+  }
+
   const div = document.getElementById("homeListaOS");
   const ultimas = [...lista].sort((a,b) => (b.created_at||"").localeCompare(a.created_at||"")).slice(0, 3);
   if (!ultimas.length) {
@@ -1166,6 +1070,7 @@ function abrirNovaOS() {
   document.getElementById("pecasList").innerHTML = "";
   document.getElementById("midiaPreview").innerHTML = "";
   document.getElementById("qrcode").innerHTML = "";
+  document.getElementById("historicoOS").innerHTML = "";
   document.getElementById("infoTempo").textContent = "⏱️ Preencha as datas para calcular os tempos.";
   document.getElementById("osStatus").value = "Aberta";
   document.getElementById("osPecaAguardada").value = "";
@@ -1214,7 +1119,13 @@ function filtrarStatus(status) {
 // ========================================================
 // ⚡ AUTO-COMPLETE
 // ========================================================
-async function buscarTag() {
+let _buscarTagTimer;
+function buscarTag() {
+  clearTimeout(_buscarTagTimer);
+  _buscarTagTimer = setTimeout(_buscarTagReal, 150);
+}
+
+async function _buscarTagReal() {
   const termo = document.getElementById("osTag").value.toLowerCase();
   const lista = await dbAll(STORE_EQ);
   const div = document.getElementById("listaTags");
@@ -1306,21 +1217,61 @@ function addPeca(codigo = "", desc = "", qtd = "") {
 }
 
 // ========================================================
-// 📷 MÍDIAS
+// 📷 MÍDIAS (com compressão)
 // ========================================================
 document.getElementById("inputMidia").onchange = async (e) => {
-  for (const file of e.target.files) {
-    const base64 = await fileParaBase64(file);
-    osAtual.midias.push({
-      tipo: file.type.startsWith("video") ? "video" : "foto",
-      mime: file.type,
-      data: base64
-    });
+  const files = [...e.target.files];
+  if (!files.length) return;
+  toast(`Processando ${files.length} arquivo(s)...`);
+  for (const file of files) {
+    try {
+      if (file.type.startsWith("image/")) {
+        const base64 = await comprimirImagem(file, 1280, 0.7);
+        osAtual.midias.push({ tipo: "foto", mime: "image/jpeg", data: base64 });
+      } else if (file.type.startsWith("video/")) {
+        if (file.size > 15 * 1024 * 1024) {
+          toast(`Vídeo ${file.name} ignorado (>15MB)`, "erro");
+          continue;
+        }
+        const base64 = await fileParaBase64(file);
+        osAtual.midias.push({ tipo: "video", mime: file.type, data: base64 });
+      }
+    } catch (err) {
+      console.error(err);
+      toast(`Erro ao processar ${file.name}`, "erro");
+    }
   }
   renderMidias();
   marcarAlterado();
   e.target.value = "";
+  toast("✅ Mídias adicionadas!", "ok");
 };
+
+function comprimirImagem(file, maxLado = 1280, qualidade = 0.7) {
+  return new Promise((resolve, reject) => {
+    const reader = new FileReader();
+    reader.onload = e => {
+      const img = new Image();
+      img.onload = () => {
+        let { width, height } = img;
+        if (width > height && width > maxLado) {
+          height = Math.round(height * maxLado / width); width = maxLado;
+        } else if (height > maxLado) {
+          width = Math.round(width * maxLado / height); height = maxLado;
+        }
+        const canvas = document.createElement("canvas");
+        canvas.width = width; canvas.height = height;
+        const ctx = canvas.getContext("2d");
+        ctx.drawImage(img, 0, 0, width, height);
+        resolve(canvas.toDataURL("image/jpeg", qualidade));
+      };
+      img.onerror = reject;
+      img.src = e.target.result;
+    };
+    reader.onerror = reject;
+    reader.readAsDataURL(file);
+  });
+}
 
 function fileParaBase64(file) {
   return new Promise(resolve => {
@@ -1365,9 +1316,19 @@ function ativarAssinatura(canvasId) {
       y: (p.clientY - r.top) * (canvas.height / r.height)
     };
   };
-  const iniciar = e => { desenhando = true; const {x,y}=pos(e); ctx.beginPath(); ctx.moveTo(x,y); e.preventDefault(); };
-  const mover  = e => { if (!desenhando) return; const {x,y}=pos(e); ctx.lineTo(x,y); ctx.stroke(); e.preventDefault(); };
-  const parar  = () => { if (desenhando) { desenhando = false; marcarAlterado(); } };
+  const iniciar = e => {
+    desenhando = true;
+    canvas.classList.add("ativa");
+    const {x,y}=pos(e); ctx.beginPath(); ctx.moveTo(x,y); e.preventDefault();
+  };
+  const mover = e => {
+    if (!desenhando) return;
+    const {x,y}=pos(e); ctx.lineTo(x,y); ctx.stroke(); e.preventDefault();
+  };
+  const parar = () => {
+    if (desenhando) { desenhando = false; marcarAlterado(); }
+    canvas.classList.remove("ativa");
+  };
 
   canvas.addEventListener("mousedown", iniciar);
   canvas.addEventListener("mousemove", mover);
@@ -1405,16 +1366,23 @@ function gerarQR() {
 }
 
 // ========================================================
-// 📦 COLETAR / SALVAR
+// 📦 COLETAR / VALIDAR / SALVAR
 // ========================================================
-function coletarForm() {
+async function coletarForm() {
+  const anterior = osAtual.id ? await dbGet(STORE, osAtual.id) : null;
+  const historico = anterior?.historico ? [...anterior.historico] : [];
+  const statusNovo = document.getElementById("osStatus").value;
+  if (anterior && anterior.status && anterior.status !== statusNovo) {
+    historico.push({ data: new Date().toISOString(), de: anterior.status, para: statusNovo });
+  }
+
   return {
     id: osAtual.id,
     numero: document.getElementById("osNumero").value.trim(),
     data: document.getElementById("osData").value,
     solicitante: document.getElementById("osSolicitante").value,
     setor: document.getElementById("osSetor").value,
-    status: document.getElementById("osStatus").value,
+    status: statusNovo,
     pecaAguardada: document.getElementById("osPecaAguardada").value,
     fornecedor: document.getElementById("osFornecedor").value,
     dataPrevista: document.getElementById("osDataPrevista").value,
@@ -1443,6 +1411,7 @@ function coletarForm() {
       codigo: l.children[0].value, desc: l.children[1].value, qtd: l.children[2].value
     })),
     midias: osAtual.midias,
+    historico,
     created_at: osAtual.created_at || new Date().toISOString()
   };
 }
@@ -1465,6 +1434,24 @@ function validarForm(os) {
   return erros;
 }
 
+function validarDatas(os) {
+  const erros = [];
+  const { iniOcor, iniCons, fimCons, fimOcor } = os;
+  const dt = v => v ? new Date(v) : null;
+
+  const seq = [["Início Ocorrência", iniOcor], ["Início Conserto", iniCons],
+               ["Fim Conserto", fimCons], ["Fim Ocorrência", fimOcor]];
+  const preenchidas = seq.filter(s => s[1]);
+  for (let i = 1; i < preenchidas.length; i++) {
+    if (dt(preenchidas[i][1]) < dt(preenchidas[i-1][1])) {
+      erros.push(`"${preenchidas[i][0]}" deve ser depois de "${preenchidas[i-1][0]}"`);
+    }
+  }
+  if (fimCons && !iniCons) erros.push("Preencha 'Início do Conserto' antes de 'Fim do Conserto'");
+  if (fimOcor && !iniOcor) erros.push("Preencha 'Início da Ocorrência' antes de 'Fim da Ocorrência'");
+  return erros;
+}
+
 async function verificarDuplicata(numero) {
   if (!numero) return false;
   const lista = await dbAll(STORE);
@@ -1472,20 +1459,31 @@ async function verificarDuplicata(numero) {
 }
 
 async function salvarOS() {
-  const os = coletarForm();
+  const os = await coletarForm();
   const erros = validarForm(os);
   if (erros.length) return toast("⚠️ Preencha: " + erros.join(", "), "erro");
+
+  const errosData = validarDatas(os);
+  if (errosData.length) return toast("⚠️ " + errosData[0], "erro");
 
   if (await verificarDuplicata(os.numero)) {
     return toast(`⚠️ Já existe OS com o número "${os.numero}".`, "erro");
   }
 
-  if (os.id === null) delete os.id;
-  await dbPut(STORE, os);
-  osAtual = os;
-  limparAlterado();
-  toast("✅ OS salva com sucesso!", "ok");
-  setTimeout(() => irPara("lista"), 600);
+  const btns = document.querySelectorAll("#view-form .actions button");
+  btns.forEach(b => b.classList.add("btn-loading"));
+  try {
+    const savedId = await dbPut(STORE, os);
+    osAtual = { ...os, id: savedId };
+    limparAlterado();
+    toast("✅ OS salva com sucesso!", "ok");
+    setTimeout(() => irPara("lista"), 600);
+  } catch (e) {
+    toast("❌ Erro ao salvar. Verifique o espaço disponível.", "erro");
+    console.error(e);
+  } finally {
+    btns.forEach(b => b.classList.remove("btn-loading"));
+  }
 }
 
 // ========================================================
@@ -1493,11 +1491,30 @@ async function salvarOS() {
 // ========================================================
 async function renderLista() {
   const lista = await dbAll(STORE);
-  const div = document.getElementById("listaOS");
+  const busca = (document.getElementById("buscaOS")?.value || "").toLowerCase().trim();
+  const dataDe = document.getElementById("filtroDataDe")?.value;
+  const dataAte = document.getElementById("filtroDataAte")?.value;
+  const tipoFiltro = document.getElementById("filtroTipoOS")?.value;
+
   let filtradas = lista;
+
   if (filtroStatusAtual !== "todos") {
-    filtradas = lista.filter(o => (o.status || "Aberta") === filtroStatusAtual);
+    filtradas = filtradas.filter(o => (o.status || "Aberta") === filtroStatusAtual);
   }
+  if (tipoFiltro) filtradas = filtradas.filter(o => o.tipo === tipoFiltro);
+  if (dataDe) filtradas = filtradas.filter(o => o.data && o.data >= dataDe);
+  if (dataAte) filtradas = filtradas.filter(o => o.data && o.data <= dataAte);
+  if (busca) {
+    filtradas = filtradas.filter(o =>
+      [o.numero, o.tag, o.equipamento, o.solicitante, o.setor, o.descricao, o.realizado]
+        .some(v => (v || "").toLowerCase().includes(busca))
+    );
+  }
+
+  const cont = document.getElementById("contadorOS");
+  if (cont) cont.textContent = `📌 ${filtradas.length} OS encontrada(s) de ${lista.length}`;
+
+  const div = document.getElementById("listaOS");
   if (!filtradas.length) {
     div.innerHTML = "<p style='text-align:center;color:#888;padding:20px'>Nenhuma OS encontrada.</p>";
     return;
@@ -1510,7 +1527,8 @@ async function renderLista() {
     item.className = "os-item" + (st === "Aguardando Peças" ? " aguardando-pecas" : "");
     let extra = "";
     if (st === "Aguardando Peças" && os.pecaAguardada) {
-      extra = `<small style="color:#d35400"><b>🟠 Aguardando:</b> ${os.pecaAguardada}</small>`;
+      const atrasado = os.dataPrevista && new Date(os.dataPrevista) < new Date();
+      extra = `<small style="color:${atrasado ? '#c00' : '#d35400'}"><b>${atrasado ? '🔴 VENCIDO' : '🟠 Aguardando'}:</b> ${os.pecaAguardada}</small>`;
       if (os.fornecedor) extra += `<small style="color:#d35400">Fornecedor: ${os.fornecedor}</small>`;
       if (os.dataPrevista) extra += `<small style="color:#d35400">Previsão: ${formatarDataBR(os.dataPrevista)}</small>`;
     }
@@ -1522,6 +1540,7 @@ async function renderLista() {
       ${extra}
       <div class="botoes">
         <button class="btn-secondary" onclick="editarOS(${os.id})">✏️ Editar</button>
+        <button class="btn-secondary" onclick="duplicarOS(${os.id})">📋 Duplicar</button>
         <button class="btn-success" onclick="pdfDaLista(${os.id})">📄 PDF</button>
         <button class="btn-danger" onclick="excluirOS(${os.id})">🗑️</button>
       </div>
@@ -1530,9 +1549,18 @@ async function renderLista() {
   });
 }
 
+function limparFiltros() {
+  document.getElementById("buscaOS").value = "";
+  document.getElementById("filtroDataDe").value = "";
+  document.getElementById("filtroDataAte").value = "";
+  document.getElementById("filtroTipoOS").value = "";
+  filtroStatusAtual = "todos";
+  document.querySelectorAll(".filtro-btn").forEach(b => b.classList.toggle("active", b.dataset.status === "todos"));
+  renderLista();
+}
+
 async function editarOS(id) {
-  const lista = await dbAll(STORE);
-  const os = lista.find(o => o.id === id);
+  const os = await dbGet(STORE, id);
   if (!os) return;
   osAtual = os;
   const set = (id, v) => document.getElementById(id).value = v || "";
@@ -1558,9 +1586,17 @@ async function editarOS(id) {
   (os.pecas || []).forEach(p => addPeca(p.codigo, p.desc, p.qtd));
   renderMidias();
   if (os.assinaturaExec) desenharAssinatura("canvasExec", os.assinaturaExec);
+  else limparCanvas("canvasExec");
   if (os.assinaturaResp) desenharAssinatura("canvasResp", os.assinaturaResp);
+  else limparCanvas("canvasResp");
   calcularTempos();
   mostrarQuadroPecas();
+
+  const hist = os.historico || [];
+  document.getElementById("historicoOS").innerHTML = hist.length
+    ? "<b>Histórico:</b><br>" + hist.map(h => `• ${formatarDataHoraBR(h.data)}: ${h.de} → ${h.para}`).join("<br>")
+    : "";
+
   limparAlterado();
   irPara("form");
 }
@@ -1580,6 +1616,61 @@ async function excluirOS(id) {
   renderLista();
 }
 
+async function duplicarOS(id) {
+  const os = await dbGet(STORE, id);
+  if (!os) return;
+  const novo = JSON.parse(JSON.stringify(os));
+  delete novo.id;
+  novo.numero = (os.numero || "OS") + "-C";
+  novo.data = new Date().toISOString().split("T")[0];
+  novo.status = "Aberta";
+  novo.iniOcor = ""; novo.iniCons = ""; novo.fimCons = ""; novo.fimOcor = "";
+  novo.realizado = "";
+  novo.created_at = new Date().toISOString();
+  novo.assinaturaExec = ""; novo.assinaturaResp = "";
+  novo.midias = [];
+  novo.historico = [];
+  await dbPut(STORE, novo);
+  toast("📋 OS duplicada com sucesso!", "ok");
+  renderLista();
+}
+
+// ========================================================
+// 📊 EXPORTAR CSV
+// ========================================================
+async function exportarCSV() {
+  const lista = await dbAll(STORE);
+  if (!lista.length) return toast("Nenhuma OS para exportar.", "erro");
+
+  const cabecalhos = ["Número", "Data", "Status", "Tipo", "TAG", "Equipamento",
+    "Solicitante", "Setor", "Descrição", "Realizado", "Início", "Fim", "MTTR(h)"];
+
+  const linhas = lista.map(o => {
+    const mttr = diffHoras(o.iniCons, o.fimCons);
+    return [
+      o.numero, o.data, o.status || "Aberta", o.tipo,
+      o.tag, o.equipamento, o.solicitante, o.setor,
+      (o.descricao || "").replace(/[\n;]/g, " "),
+      (o.realizado || "").replace(/[\n;]/g, " "),
+      o.iniOcor, o.fimOcor,
+      mttr !== null ? mttr.toFixed(2) : ""
+    ];
+  });
+
+  const csv = [cabecalhos, ...linhas]
+    .map(l => l.map(v => `"${String(v ?? "").replace(/"/g, '""')}"`).join(";"))
+    .join("\n");
+
+  const blob = new Blob(["\uFEFF" + csv], { type: "text/csv;charset=utf-8" });
+  const url = URL.createObjectURL(blob);
+  const a = document.createElement("a");
+  a.href = url;
+  a.download = `OS_${new Date().toISOString().split("T")[0]}.csv`;
+  a.click();
+  URL.revokeObjectURL(url);
+  toast("✅ CSV exportado!", "ok");
+}
+
 // ========================================================
 // 📚 EQUIPAMENTOS
 // ========================================================
@@ -1587,6 +1678,8 @@ async function salvarEquip() {
   const tag = document.getElementById("eqTag").value.trim();
   const nome = document.getElementById("eqNome").value.trim();
   if (!tag || !nome) return toast("TAG e Nome são obrigatórios.", "erro");
+
+  const id = parseInt(document.getElementById("eqId").value) || null;
   const eq = {
     tag, nome,
     marca: document.getElementById("eqMarca").value,
@@ -1594,14 +1687,19 @@ async function salvarEquip() {
     local: document.getElementById("eqLocal").value,
     obs: document.getElementById("eqObs").value
   };
+  if (id) eq.id = id;
+
   await dbPut(STORE_EQ, eq);
   limparFormEquip();
   renderEquipamentos();
-  toast("✅ Equipamento salvo!", "ok");
+  toast(id ? "✅ Equipamento atualizado!" : "✅ Equipamento salvo!", "ok");
 }
 
 function limparFormEquip() {
-  ["eqTag","eqNome","eqMarca","eqSetor","eqLocal","eqObs"].forEach(id => document.getElementById(id).value = "");
+  ["eqId","eqTag","eqNome","eqMarca","eqSetor","eqLocal","eqObs"].forEach(id => {
+    document.getElementById(id).value = "";
+  });
+  document.getElementById("eqFormTitulo").textContent = "➕ Cadastrar Equipamento";
 }
 
 async function renderEquipamentos() {
@@ -1633,16 +1731,17 @@ async function renderEquipamentos() {
 }
 
 async function editarEquip(id) {
-  const lista = await dbAll(STORE_EQ);
-  const eq = lista.find(e => e.id === id);
-  if (!eq) return;
+  const eq = await dbGet(STORE_EQ, id);
+  if (!eq) return toast("Equipamento não encontrado.", "erro");
+  document.getElementById("eqId").value = eq.id;
   document.getElementById("eqTag").value = eq.tag || "";
   document.getElementById("eqNome").value = eq.nome || "";
   document.getElementById("eqMarca").value = eq.marca || "";
   document.getElementById("eqSetor").value = eq.setor || "";
   document.getElementById("eqLocal").value = eq.local || "";
   document.getElementById("eqObs").value = eq.obs || "";
-  window.scrollTo(0, 0);
+  document.getElementById("eqFormTitulo").textContent = "✏️ Editando Equipamento";
+  window.scrollTo({ top: 0, behavior: "smooth" });
 }
 
 async function excluirEquip(id) {
@@ -1717,11 +1816,9 @@ async function exportarBackup() {
   const ordens = await dbAll(STORE);
   const equipamentos = await dbAll(STORE_EQ);
   const backup = {
-    versao: 1,
+    versao: 2,
     exportado: new Date().toISOString(),
-    ordens,
-    equipamentos,
-    metas
+    ordens, equipamentos, metas
   };
   const blob = new Blob([JSON.stringify(backup, null, 2)], { type: "application/json" });
   const url = URL.createObjectURL(blob);
@@ -1780,7 +1877,7 @@ function setPeriodo(p) {
   renderDashboard();
 }
 
-function filtrarPorPeriodo(lista, periodo) {
+function filtrarPorPeriodo(lista, periodo, usarDataOcorrencia = false) {
   if (periodo === "tudo") return lista;
   const agora = new Date();
   let inicio;
@@ -1793,7 +1890,7 @@ function filtrarPorPeriodo(lista, periodo) {
     default: return lista;
   }
   return lista.filter(o => {
-    const dataRef = o.created_at || o.data;
+    const dataRef = usarDataOcorrencia ? (o.iniOcor || o.data) : (o.created_at || o.data);
     if (!dataRef) return false;
     return new Date(dataRef) >= inicio;
   });
@@ -1874,14 +1971,16 @@ function calcKpis(lista) {
 
 async function renderDashboard() {
   const todas = await dbAll(STORE);
-  const lista = filtrarPorPeriodo(todas, periodoDashboard);
+  const usarData = document.getElementById("usarDataOcorrencia")?.checked || false;
+  const lista = filtrarPorPeriodo(todas, periodoDashboard, usarData);
   const k = calcKpis(lista);
 
   let kAnt = null;
   const rangeAnt = periodoAnterior(periodoDashboard);
   if (rangeAnt) {
     const listaAnt = todas.filter(o => {
-      const d = new Date(o.created_at || o.data);
+      const dataRef = usarData ? (o.iniOcor || o.data) : (o.created_at || o.data);
+      const d = new Date(dataRef);
       return d >= rangeAnt.inicio && d <= rangeAnt.fim;
     });
     kAnt = calcKpis(listaAnt);
@@ -1949,7 +2048,6 @@ async function renderDashboard() {
     </div>
   `).join("");
 
-  // Comparativo
   if (kAnt) {
     const ctxC = document.getElementById("grafComparativo").getContext("2d");
     if (window.grafComp) window.grafComp.destroy();
@@ -1967,7 +2065,6 @@ async function renderDashboard() {
     });
   }
 
-  // Status
   const ctxS = document.getElementById("grafStatus").getContext("2d");
   if (window.grafStatus) window.grafStatus.destroy();
   window.grafStatus = new Chart(ctxS, {
@@ -1981,7 +2078,6 @@ async function renderDashboard() {
       scales: { y: { beginAtZero: true, ticks: { precision: 0 } } } }
   });
 
-  // Tipos
   const ctxT = document.getElementById("grafTipos").getContext("2d");
   if (window.grafTipos) window.grafTipos.destroy();
   window.grafTipos = new Chart(ctxT, {
@@ -1993,7 +2089,6 @@ async function renderDashboard() {
     }
   });
 
-  // Por dia
   const dias = [];
   const contDia = {};
   for (let i = 29; i >= 0; i--) {
@@ -2022,7 +2117,6 @@ async function renderDashboard() {
       scales: { y: { beginAtZero: true, ticks: { precision: 0 } } } }
   });
 
-  // Rankings
   const equipCount = {};
   lista.forEach(o => { if (o.equipamento) equipCount[o.equipamento] = (equipCount[o.equipamento] || 0) + 1; });
   renderRanking("rankEquip", equipCount, "OS");
@@ -2074,8 +2168,7 @@ async function renderEquipDash(todas = null) {
   });
 
   const chaves = Object.keys(grupos).filter(k =>
-    k.toLowerCase().includes(termo) ||
-    (grupos[k].nome || "").toLowerCase().includes(termo)
+    k.toLowerCase().includes(termo) || (grupos[k].nome || "").toLowerCase().includes(termo)
   );
 
   if (!chaves.length) {
@@ -2119,13 +2212,12 @@ async function renderEquipDash(todas = null) {
 // 📄 PDF DA OS
 // ========================================================
 async function pdfDaLista(id) {
-  const lista = await dbAll(STORE);
-  const os = lista.find(o => o.id === id);
+  const os = await dbGet(STORE, id);
   if (os) gerarPDFdeObjeto(os);
 }
 
-function gerarPDF() {
-  const os = coletarForm();
+async function gerarPDF() {
+  const os = await coletarForm();
   const erros = validarForm(os);
   if (erros.length) return toast("⚠️ Preencha: " + erros.join(", "), "erro");
   gerarPDFdeObjeto(os);
@@ -2143,8 +2235,7 @@ function gerarPDFdeObjeto(os) {
   doc.setFontSize(10);
   const linha = (l, v) => {
     doc.setFont(undefined, "bold"); doc.text(l + ":", 15, y);
-    doc.setFont(undefined, "normal");
-    doc.text(String(v || "-"), 60, y);
+    doc.setFont(undefined, "normal"); doc.text(String(v || "-"), 60, y);
     y += 6;
   };
 
@@ -2211,7 +2302,7 @@ function gerarPDFdeObjeto(os) {
     doc.text(`- ${p.codigo || "-"} | ${p.desc || "-"} | Qtd: ${p.qtd || "-"}`, 18, y); y += 5;
   });
 
-  if (os.midias && os.midias.length) {
+  if (os.midias && os.midias.some(m => m.tipo === "foto")) {
     doc.addPage(); y = 15;
     doc.setFontSize(14); doc.text("Fotos", 105, y, { align: "center" }); y += 10;
     let x = 15;
@@ -2249,7 +2340,8 @@ function gerarPDFdeObjeto(os) {
 // ========================================================
 async function exportarRelatorioPDF() {
   const todas = await dbAll(STORE);
-  const lista = filtrarPorPeriodo(todas, periodoDashboard);
+  const usarData = document.getElementById("usarDataOcorrencia")?.checked || false;
+  const lista = filtrarPorPeriodo(todas, periodoDashboard, usarData);
   const k = calcKpis(lista);
 
   const { jsPDF } = window.jspdf;
@@ -2324,6 +2416,28 @@ async function exportarRelatorioPDF() {
 }
 
 // ========================================================
+// ⌨️ ATALHOS DE TECLADO
+// ========================================================
+document.addEventListener("keydown", e => {
+  if (e.ctrlKey && e.key === "s" && document.getElementById("view-form").classList.contains("active")) {
+    e.preventDefault();
+    salvarOS();
+  }
+  if (e.key === "Escape") {
+    const modal = document.getElementById("modalMetas");
+    if (modal.classList.contains("show")) fecharModalMetas();
+  }
+});
+
+// Previne perda acidental
+window.addEventListener("beforeunload", e => {
+  if (dadosAlterados && document.getElementById("view-form").classList.contains("active")) {
+    e.preventDefault();
+    e.returnValue = "";
+  }
+});
+
+// ========================================================
 // 🚀 INICIALIZAÇÃO
 // ========================================================
 (async () => {
@@ -2338,6 +2452,42 @@ async function exportarRelatorioPDF() {
     new Date().toLocaleDateString("pt-BR", { day: "2-digit", month: "short" });
   irPara("home");
 })();
+
+// ========================================================
+// 📱 SERVICE WORKER (PWA)
+// ========================================================
+if ("serviceWorker" in navigator) {
+  const swCode = `
+    const CACHE = "os-digital-v2";
+    const ASSETS = [
+      "https://cdnjs.cloudflare.com/ajax/libs/jspdf/2.5.1/jspdf.umd.min.js",
+      "https://cdnjs.cloudflare.com/ajax/libs/qrcodejs/1.0.0/qrcode.min.js",
+      "https://cdn.jsdelivr.net/npm/chart.js"
+    ];
+    self.addEventListener("install", e => {
+      e.waitUntil(caches.open(CACHE).then(c => c.addAll(ASSETS).catch(()=>{})));
+      self.skipWaiting();
+    });
+    self.addEventListener("activate", e => {
+      e.waitUntil(caches.keys().then(keys =>
+        Promise.all(keys.filter(k => k !== CACHE).map(k => caches.delete(k)))
+      ));
+      self.clients.claim();
+    });
+    self.addEventListener("fetch", e => {
+      if (e.request.method !== "GET") return;
+      e.respondWith(
+        caches.match(e.request).then(cached => cached || fetch(e.request).then(res => {
+          const copy = res.clone();
+          caches.open(CACHE).then(c => c.put(e.request, copy)).catch(()=>{});
+          return res;
+        }).catch(() => cached))
+      );
+    });
+  `;
+  const blob = new Blob([swCode], { type: "application/javascript" });
+  navigator.serviceWorker.register(URL.createObjectURL(blob)).catch(console.warn);
+}
 </script>
 </body>
 </html>
