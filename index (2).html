@@ -73,10 +73,23 @@ header{
 #statusRede{font-size:11px;font-weight:600;padding:4px 12px;border-radius:20px;background:rgba(0,0,0,0.2);border:1px solid var(--borda);white-space:nowrap}
 #usuarioAtual{font-size:12px;padding:4px 12px;border-radius:20px;background:rgba(30,184,201,0.15);border:1px solid rgba(30,184,201,0.3);color:var(--azul-claro);cursor:pointer}
 
+.busca-global{margin-top:10px;position:relative}
+.busca-global input{
+  width:100%;padding:10px 16px 10px 40px;border-radius:14px;
+  background:var(--card);border:1px solid var(--borda);color:var(--texto);
+  font-size:14px;font-family:inherit;outline:none;transition:var(--transition)
+}
+.busca-global input:focus{border-color:var(--azul);box-shadow:0 0 0 4px rgba(30,184,201,0.1)}
+.busca-global::before{
+  content:"🔍";position:absolute;left:14px;top:50%;transform:translateY(-50%);
+  font-size:16px;opacity:.5;pointer-events:none
+}
+
 nav{display:flex;gap:5px;overflow-x:auto;padding-top:10px;scrollbar-width:thin}
 nav button{white-space:nowrap;border:none;background:transparent;color:var(--cinza);border-radius:30px;padding:8px 18px;font-weight:600;font-size:13px;cursor:pointer;transition:var(--transition);position:relative}
 nav button:hover{color:var(--texto);background:var(--card);transform:translateY(-3px)}
 nav button.ativo{color:#fff;background:linear-gradient(135deg,var(--azul),var(--roxo),var(--rosa));box-shadow:0 4px 35px rgba(30,184,201,0.3)}
+nav button.badge::after{content:attr(data-count);position:absolute;top:-4px;right:-4px;background:var(--laranja);color:#fff;font-size:10px;font-weight:700;min-width:20px;height:20px;padding:0 6px;border-radius:10px;display:flex;align-items:center;justify-content:center}
 
 .container{max-width:1260px;margin:auto;padding:18px 20px}
 .view{display:none}
@@ -97,6 +110,8 @@ button:disabled{opacity:0.5;cursor:not-allowed;transform:none}
 .btn-outline{background:transparent;border-color:var(--borda)}
 .btn-pdf{background:linear-gradient(135deg,#d32f2f,#ff5722);border-color:transparent;color:#fff}
 .btn-excel{background:linear-gradient(135deg,#1a8a5a,#4caf50);border-color:transparent;color:#fff}
+.btn-filtro{padding:6px 14px;font-size:12px;border-radius:20px;background:var(--card);border:1px solid var(--borda)}
+.btn-filtro.ativo{background:linear-gradient(135deg,var(--azul),var(--roxo));border-color:transparent;color:#fff}
 
 dialog{width:min(800px,94vw);padding:0;border:1px solid var(--borda);border-radius:24px;background:var(--bg-header);backdrop-filter:blur(40px);color:var(--texto);box-shadow:0 50px 120px rgba(0,0,0,0.9);animation:modalBounce .5s cubic-bezier(0.34,1.56,0.64,1)}
 @keyframes modalBounce{from{opacity:0;transform:scale(.8) translateY(80px)}to{opacity:1;transform:scale(1) translateY(0)}}
@@ -115,11 +130,13 @@ dialog::backdrop{background:rgba(0,0,0,0.8);backdrop-filter:blur(12px)}
 .flex-between{display:flex;justify-content:space-between;align-items:center;flex-wrap:wrap;gap:8px}
 .search-bar input{width:100%;padding:11px 16px;border-radius:12px;background:rgba(0,0,0,0.15);color:var(--texto);outline:none;font-size:14px;border:1px solid var(--borda);margin:4px 0 10px;font-family:inherit}
 .search-bar input:focus{border-color:var(--azul);box-shadow:0 0 0 4px rgba(30,184,201,0.08)}
+.filtros-rapidos{display:flex;gap:6px;flex-wrap:wrap;margin:8px 0 12px;overflow-x:auto;padding-bottom:2px}
 footer{text-align:center;padding:30px 20px;font-size:12px;color:var(--cinza);opacity:.4;border-top:1px solid var(--borda);margin-top:28px}
 
 .resumo-grid{display:grid;grid-template-columns:repeat(2,1fr);gap:10px;margin-bottom:20px}
 @media(min-width:700px){.resumo-grid{grid-template-columns:repeat(4,1fr)}}
-.resumo-card{background:var(--card);border:1px solid var(--borda);border-radius:14px;padding:14px;display:flex;align-items:center;gap:10px}
+.resumo-card{background:var(--card);border:1px solid var(--borda);border-radius:14px;padding:14px;display:flex;align-items:center;gap:10px;transition:var(--transition);cursor:pointer}
+.resumo-card:hover{transform:translateY(-3px)}
 .resumo-card .icone{width:42px;height:42px;border-radius:12px;display:grid;place-items:center;font-size:20px;flex-shrink:0}
 .resumo-card .icone.azul{background:rgba(30,184,201,0.15);color:var(--azul-claro)}
 .resumo-card .icone.laranja{background:rgba(245,166,35,0.15);color:var(--laranja)}
@@ -132,12 +149,13 @@ footer{text-align:center;padding:30px 20px;font-size:12px;color:var(--cinza);opa
 .btn-nova-os .plus{background:rgba(255,255,255,0.25);width:30px;height:30px;border-radius:50%;display:grid;place-items:center;font-size:18px;font-weight:bold}
 
 .lista-os{display:flex;flex-direction:column;gap:10px}
-.os-item{background:var(--card);border:1px solid var(--borda);padding:14px;border-radius:14px;box-shadow:var(--sombra)}
+.os-item{background:var(--card);border:1px solid var(--borda);padding:14px;border-radius:14px;box-shadow:var(--sombra);transition:var(--transition)}
 .os-item h3{font-size:14px;margin-bottom:6px;color:var(--texto)}
 .os-item small{color:var(--cinza);display:block;margin-bottom:3px;font-size:12px;opacity:.8}
 .os-item .botoes{margin-top:12px;display:flex;gap:8px;flex-wrap:wrap}
-.os-item .botoes button{flex:1;min-width:80px;padding:8px;font-size:12px;justify-content:center}
+.os-item .botoes button{flex:1;min-width:70px;padding:8px;font-size:12px;justify-content:center}
 .os-item.aguardando-pecas{border-left:5px solid var(--laranja);background:rgba(245,166,35,0.06)}
+.os-item.parada{border-left:5px solid var(--vermelho);background:rgba(255,107,130,0.06)}
 
 .status-badge{display:inline-block;padding:3px 10px;border-radius:12px;font-size:11px;font-weight:700;color:#fff;margin-left:6px}
 .status-Aberta{background:#0066cc}
@@ -160,6 +178,8 @@ footer{text-align:center;padding:30px 20px;font-size:12px;color:var(--cinza);opa
 .chart-box{background:var(--card);border:1px solid var(--borda);border-radius:12px;padding:15px;margin-bottom:12px}
 .chart-box h3{font-size:13px;color:var(--texto);margin-bottom:10px;font-weight:600;opacity:.85}
 
+.periodo-filtro{display:flex;gap:6px;flex-wrap:wrap;margin-bottom:12px}
+
 .ranking-list{background:var(--card);border:1px solid var(--borda);border-radius:12px;padding:15px;margin-bottom:12px}
 .ranking-list h3{font-size:13px;color:var(--texto);margin-bottom:10px;opacity:.85}
 .ranking-item{display:flex;justify-content:space-between;align-items:center;padding:10px 0;border-bottom:1px solid var(--borda);font-size:13px}
@@ -170,8 +190,12 @@ footer{text-align:center;padding:30px 20px;font-size:12px;color:var(--cinza);opa
 .quadro-pecas{background:rgba(245,166,35,0.08);border:2px solid var(--laranja);border-radius:12px;padding:14px;margin-top:10px}
 .quadro-pecas h3{color:var(--laranja);font-size:14px;margin-bottom:10px}
 
-canvas.assinatura{border:2px dashed var(--borda);border-radius:10px;touch-action:none;width:100%;max-width:400px;background:rgba(0,0,0,0.15);margin-bottom:8px;display:block}
+.assinatura-wrap{position:relative;display:inline-block;width:100%;max-width:400px;margin-bottom:8px}
+.assinatura-wrap .btn-x{position:absolute;top:6px;right:6px;width:26px;height:26px;border-radius:50%;background:rgba(255,107,130,0.9);color:#fff;font-size:14px;padding:0;justify-content:center;z-index:2;border:none;cursor:pointer;display:flex;align-items:center;justify-content:center}
+canvas.assinatura{border:2px dashed var(--borda);border-radius:10px;touch-action:none;width:100%;background:rgba(0,0,0,0.15);display:block}
 canvas.assinatura.ativa{border-color:var(--azul);background:rgba(255,255,255,0.05);box-shadow:0 0 0 3px rgba(30,184,201,0.15)}
+.assinatura-acoes{display:flex;gap:6px;margin-top:6px;flex-wrap:wrap}
+.assinatura-acoes button{padding:5px 12px;font-size:11px;border-radius:20px}
 
 .midia-grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(90px,1fr));gap:8px;margin-top:10px}
 .midia-item{position:relative;border-radius:8px;overflow:hidden;border:1px solid var(--borda)}
@@ -179,8 +203,16 @@ canvas.assinatura.ativa{border-color:var(--azul);background:rgba(255,255,255,0.0
 .midia-item button{position:absolute;top:2px;right:2px;background:rgba(255,0,0,.85);color:#fff;border:none;border-radius:50%;width:22px;height:22px;font-size:12px;justify-content:center;padding:0}
 
 .linha-dinamica{display:grid;grid-template-columns:2fr 1fr 1fr auto;gap:6px;margin-bottom:6px}
+.linha-dinamica.peca{grid-template-columns:2fr 2fr 1fr 1fr auto}
 .linha-dinamica input{margin:0;padding:8px;font-size:13px}
 .linha-dinamica button{background:#ff4444;color:#fff;border:none;border-radius:8px;padding:0 10px}
+
+.template-grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(150px,1fr));gap:8px;margin-top:10px}
+.template-card{background:var(--card);border:1px solid var(--borda);border-radius:12px;padding:12px;cursor:pointer;transition:var(--transition);text-align:center}
+.template-card:hover{transform:translateY(-3px);border-color:var(--azul)}
+.template-card .t-emoji{font-size:24px;display:block;margin-bottom:4px}
+.template-card .t-nome{font-size:12px;font-weight:600}
+.template-card .t-desc{font-size:10px;color:var(--cinza);opacity:.7;margin-top:2px}
 
 .toast{position:fixed;bottom:30px;left:50%;transform:translateX(-50%);background:#333;color:#fff;padding:12px 22px;border-radius:12px;font-size:14px;z-index:99999;opacity:0;transition:opacity .3s;pointer-events:none;max-width:90%;text-align:center}
 .toast.show{opacity:1}
@@ -199,12 +231,16 @@ canvas.assinatura.ativa{border-color:var(--azul);background:rgba(255,255,255,0.0
 
 #btnInstalarApp{position:fixed;bottom:20px;left:50%;transform:translateX(-50%);z-index:9999;background:linear-gradient(135deg,var(--azul),var(--roxo));color:#fff;padding:12px 28px;border-radius:30px;font-weight:700;font-size:15px;box-shadow:0 8px 40px rgba(30,184,201,0.4)}
 
+.modo-tecnico-toggle{background:linear-gradient(135deg,var(--roxo),var(--rosa)) !important;color:#fff !important;border:none !important}
+
 @media (max-width:768px){
   .modal{padding:16px 18px}
   .logo-icon{width:38px;height:38px;font-size:20px}
   .logo-text h1{font-size:17px}
   nav button{font-size:11.5px;padding:6px 12px}
   .header-actions button{padding:5px 10px;font-size:11px}
+  .linha-dinamica{grid-template-columns:2fr 1fr auto}
+  .linha-dinamica.peca{grid-template-columns:1fr 1fr auto}
 }
 ::-webkit-scrollbar{width:6px;height:6px}
 ::-webkit-scrollbar-track{background:transparent}
@@ -232,9 +268,13 @@ canvas.assinatura.ativa{border-color:var(--azul);background:rgba(255,255,255,0.0
     </div>
   </div>
 
+  <div class="busca-global">
+    <input id="buscaGlobal" placeholder="Buscar por OS, TAG, equipamento, técnico, peça..." oninput="App.buscaGlobal(this.value)">
+  </div>
+
   <nav id="navPrincipal">
     <button class="ativo" data-tela="os-home">🏠 Início</button>
-    <button data-tela="os-lista">📋 OS Salvas</button>
+    <button data-tela="os-lista" id="navOsLista">📋 OS Salvas</button>
     <button data-tela="os-dash">📊 Produção</button>
   </nav>
 </header>
@@ -259,27 +299,51 @@ canvas.assinatura.ativa{border-color:var(--azul);background:rgba(255,255,255,0.0
       <button class="btn-primary" onclick="OS.novaOS()">＋ Nova OS</button>
     </div>
   </div>
-  <div class="search-bar"><input id="buscaOS" placeholder="🔍 Buscar..." oninput="OS.renderLista()"></div>
+
+  <div class="filtros-rapidos" id="filtrosOS">
+    <button class="btn-filtro ativo" data-f="todas">Todas</button>
+    <button class="btn-filtro" data-f="Aberta">🔵 Abertas</button>
+    <button class="btn-filtro" data-f="Execução">🟡 Execução</button>
+    <button class="btn-filtro" data-f="Aguardando Peças">🟠 Aguardando</button>
+    <button class="btn-filtro" data-f="Concluída">🟢 Concluídas</button>
+    <button class="btn-filtro" data-f="paradas">⚠️ Paradas +7d</button>
+  </div>
+
   <p id="contadorOS" style="font-size:12px;color:var(--cinza);opacity:.7;margin:6px 0 12px"></p>
   <div id="listaOS" class="lista-os"></div>
 </section>
 
 <section id="os-dash" class="view">
   <h3 class="section-header">📊 Indicadores de Produção</h3>
+  <div class="periodo-filtro" id="periodoDash">
+    <button class="btn-filtro" data-p="7">Últimos 7 dias</button>
+    <button class="btn-filtro ativo" data-p="30">Últimos 30 dias</button>
+    <button class="btn-filtro" data-p="90">Últimos 90 dias</button>
+    <button class="btn-filtro" data-p="0">Tudo</button>
+  </div>
   <div id="kpiGrid" class="kpi-grid"></div>
   <h3 class="section-header">📈 Análise</h3>
   <div class="chart-box"><h3>OS por Status</h3><canvas id="grafStatus" height="120"></canvas></div>
   <div class="chart-box"><h3>Tipos de Serviço</h3><canvas id="grafTipos" height="120"></canvas></div>
-  <div class="chart-box"><h3>OS por Dia (últimos 30)</h3><canvas id="grafDia" height="120"></canvas></div>
+  <div class="chart-box"><h3>OS por Dia</h3><canvas id="grafDia" height="120"></canvas></div>
   <h3 class="section-header">🏆 Rankings</h3>
   <div class="ranking-list"><h3>🔧 Top 5 Equipamentos</h3><div id="rankEquip"></div></div>
   <div class="ranking-list"><h3>👷 OS por Técnico</h3><div id="rankTecnico"></div></div>
   <div class="ranking-list"><h3>🏭 OS por Setor</h3><div id="rankSetor"></div></div>
   <div class="ranking-list"><h3>🔩 Top 5 Peças</h3><div id="rankPecas"></div></div>
+  <div class="ranking-list"><h3>💰 Custo por Peça</h3><div id="rankCustos"></div></div>
 </section>
 
 <section id="os-form" class="view">
-  <button class="btn-outline" onclick="App.mostrarView('os-home')">← Voltar</button>
+  <div class="flex-between">
+    <button class="btn-outline" onclick="App.mostrarView('os-home')">← Voltar</button>
+    <button class="btn-outline modo-tecnico-toggle" id="btnModoTecnico" onclick="OS.alternarModoTecnico()">🔧 Modo Técnico</button>
+  </div>
+
+  <div class="card mt-16">
+    <h3>🚀 Templates Rápidos</h3>
+    <div class="template-grid" id="templateGrid"></div>
+  </div>
 
   <div class="card mt-16">
     <h3>📋 Identificação</h3>
@@ -298,9 +362,9 @@ canvas.assinatura.ativa{border-color:var(--azul);background:rgba(255,255,255,0.0
     </select>
     <div id="quadroPecas" class="quadro-pecas hidden">
       <h3>🟠 Peças Aguardadas</h3>
-      <label>Peça(s)</label><textarea id="osPecaAguardada" rows="2"></textarea>
+      <label>Peça(s) *</label><textarea id="osPecaAguardada" rows="2"></textarea>
       <label>Fornecedor</label><input id="osFornecedor">
-      <label>Data prevista</label><input type="date" id="osDataPrevista">
+      <label>Data prevista *</label><input type="date" id="osDataPrevista">
     </div>
   </div>
 
@@ -319,21 +383,24 @@ canvas.assinatura.ativa{border-color:var(--azul);background:rgba(255,255,255,0.0
       <option>Melhoria</option><option>Predial</option>
     </select>
     <label>Causa</label><input id="osCausa">
-    <button class="btn-outline" onclick="OS.gerarQR()">🔳 Gerar QR Code</button>
+    <div style="display:flex;gap:6px;flex-wrap:wrap;margin-top:10px">
+      <button class="btn-outline" onclick="OS.gerarQR()">🔳 Gerar QR Code (abre OS)</button>
+      <button class="btn-outline" onclick="OS.duplicarUltimaOS()">📋 Duplicar última OS deste equipamento</button>
+    </div>
     <div id="qrcodeBox"></div>
   </div>
 
   <div class="card mt-10">
     <h3>📝 Descrições</h3>
     <label>Serviço a ser realizado</label><textarea id="osDescricao" rows="3"></textarea>
-    <label>Serviço realizado</label><textarea id="osRealizado" rows="3"></textarea>
+    <label>Serviço realizado *</label><textarea id="osRealizado" rows="3"></textarea>
   </div>
 
   <div class="card mt-10">
     <h3>⏱️ Datas e Horas</h3>
     <label>Início da Ocorrência</label><input type="datetime-local" id="osIniOcor" onchange="OS.calcularTempos()">
     <label>Início do Conserto</label><input type="datetime-local" id="osIniCons" onchange="OS.calcularTempos()">
-    <label>Fim do Conserto</label><input type="datetime-local" id="osFimCons" onchange="OS.calcularTempos()">
+    <label>Fim do Conserto *</label><input type="datetime-local" id="osFimCons" onchange="OS.calcularTempos()">
     <label>Fim da Ocorrência</label><input type="datetime-local" id="osFimOcor" onchange="OS.calcularTempos()">
     <div id="infoTempo" style="background:rgba(30,184,201,0.1);border:1px solid var(--azul);border-radius:10px;padding:10px;margin-top:8px;font-size:13px">⏱️ Preencha as datas para calcular os tempos.</div>
   </div>
@@ -360,17 +427,35 @@ canvas.assinatura.ativa{border-color:var(--azul);background:rgba(255,255,255,0.0
   <div class="card mt-10">
     <h3>✍️ Assinaturas</h3>
     <label>Executante</label>
-    <canvas id="canvasExec" class="assinatura" width="400" height="120"></canvas>
-    <button class="btn-outline" onclick="OS.limparCanvas('canvasExec')">Limpar</button>
+    <div class="assinatura-wrap">
+      <canvas id="canvasExec" class="assinatura" width="400" height="120"></canvas>
+      <button class="btn-x" onclick="OS.limparCanvas('canvasExec')">✕</button>
+    </div>
+    <div class="assinatura-acoes">
+      <button class="btn-outline" onclick="OS.salvarAssinaturaPadrao('canvasExec')">💾 Salvar como padrão</button>
+      <button class="btn-outline" onclick="OS.usarAssinaturaPadrao('canvasExec')">📥 Usar padrão</button>
+    </div>
     <label style="margin-top:12px">Responsável</label>
-    <canvas id="canvasResp" class="assinatura" width="400" height="120"></canvas>
-    <button class="btn-outline" onclick="OS.limparCanvas('canvasResp')">Limpar</button>
+    <div class="assinatura-wrap">
+      <canvas id="canvasResp" class="assinatura" width="400" height="120"></canvas>
+      <button class="btn-x" onclick="OS.limparCanvas('canvasResp')">✕</button>
+    </div>
+    <div class="assinatura-acoes">
+      <button class="btn-outline" onclick="OS.salvarAssinaturaPadrao('canvasResp')">💾 Salvar como padrão</button>
+      <button class="btn-outline" onclick="OS.usarAssinaturaPadrao('canvasResp')">📥 Usar padrão</button>
+    </div>
   </div>
 
   <div class="mt-16" style="display:flex;gap:10px;flex-wrap:wrap">
-    <button class="btn-primary" onclick="OS.salvarOS()" style="flex:1;min-width:140px;padding:14px;justify-content:center">💾 Salvar OS</button>
-    <button class="btn-success" onclick="OS.gerarPDFAtual()" style="flex:1;min-width:140px;padding:14px;justify-content:center">📄 Gerar PDF</button>
-    <button class="btn-outline" onclick="OS.compartilharWhatsApp()" style="flex:1;min-width:140px;padding:14px;justify-content:center">📲 WhatsApp</button>
+    <button class="btn-primary" onclick="OS.salvarOS(false)" style="flex:1;min-width:130px;padding:14px;justify-content:center">💾 Salvar OS</button>
+    <button class="btn-success" onclick="OS.salvarOS(true)" style="flex:1;min-width:130px;padding:14px;justify-content:center">💾＋ Salvar e Nova</button>
+    <button class="btn-pdf" onclick="OS.gerarPDFAtual()" style="flex:1;min-width:130px;padding:14px;justify-content:center">📄 PDF</button>
+    <button class="btn-outline" onclick="OS.compartilharWhatsApp()" style="flex:1;min-width:130px;padding:14px;justify-content:center">📲 WhatsApp</button>
+  </div>
+
+  <div class="card mt-16" style="border-left:3px solid var(--azul)">
+    <h3>📜 Histórico desta OS</h3>
+    <div id="historicoOSItem" class="mt-10"></div>
   </div>
 </section>
 
@@ -393,13 +478,13 @@ canvas.assinatura.ativa{border-color:var(--azul);background:rgba(255,255,255,0.0
 
 <script>
 /* ============================================================
-   ORDENS DE SERVIÇO — App independente
+   ORDENS DE SERVIÇO v2 — Completo e Melhorado
    ============================================================ */
 
 /* ---------- DB ---------- */
 const DB = (() => {
   const DB_NAME = "manutencaoUnificada";
-  const DB_VERSION = 1;
+  const DB_VERSION = 2;
   const STORES = {
     equipamentos: { keyPath:"id", autoIncrement:true, indices:["tag","setor","categoria","status"] },
     ordens:       { keyPath:"id", autoIncrement:true, indices:["numero","status","tag"] },
@@ -409,7 +494,9 @@ const DB = (() => {
     externas:     { keyPath:"id", autoIncrement:true },
     setores:      { keyPath:"nome" },
     historico:    { keyPath:"id", autoIncrement:true, indices:["itemId","tipo"] },
+    historicoOS:  { keyPath:"id", autoIncrement:true, indices:["osId"] },
     alarmes:      { keyPath:"id", autoIncrement:true, indices:["equipamentoId","ativo"] },
+    backups:      { keyPath:"id", autoIncrement:true },
     config:       { keyPath:"chave" }
   };
   let _db = null;
@@ -437,11 +524,12 @@ const DB = (() => {
   const get = (s, k) => new Promise((res, rej) => { const r = tx(s).get(k); r.onsuccess = () => res(r.result); r.onerror = () => rej(r.error); });
   const all = (s) => new Promise((res, rej) => { const r = tx(s).getAll(); r.onsuccess = () => res(r.result||[]); r.onerror = () => rej(r.error); });
   const del = (s, k) => new Promise((res, rej) => { const r = tx(s,"readwrite").delete(k); r.onsuccess = () => res(); r.onerror = () => rej(r.error); });
+  const clear = (s) => new Promise((res, rej) => { const r = tx(s,"readwrite").clear(); r.onsuccess = () => res(); r.onerror = () => rej(r.error); });
 
   async function getConfig(k, def=null){ const r = await get("config", k); return r ? r.valor : def; }
   function setConfig(k, v){ return put("config", { chave:k, valor:v }); }
 
-  return { open, put, get, all, del, getConfig, setConfig };
+  return { open, put, get, all, del, clear, getConfig, setConfig };
 })();
 
 /* ---------- UTILS ---------- */
@@ -450,6 +538,7 @@ const hojeISO = () => new Date().toISOString().substring(0,10);
 const formatarDataBR = iso => { if(!iso) return "-"; const d = iso.length <= 10 ? new Date(iso+"T00:00:00") : new Date(iso); return isNaN(d) ? iso : d.toLocaleDateString("pt-BR"); };
 const diffHoras = (a,b) => { if(!a||!b) return null; return (new Date(b) - new Date(a)) / 36e5; };
 const formatarDuracao = h => { if(h == null || isNaN(h)) return "-"; const H = Math.floor(h); const M = Math.round((h-H)*60); return `${H}h${String(M).padStart(2,"0")}min`; };
+const diasDesde = iso => { if(!iso) return null; return (Date.now() - new Date(iso).getTime()) / 864e5; };
 
 function comprimirImagem(dataUrl, maxW=1200, q=0.75){
   return new Promise(res => {
@@ -468,6 +557,33 @@ function comprimirImagem(dataUrl, maxW=1200, q=0.75){
     img.src = dataUrl;
   });
 }
+
+function adicionarMarcaDagua(dataUrl, texto){
+  return new Promise(res => {
+    const img = new Image();
+    img.onload = () => {
+      try {
+        const c = document.createElement("canvas");
+        c.width = img.width; c.height = img.height;
+        const ctx = c.getContext("2d");
+        ctx.drawImage(img, 0, 0);
+        // Faixa semi-transparente no rodapé
+        const h = Math.max(30, img.height * 0.06);
+        ctx.fillStyle = "rgba(0,0,0,0.55)";
+        ctx.fillRect(0, img.height - h, img.width, h);
+        ctx.fillStyle = "#fff";
+        const font = Math.max(14, img.width * 0.02);
+        ctx.font = `bold ${font}px sans-serif`;
+        ctx.textBaseline = "middle";
+        ctx.fillText(texto, 15, img.height - h/2);
+        res(c.toDataURL("image/jpeg", 0.75));
+      } catch(e){ res(dataUrl); }
+    };
+    img.onerror = () => res(dataUrl);
+    img.src = dataUrl;
+  });
+}
+
 function lerArquivo(f){
   return new Promise((res, rej) => {
     const r = new FileReader();
@@ -477,9 +593,29 @@ function lerArquivo(f){
   });
 }
 
+/* ---------- TEMPLATES ---------- */
+const TEMPLATES = [
+  { id:"lubrificacao", emoji:"🛢️", nome:"Lubrificação", desc:"Lubrificação periódica",
+    tipo:"Preventiva", descricao:"Lubrificar pontos conforme plano de manutenção." },
+  { id:"eletrica", emoji:"⚡", nome:"Inspeção Elétrica", desc:"Revisão de quadro/motor",
+    tipo:"Preventiva", descricao:"Inspecionar conexões, apertos e isolamento elétrico." },
+  { id:"troca_oleo", emoji:"🔧", nome:"Troca de Óleo", desc:"Troca de óleo e filtro",
+    tipo:"Preventiva", descricao:"Drenar óleo, substituir filtro e completar nível." },
+  { id:"correia", emoji:"🔩", nome:"Troca de Correia", desc:"Substituição de correia",
+    tipo:"Corretiva", descricao:"Substituir correia desgastada e alinhar polias." },
+  { id:"rolamento", emoji:"⚙️", nome:"Troca de Rolamento", desc:"Substituição de rolamento",
+    tipo:"Corretiva", descricao:"Substituir rolamento com ruído ou folga." },
+  { id:"hidraulica", emoji:"💧", nome:"Sistema Hidráulico", desc:"Verificação hidráulica",
+    tipo:"Preventiva", descricao:"Verificar vazamentos, pressão e nível de óleo." },
+  { id:"pneumatica", emoji:"💨", nome:"Sistema Pneumático", desc:"Verificação pneumática",
+    tipo:"Preventiva", descricao:"Verificar vazamentos de ar e pressão de trabalho." },
+  { id:"limpeza", emoji:"🧹", nome:"Limpeza Técnica", desc:"Limpeza geral e conservação",
+    tipo:"Preventiva", descricao:"Limpeza geral, remoção de resíduos e conservação." }
+];
+
 /* ---------- APP ---------- */
 const App = (() => {
-  const state = { usuarioAtual:"" };
+  const state = { usuarioAtual:"", filtroLista:"todas", periodoDash:30 };
 
   function toast(msg, tipo="info"){
     const el = document.getElementById("toast");
@@ -504,6 +640,7 @@ const App = (() => {
     };
     if(renders[view]) try { renders[view](); } catch(e){ console.warn(e); }
     window.scrollTo(0,0);
+    if(view !== "os-form") document.getElementById("buscaGlobal").value = "";
   }
 
   function alternarTema(){
@@ -526,21 +663,74 @@ const App = (() => {
     document.getElementById("usuarioAtual").textContent = `👤 ${nome}`;
     document.getElementById("dialogUsuario").close();
     toast(`Bem-vindo, ${nome}!`, "ok");
+    atualizarContadorHoje();
+  }
+
+  async function buscaGlobal(texto){
+    if(!texto) return;
+    // Se já está na lista, só filtra. Se não, muda pra lista e filtra.
+    const viewLista = document.getElementById("os-lista");
+    if(!viewLista.classList.contains("active")){
+      mostrarView("os-lista");
+    }
+    const input = document.getElementById("buscaOS");
+    if(input){ input.value = texto; }
+    OS.renderLista();
+  }
+
+  async function atualizarContadorHoje(){
+    const lista = await DB.all("ordens");
+    const hoje = hojeISO();
+    const hojeCount = lista.filter(o => (o.created_at||"").startsWith(hoje) || o.data === hoje).length;
+    const btn = document.getElementById("navOsLista");
+    if(btn && hojeCount > 0){
+      btn.classList.add("badge");
+      btn.setAttribute("data-count", hojeCount);
+    } else if(btn){
+      btn.classList.remove("badge");
+    }
   }
 
   async function init(){
-    if(localStorage.getItem("tema") === "claro"){
+    // Tema: preferência salva ou sistema
+    const temaSalvo = localStorage.getItem("tema");
+    const prefereEscuro = window.matchMedia && window.matchMedia("(prefers-color-scheme: dark)").matches;
+    const usarClaro = temaSalvo ? temaSalvo === "claro" : !prefereEscuro;
+    if(usarClaro){
       document.body.classList.add("tema-claro");
       document.getElementById("btnTema").textContent = "🌙";
     }
+
     state.usuarioAtual = await DB.getConfig("usuarioAtual", "");
     if(state.usuarioAtual) document.getElementById("usuarioAtual").textContent = `👤 ${state.usuarioAtual}`;
     else setTimeout(trocarUsuario, 800);
 
+    // Navegação
     document.querySelectorAll("#navPrincipal button").forEach(b => {
       b.addEventListener("click", () => mostrarView(b.dataset.tela));
     });
 
+    // Filtros lista
+    document.querySelectorAll("#filtrosOS .btn-filtro").forEach(b => {
+      b.addEventListener("click", () => {
+        document.querySelectorAll("#filtrosOS .btn-filtro").forEach(x => x.classList.remove("ativo"));
+        b.classList.add("ativo");
+        state.filtroLista = b.dataset.f;
+        OS.renderLista();
+      });
+    });
+
+    // Filtros dashboard
+    document.querySelectorAll("#periodoDash .btn-filtro").forEach(b => {
+      b.addEventListener("click", () => {
+        document.querySelectorAll("#periodoDash .btn-filtro").forEach(x => x.classList.remove("ativo"));
+        b.classList.add("ativo");
+        state.periodoDash = parseInt(b.dataset.p);
+        OS.renderDashboard();
+      });
+    });
+
+    // Rede
     function atualizarRede(){
       const on = navigator.onLine;
       const el = document.getElementById("statusRede");
@@ -550,16 +740,41 @@ const App = (() => {
     window.addEventListener("offline", atualizarRede);
     atualizarRede();
 
-    mostrarView("os-home");
+    // Atalhos de teclado
+    document.addEventListener("keydown", e => {
+      if(e.ctrlKey && e.key === "s"){ e.preventDefault(); OS.salvarOS(false); }
+      else if(e.ctrlKey && e.key === "n"){ e.preventDefault(); OS.novaOS(); }
+      else if(e.key === "Escape"){
+        const dlgAberto = document.querySelector("dialog[open]");
+        if(dlgAberto){ dlgAberto.close(); return; }
+        if(document.getElementById("os-form").classList.contains("active")) mostrarView("os-home");
+      }
+    });
+
+    // Backup automático (a cada 24h, verifica se já fez hoje)
+    setInterval(() => Backup.autoBackup(), 60 * 60 * 1000);
+    setTimeout(() => Backup.autoBackup(), 30000);
+
+    // QR Code: abrir OS direto se ?id=123
+    const params = new URLSearchParams(location.search);
+    const id = params.get("id");
+    if(id){
+      mostrarView("os-lista");
+      setTimeout(() => OS.editarOS(parseInt(id)), 600);
+    } else {
+      mostrarView("os-home");
+    }
+
+    atualizarContadorHoje();
   }
 
-  return { state, toast, mostrarView, alternarTema, trocarUsuario, salvarUsuario, init };
+  return { state, toast, mostrarView, alternarTema, trocarUsuario, salvarUsuario, buscaGlobal, init, atualizarContadorHoje };
 })();
 const toast = (m, t) => App.toast(m, t);
 
 /* ---------- OS ---------- */
 const OS = (() => {
-  const state = { osAtual:{ id:null, midias:[], maoObra:[], pecas:[] } };
+  const state = { osAtual:{ id:null, midias:[], maoObra:[], pecas:[] }, modoTecnico:false, statusAnterior:null };
 
   function badgeStatus(status){
     const map = {
@@ -576,6 +791,53 @@ const OS = (() => {
     dl.innerHTML = lista.map(e => `<option value="${escapar(e.tag)}">${escapar(e.nome)} — ${escapar(e.setor||"")}</option>`).join("");
   }
 
+  async function renderTemplates(){
+    const grid = document.getElementById("templateGrid");
+    if(!grid) return;
+    grid.innerHTML = TEMPLATES.map(t => `
+      <div class="template-card" onclick="OS.aplicarTemplate('${t.id}')">
+        <span class="t-emoji">${t.emoji}</span>
+        <div class="t-nome">${t.nome}</div>
+        <div class="t-desc">${t.desc}</div>
+      </div>
+    `).join("");
+  }
+
+  function aplicarTemplate(id){
+    const t = TEMPLATES.find(x => x.id === id);
+    if(!t) return;
+    if(document.getElementById("osTipo").value && document.getElementById("osDescricao").value){
+      if(!confirm("Substituir os campos já preenchidos pelo template?")) return;
+    }
+    document.getElementById("osTipo").value = t.tipo;
+    document.getElementById("osDescricao").value = t.descricao;
+    toast(`📋 Template aplicado: ${t.nome}`, "ok");
+  }
+
+  function renderHistoricoItem(id){
+    const el = document.getElementById("historicoOSItem");
+    if(!el) return;
+    if(!id){ el.innerHTML = "<p class='muted text-sm'>Salve a OS para ver o histórico.</p>"; return; }
+    DB.all("historicoOS").then(lista => {
+      const filtrados = lista.filter(h => h.osId === id).sort((a,b) => (b.data||"").localeCompare(a.data||""));
+      if(!filtrados.length){ el.innerHTML = "<p class='muted text-sm'>Sem movimentações registradas.</p>"; return; }
+      el.innerHTML = filtrados.map(h => `
+        <div style="padding:8px 0;border-bottom:1px solid var(--borda);font-size:12px">
+          <b>${escapar(h.acao)}</b>
+          <div class="muted" style="opacity:.7;margin-top:2px">${new Date(h.data).toLocaleString("pt-BR")} — ${escapar(h.usuario||"—")}</div>
+        </div>
+      `).join("");
+    });
+  }
+
+  async function registrarHistoricoOS(osId, osNumero, acao){
+    await DB.put("historicoOS", {
+      osId, osNumero, acao,
+      data: new Date().toISOString(),
+      usuario: App.state.usuarioAtual || "—"
+    });
+  }
+
   async function renderHome(){
     const lista = await DB.all("ordens");
     const total = lista.length;
@@ -583,14 +845,27 @@ const OS = (() => {
     const exec = lista.filter(o => (o.status||"") === "Execução").length;
     const aguard = lista.filter(o => (o.status||"") === "Aguardando Peças").length;
     const backlog = abertas + exec + aguard;
+    const paradas = lista.filter(o => {
+      if(o.fimOcor) return false;
+      if(!o.iniOcor) return false;
+      return diasDesde(o.iniOcor) > 7;
+    }).length;
 
     const el = document.getElementById("os-resumoGrid");
     if(el){
       el.innerHTML = `
-        <div class="resumo-card"><div class="icone azul">📋</div><div><div class="num">${total}</div><div class="lbl">Total OS</div></div></div>
-        <div class="resumo-card"><div class="icone laranja">⏳</div><div><div class="num">${backlog}</div><div class="lbl">Backlog</div></div></div>
-        <div class="resumo-card"><div class="icone verde">🟢</div><div><div class="num">${lista.filter(o => (o.status||"") === "Concluída").length}</div><div class="lbl">Concluídas</div></div></div>
-        <div class="resumo-card"><div class="icone vermelho">🟠</div><div><div class="num">${aguard}</div><div class="lbl">Aguardando</div></div></div>
+        <div class="resumo-card" onclick="App.state.filtroLista='todas';App.mostrarView('os-lista')">
+          <div class="icone azul">📋</div><div><div class="num">${total}</div><div class="lbl">Total OS</div></div>
+        </div>
+        <div class="resumo-card" onclick="App.state.filtroLista='Aberta';App.mostrarView('os-lista')">
+          <div class="icone laranja">⏳</div><div><div class="num">${backlog}</div><div class="lbl">Backlog</div></div>
+        </div>
+        <div class="resumo-card" onclick="App.state.filtroLista='Concluída';App.mostrarView('os-lista')">
+          <div class="icone verde">🟢</div><div><div class="num">${lista.filter(o => (o.status||"") === "Concluída").length}</div><div class="lbl">Concluídas</div></div>
+        </div>
+        <div class="resumo-card" onclick="App.state.filtroLista='paradas';App.mostrarView('os-lista')">
+          <div class="icone vermelho">⚠️</div><div><div class="num">${paradas}</div><div class="lbl">Paradas +7d</div></div>
+        </div>
       `;
     }
 
@@ -601,20 +876,25 @@ const OS = (() => {
       div.innerHTML = `<p style="text-align:center;color:var(--cinza);opacity:.6;padding:20px">Nenhuma OS cadastrada.</p>`;
       return;
     }
-    div.innerHTML = ultimas.map(os => `
-      <div class="os-item ${os.status === "Aguardando Peças" ? "aguardando-pecas" : ""}">
-        <h3>OS ${escapar(os.numero||"-")} — ${escapar(os.equipamento||"-")} ${badgeStatus(os.status)}</h3>
-        <small>📅 ${formatarDataBR(os.data)} | ${escapar(os.tipo||"-")}</small>
-        <div class="botoes">
-          <button class="btn-outline" onclick="OS.editarOS(${os.id})">✏️ Editar</button>
-          <button class="btn-success" onclick="OS.pdfDaLista(${os.id})">📄 PDF</button>
+    div.innerHTML = ultimas.map(os => {
+      const parada = !os.fimOcor && os.iniOcor && diasDesde(os.iniOcor) > 7;
+      return `
+        <div class="os-item ${os.status === "Aguardando Peças" ? "aguardando-pecas" : ""} ${parada ? "parada" : ""}">
+          <h3>OS ${escapar(os.numero||"-")} — ${escapar(os.equipamento||"-")} ${badgeStatus(os.status)}</h3>
+          <small>📅 ${formatarDataBR(os.data)} | ${escapar(os.tipo||"-")}</small>
+          ${parada ? `<small style="color:var(--vermelho)"><b>⚠️ Parada há ${Math.floor(diasDesde(os.iniOcor))} dias</b></small>` : ""}
+          <div class="botoes">
+            <button class="btn-outline" onclick="OS.editarOS(${os.id})">✏️ Editar</button>
+            <button class="btn-success" onclick="OS.pdfDaLista(${os.id})">📄 PDF</button>
+          </div>
         </div>
-      </div>
-    `).join("");
+      `;
+    }).join("");
   }
 
   async function novaOS(){
-    state.osAtual = { id:null, midias:[], maoObra:[], pecas:[] };
+    state.osAtual = { id:null, midias:[], maoObra:[], pecas:[], created_at:null };
+    state.statusAnterior = null;
     ["osNumero","osSolicitante","osSetor","osTag","osEquip","osMarca","osLocal",
      "osCausa","osDescricao","osRealizado","osIniOcor","osIniCons","osFimCons","osFimOcor",
      "osPecaAguardada","osFornecedor","osDataPrevista"].forEach(i => {
@@ -634,13 +914,28 @@ const OS = (() => {
     limparCanvas("canvasResp");
     addMaoObra(); addPeca();
     await popularDatalist();
+    await renderTemplates();
+    renderHistoricoItem(null);
     App.mostrarView("os-form");
+  }
+
+  async function novaOSComEquipamento(id){
+    await novaOS();
+    const eq = await DB.get("equipamentos", id);
+    if(!eq) return;
+    document.getElementById("osTag").value = eq.tag || "";
+    document.getElementById("osEquip").value = eq.nome || "";
+    document.getElementById("osMarca").value = eq.fabricante || eq.marca || "";
+    document.getElementById("osLocal").value = eq.local || "";
+    document.getElementById("osSetor").value = eq.setor || "";
+    toast(`OS aberta para: ${eq.nome}`, "ok");
   }
 
   async function editarOS(id){
     const os = await DB.get("ordens", id);
     if(!os) return;
     state.osAtual = { id:os.id, midias:os.midias||[], maoObra:os.maoObra||[], pecas:os.pecas||[], created_at:os.created_at };
+    state.statusAnterior = os.status || "Aberta";
     const set = (id, v) => { const el = document.getElementById(id); if(el) el.value = v || ""; };
     set("osNumero", os.numero); set("osData", os.data);
     set("osSolicitante", os.solicitante); set("osSetor", os.setor);
@@ -658,7 +953,7 @@ const OS = (() => {
     document.getElementById("maoObraList").innerHTML = "";
     (os.maoObra||[]).forEach(m => addMaoObra(m.nome, m.tempo, m.regime));
     document.getElementById("pecasList").innerHTML = "";
-    (os.pecas||[]).forEach(p => addPeca(p.codigo, p.desc, p.qtd));
+    (os.pecas||[]).forEach(p => addPeca(p.codigo, p.desc, p.qtd, p.valor));
     renderMidias();
     if(os.assinaturaExec) desenharAssinatura("canvasExec", os.assinaturaExec);
     else limparCanvas("canvasExec");
@@ -667,21 +962,35 @@ const OS = (() => {
     mostrarQuadroPecas();
     calcularTempos();
     await popularDatalist();
+    await renderTemplates();
+    renderHistoricoItem(os.id);
     App.mostrarView("os-form");
     toast(`Editando OS ${os.numero}`, "info");
   }
 
   async function renderLista(){
     const lista = await DB.all("ordens");
-    const busca = (document.getElementById("buscaOS")?.value || "").toLowerCase();
+    const busca = (document.getElementById("buscaOS")?.value || document.getElementById("buscaGlobal")?.value || "").toLowerCase();
     let filtradas = lista;
+
+    const filtro = App.state.filtroLista || "todas";
+    if(filtro === "paradas"){
+      filtradas = filtradas.filter(o => !o.fimOcor && o.iniOcor && diasDesde(o.iniOcor) > 7);
+    } else if(filtro !== "todas"){
+      filtradas = filtradas.filter(o => (o.status||"Aberta") === filtro);
+    }
+
     if(busca){
       filtradas = filtradas.filter(o =>
-        [o.numero,o.tag,o.equipamento,o.solicitante,o.setor,o.descricao].some(v => (v||"").toLowerCase().includes(busca))
+        [o.numero,o.tag,o.equipamento,o.solicitante,o.setor,o.descricao,o.realizado,
+         (o.pecas||[]).map(p=>p.desc+p.codigo).join(" "),
+         (o.maoObra||[]).map(m=>m.nome).join(" ")]
+        .some(v => (v||"").toLowerCase().includes(busca))
       );
     }
+
     const cont = document.getElementById("contadorOS");
-    if(cont) cont.textContent = `📌 ${filtradas.length} OS encontrada(s) de ${lista.length}`;
+    if(cont) cont.textContent = `📌 ${filtradas.length} OS de ${lista.length}`;
 
     const div = document.getElementById("listaOS");
     if(!div) return;
@@ -691,12 +1000,16 @@ const OS = (() => {
     }
     div.innerHTML = filtradas.sort((a,b) => (b.created_at||"").localeCompare(a.created_at||"")).map(os => {
       const st = os.status || "Aberta";
+      const parada = !os.fimOcor && os.iniOcor && diasDesde(os.iniOcor) > 7;
       let extra = "";
       if(st === "Aguardando Peças" && os.pecaAguardada){
         extra = `<small style="color:var(--laranja)"><b>🟠 ${escapar(os.pecaAguardada)}</b></small>`;
       }
+      if(parada){
+        extra += `<small style="color:var(--vermelho)"><b>⚠️ Parada há ${Math.floor(diasDesde(os.iniOcor))} dias</b></small>`;
+      }
       return `
-        <div class="os-item ${st === "Aguardando Peças" ? "aguardando-pecas" : ""}">
+        <div class="os-item ${st === "Aguardando Peças" ? "aguardando-pecas" : ""} ${parada ? "parada" : ""}">
           <h3>OS ${escapar(os.numero||"-")} ${badgeStatus(st)}</h3>
           <small>🔧 ${escapar(os.equipamento||"-")} | TAG: ${escapar(os.tag||"-")}</small>
           <small>📅 ${formatarDataBR(os.data)} | ${escapar(os.tipo||"-")}</small>
@@ -729,11 +1042,33 @@ const OS = (() => {
     renderLista();
   }
 
+  async function duplicarUltimaOS(){
+    const tag = document.getElementById("osTag").value.trim();
+    if(!tag) return toast("Preencha a TAG primeiro.", "warning");
+    const lista = await DB.all("ordens");
+    const ultimas = lista.filter(o => o.tag === tag).sort((a,b) => (b.created_at||"").localeCompare(a.created_at||""));
+    if(!ultimas.length) return toast("Nenhuma OS anterior para esta TAG.", "warning");
+    const os = ultimas[0];
+    document.getElementById("osEquip").value = os.equipamento || "";
+    document.getElementById("osMarca").value = os.marca || "";
+    document.getElementById("osSetor").value = os.setor || "";
+    document.getElementById("osLocal").value = os.local || "";
+    document.getElementById("osTipo").value = os.tipo || "";
+    document.getElementById("osCausa").value = os.causa || "";
+    document.getElementById("osDescricao").value = os.descricao || "";
+    document.getElementById("maoObraList").innerHTML = "";
+    (os.maoObra||[]).forEach(m => addMaoObra(m.nome, m.tempo, m.regime));
+    document.getElementById("pecasList").innerHTML = "";
+    (os.pecas||[]).forEach(p => addPeca(p.codigo, p.desc, p.qtd, p.valor));
+    toast(`📋 Campos copiados da OS ${os.numero}`, "ok");
+  }
+
   async function excluirOS(id){
     if(!confirm("Excluir esta OS?")) return;
     await DB.del("ordens", id);
     toast("OS excluída.", "ok");
     renderLista();
+    App.atualizarContadorHoje();
   }
 
   function mostrarQuadroPecas(){
@@ -754,13 +1089,14 @@ const OS = (() => {
     document.getElementById("maoObraList").appendChild(div);
   }
 
-  function addPeca(codigo="", desc="", qtd=""){
+  function addPeca(codigo="", desc="", qtd="", valor=""){
     const div = document.createElement("div");
-    div.className = "linha-dinamica";
+    div.className = "linha-dinamica peca";
     div.innerHTML = `
       <input type="text" placeholder="Código" value="${escapar(codigo)}">
       <input type="text" placeholder="Descrição" value="${escapar(desc)}">
       <input type="text" placeholder="Qtd" value="${escapar(qtd)}">
+      <input type="text" placeholder="R$" value="${escapar(valor)}">
       <button type="button">✕</button>
     `;
     div.querySelector("button").onclick = () => div.remove();
@@ -770,10 +1106,18 @@ const OS = (() => {
   async function adicionarMidias(ev){
     const files = [...ev.target.files];
     if(!files.length) return;
+    const numeroOS = document.getElementById("osNumero").value || "sem-nº";
+    const totalFotos = state.osAtual.midias.length + files.length;
+    // Compressão adaptativa: quanto mais fotos, mais agressiva
+    const q = totalFotos > 8 ? 0.5 : totalFotos > 4 ? 0.65 : 0.75;
+    const maxW = totalFotos > 8 ? 900 : 1280;
+
     for(const f of files){
       if(f.type.startsWith("image/")){
         const b64 = await lerArquivo(f);
-        const comp = await comprimirImagem(b64, 1280, 0.7);
+        let comp = await comprimirImagem(b64, maxW, q);
+        const marca = `OS ${numeroOS} • ${new Date().toLocaleString("pt-BR")}`;
+        comp = await adicionarMarcaDagua(comp, marca);
         state.osAtual.midias.push({ tipo:"foto", data:comp });
       }
     }
@@ -843,6 +1187,22 @@ const OS = (() => {
     img.src = url;
   }
 
+  async function salvarAssinaturaPadrao(canvasId){
+    const assinatura = pegarAssinatura(canvasId);
+    if(!assinatura) return toast("Assine antes de salvar.", "warning");
+    const chave = canvasId === "canvasExec" ? "assinaturaPadraoExec" : "assinaturaPadraoResp";
+    await DB.setConfig(chave, assinatura);
+    toast("💾 Assinatura padrão salva!", "ok");
+  }
+
+  async function usarAssinaturaPadrao(canvasId){
+    const chave = canvasId === "canvasExec" ? "assinaturaPadraoExec" : "assinaturaPadraoResp";
+    const assinatura = await DB.getConfig(chave, "");
+    if(!assinatura) return toast("Nenhuma assinatura padrão salva.", "warning");
+    desenharAssinatura(canvasId, assinatura);
+    toast("📥 Assinatura padrão aplicada!", "ok");
+  }
+
   function calcularTempos(){
     const a = document.getElementById("osIniOcor").value;
     const b = document.getElementById("osIniCons").value;
@@ -857,7 +1217,43 @@ const OS = (() => {
     div.innerHTML = html || "⏱️ Preencha as datas para calcular os tempos.";
   }
 
-  async function salvarOS(){
+  function alternarModoTecnico(){
+    state.modoTecnico = !state.modoTecnico;
+    const btn = document.getElementById("btnModoTecnico");
+    const form = document.getElementById("os-form");
+    if(state.modoTecnico){
+      btn.textContent = "📋 Modo Completo";
+      form.classList.add("modo-tecnico");
+      // Esconde cards que não são essenciais
+      ["osNumero","osSolicitante","osIniCons","osFimOcor"].forEach(id => {
+        const label = document.querySelector(`label + #${id}`) || document.getElementById(id);
+        // Não remove, apenas destaca visualmente que está em modo simplificado
+      });
+      toast("🔧 Modo Técnico ativo — formulário simplificado", "info");
+    } else {
+      btn.textContent = "🔧 Modo Técnico";
+      form.classList.remove("modo-tecnico");
+      toast("📋 Modo completo", "info");
+    }
+  }
+
+  function validarPorStatus(status){
+    const erros = [];
+    if(status === "Aguardando Peças"){
+      if(!document.getElementById("osPecaAguardada").value.trim()) erros.push("Peça aguardada");
+      if(!document.getElementById("osDataPrevista").value) erros.push("Data prevista");
+    }
+    if(status === "Concluída" || status === "Encerrada"){
+      if(!document.getElementById("osRealizado").value.trim()) erros.push("Serviço realizado");
+      if(!document.getElementById("osFimCons").value) erros.push("Fim do conserto");
+    }
+    const ini = document.getElementById("osIniCons").value;
+    const fim = document.getElementById("osFimCons").value;
+    if(ini && fim && new Date(fim) < new Date(ini)) erros.push("Fim do conserto anterior ao início");
+    return erros;
+  }
+
+  async function salvarOS(abrirNovaDepois=false){
     const numero = document.getElementById("osNumero").value.trim();
     const equip = document.getElementById("osEquip").value.trim();
     const tipo = document.getElementById("osTipo").value;
@@ -870,6 +1266,11 @@ const OS = (() => {
     if(!data) erros.push("Data");
     if(erros.length) return toast("⚠️ Preencha: " + erros.join(", "), "warning");
 
+    // Validação por status
+    const status = document.getElementById("osStatus").value;
+    const errosStatus = validarPorStatus(status);
+    if(errosStatus.length) return toast("⚠️ " + errosStatus.join(" | "), "warning");
+
     const todas = await DB.all("ordens");
     const dup = todas.find(o => o.numero === numero && o.id !== state.osAtual.id);
     if(dup) return toast(`⚠️ Já existe OS "${numero}".`, "warning");
@@ -878,7 +1279,7 @@ const OS = (() => {
       numero, data,
       solicitante: document.getElementById("osSolicitante").value,
       setor: document.getElementById("osSetor").value,
-      status: document.getElementById("osStatus").value,
+      status,
       pecaAguardada: document.getElementById("osPecaAguardada").value,
       fornecedor: document.getElementById("osFornecedor").value,
       dataPrevista: document.getElementById("osDataPrevista").value,
@@ -900,19 +1301,51 @@ const OS = (() => {
         nome: l.children[0].value, tempo: l.children[1].value, regime: l.children[2].value
       })),
       pecas: [...document.querySelectorAll("#pecasList .linha-dinamica")].map(l => ({
-        codigo: l.children[0].value, desc: l.children[1].value, qtd: l.children[2].value
+        codigo: l.children[0].value, desc: l.children[1].value,
+        qtd: l.children[2].value, valor: l.children[3].value
       })),
       midias: state.osAtual.midias,
+      usuario: App.state.usuarioAtual || "—",
       created_at: state.osAtual.created_at || new Date().toISOString()
     };
     if(state.osAtual.id) os.id = state.osAtual.id;
     await DB.put("ordens", os);
+
+    // Registra histórico
+    if(!state.osAtual.id){
+      await registrarHistoricoOS(os.id || 0, numero, "🆕 OS criada");
+    } else if(state.statusAnterior !== status){
+      await registrarHistoricoOS(state.osAtual.id, numero, `🔄 Status: ${state.statusAnterior} → ${status}`);
+    } else {
+      await registrarHistoricoOS(state.osAtual.id, numero, "✏️ OS editada");
+    }
+
     toast("✅ OS salva!", "ok");
-    setTimeout(() => App.mostrarView("os-lista"), 600);
+    App.atualizarContadorHoje();
+
+    if(abrirNovaDepois){
+      const dataSalva = data;
+      const solicitanteSalvo = os.solicitante;
+      const setorSalvo = os.setor;
+      setTimeout(async () => {
+        await novaOS();
+        document.getElementById("osData").value = dataSalva;
+        document.getElementById("osSolicitante").value = solicitanteSalvo;
+        document.getElementById("osSetor").value = setorSalvo;
+      }, 400);
+    } else {
+      setTimeout(() => App.mostrarView("os-lista"), 600);
+    }
   }
 
   async function renderDashboard(){
-    const lista = await DB.all("ordens");
+    let lista = await DB.all("ordens");
+    const dias = App.state.periodoDash;
+    if(dias > 0){
+      const limite = Date.now() - dias * 864e5;
+      lista = lista.filter(o => new Date(o.created_at || o.data).getTime() >= limite);
+    }
+
     const total = lista.length;
     const abertas = lista.filter(o => (o.status||"Aberta") === "Aberta").length;
     const exec = lista.filter(o => (o.status||"") === "Execução").length;
@@ -981,12 +1414,13 @@ const OS = (() => {
       const ctxD = document.getElementById("grafDia");
       if(ctxD){
         if(ctxD._c) ctxD._c.destroy();
-        const dias = [];
+        const qtd = dias > 0 ? Math.min(dias, 30) : 30;
+        const datas = [];
         const cont = {};
-        for(let i=29;i>=0;i--){
+        for(let i=qtd-1;i>=0;i--){
           const d = new Date(); d.setDate(d.getDate()-i);
           const k = d.toISOString().split("T")[0];
-          dias.push(k); cont[k] = 0;
+          datas.push(k); cont[k] = 0;
         }
         lista.forEach(o => {
           const ref = (o.created_at || o.data || "").split("T")[0];
@@ -994,8 +1428,8 @@ const OS = (() => {
         });
         ctxD._c = new Chart(ctxD, {
           type:"line",
-          data:{ labels:dias.map(d => { const [y,m,dd]=d.split("-"); return `${dd}/${m}`; }),
-                 datasets:[{ label:"OS", data:dias.map(d => cont[d]), borderColor:"#1eb8c9", backgroundColor:"rgba(30,184,201,0.15)", fill:true, tension:0.3 }]},
+          data:{ labels:datas.map(d => { const [y,m,dd]=d.split("-"); return `${dd}/${m}`; }),
+                 datasets:[{ label:"OS", data:datas.map(d => cont[d]), borderColor:"#1eb8c9", backgroundColor:"rgba(30,184,201,0.15)", fill:true, tension:0.3 }]},
           options:{ responsive:true, plugins:{ legend:{ display:false } },
                     scales:{ y:{ beginAtZero:true, ticks:{ precision:0, color:"#b0c8d9" } } } }
         });
@@ -1010,6 +1444,25 @@ const OS = (() => {
     renderRank("rankSetor", setC, "OS");
     const pecC = {}; lista.forEach(o => (o.pecas||[]).forEach(p => { const k = p.desc || p.codigo; if(k) pecC[k] = (pecC[k]||0) + (parseFloat(p.qtd)||1); }));
     renderRank("rankPecas", pecC, "usos");
+
+    // Custo por peça
+    const custoC = {}; lista.forEach(o => (o.pecas||[]).forEach(p => {
+      const k = p.desc || p.codigo;
+      if(k){
+        const total = (parseFloat(p.qtd)||1) * (parseFloat((p.valor||"").replace(",","."))||0);
+        custoC[k] = (custoC[k]||0) + total;
+      }
+    }));
+    const elC = document.getElementById("rankCustos");
+    if(elC){
+      const arr = Object.entries(custoC).sort((a,b) => b[1]-a[1]).slice(0,5);
+      elC.innerHTML = arr.length ? arr.map(([n,v],i) => `
+        <div class="ranking-item">
+          <span><span class="pos">${i+1}º</span>${escapar(n)}</span>
+          <span class="valor">R$ ${v.toFixed(2)}</span>
+        </div>
+      `).join("") : "<p style='color:var(--cinza);font-size:12px;text-align:center;opacity:.6'>Sem dados.</p>";
+    }
   }
 
   function renderRank(id, obj, unidade, limit=5){
@@ -1047,6 +1500,7 @@ const OS = (() => {
     doc.text("ORDEM DE SERVICO", 105, y, { align:"center" });
     y += 10; doc.setFontSize(10);
     const linha = (l, v) => {
+      if(y > 270){ doc.addPage(); y = 15; }
       doc.setFont(undefined,"bold"); doc.text(l+":",15,y);
       doc.setFont(undefined,"normal"); doc.text(String(v||"-"),60,y);
       y += 6;
@@ -1060,6 +1514,7 @@ const OS = (() => {
     linha("Equipamento", os.equipamento);
     linha("Tipo", os.tipo);
     linha("Causa", os.causa);
+    linha("Aberta por", os.usuario);
     y += 3;
     doc.setFont(undefined,"bold"); doc.text("Descrição:",15,y); y += 5;
     doc.setFont(undefined,"normal");
@@ -1073,7 +1528,8 @@ const OS = (() => {
     y += 3;
     doc.setFont(undefined,"bold"); doc.text("Peças:",15,y); y += 5;
     doc.setFont(undefined,"normal");
-    (os.pecas||[]).forEach(p => { doc.text(`- ${p.codigo||"-"} | ${p.desc||"-"} | Qtd: ${p.qtd||"-"}`, 18, y); y += 5; });
+    (os.pecas||[]).forEach(p => { doc.text(`- ${p.codigo||"-"} | ${p.desc||"-"} | Qtd: ${p.qtd||"-"}${p.valor?` | R$ ${p.valor}`:""}`, 18, y); y += 5; });
+    // Assinaturas
     if(os.assinaturaExec || os.assinaturaResp){
       doc.addPage();
       doc.setFontSize(14); doc.text("Assinaturas",105,15,{align:"center"});
@@ -1081,17 +1537,50 @@ const OS = (() => {
       if(os.assinaturaExec){ doc.text("Executante:",15,30); try { doc.addImage(os.assinaturaExec,"PNG",15,35,80,30); } catch(e){} }
       if(os.assinaturaResp){ doc.text("Responsável:",15,80); try { doc.addImage(os.assinaturaResp,"PNG",15,85,80,30); } catch(e){} }
     }
+    // Fotos
+    if(os.midias && os.midias.length){
+      doc.addPage();
+      doc.setFontSize(14); doc.text("Fotos Anexas",105,15,{align:"center"});
+      let yImg = 30;
+      os.midias.forEach((m, i) => {
+        if(yImg > 200){ doc.addPage(); doc.setFontSize(14); doc.text("Fotos Anexas (cont.)",105,15,{align:"center"}); yImg = 30; }
+        try {
+          doc.addImage(m.data, "JPEG", 15, yImg, 80, 60);
+          doc.setFontSize(9); doc.text(`Foto ${i+1}`, 15, yImg + 63);
+          yImg += 70;
+        } catch(e){}
+      });
+    }
     doc.save(`OS_${os.numero||"sem_numero"}.pdf`);
   }
 
-  function gerarQR(){
+  async function gerarQR(){
+    const numero = document.getElementById("osNumero").value.trim();
     const tag = document.getElementById("osTag").value.trim();
     const equip = document.getElementById("osEquip").value.trim();
     if(!tag && !equip) return toast("Preencha TAG ou Equipamento.", "warning");
+    if(!numero) return toast("Preencha o Nº da OS antes de gerar o QR.", "warning");
+
+    const todas = await DB.all("ordens");
+    const os = todas.find(o => o.numero === numero);
     const box = document.getElementById("qrcodeBox");
     box.innerHTML = "";
+
+    if(!os){
+      toast("Salve a OS primeiro para gerar o QR de acesso.", "warning");
+      return;
+    }
+
+    const baseUrl = location.origin + location.pathname;
+    const url = `${baseUrl}?id=${os.id}`;
+
     if(window.QRCode){
-      new QRCode(box, { text: `OS|${tag}|${equip}`, width:150, height:150 });
+      new QRCode(box, { text: url, width:150, height:150 });
+      const p = document.createElement("p");
+      p.className = "text-sm muted";
+      p.style.marginTop = "8px";
+      p.innerHTML = `📱 Escaneie para abrir esta OS diretamente<br><a href="${url}" style="color:var(--azul-claro);word-break:break-all">${url}</a>`;
+      box.appendChild(p);
     } else {
       box.innerHTML = `<p class="muted text-sm">Biblioteca QR não carregada.</p>`;
     }
@@ -1101,6 +1590,30 @@ const OS = (() => {
     const os = await DB.get("ordens", id);
     if(!os) return;
     const texto = montarTextoOS(os);
+    // Tenta compartilhar PDF + texto
+    try {
+      if(window.jspdf && navigator.canShare){
+        const { jsPDF } = window.jspdf;
+        const doc = new jsPDF("p","mm","a4");
+        doc.setFontSize(14); doc.text(`Ordem de Serviço ${os.numero}`, 105, 15, {align:"center"});
+        doc.setFontSize(10);
+        let y = 30;
+        const addL = (l,v) => { doc.setFont(undefined,"bold"); doc.text(l+":",15,y); doc.setFont(undefined,"normal"); doc.text(String(v||"-"),55,y); y += 5; };
+        addL("Status", os.status); addL("Data", formatarDataBR(os.data)); addL("Equipamento", os.equipamento);
+        addL("Tipo", os.tipo); addL("Solicitante", os.solicitante);
+        y += 5;
+        doc.setFont(undefined,"bold"); doc.text("Descrição:",15,y); y += 5;
+        doc.setFont(undefined,"normal"); doc.text(doc.splitTextToSize(os.descricao||"-",180),15,y);
+        const blob = doc.output("blob");
+        const file = new File([blob], `OS_${os.numero}.pdf`, { type:"application/pdf" });
+        if(navigator.canShare({ files:[file] })){
+          await navigator.share({ files:[file], title:`OS ${os.numero}`, text: texto });
+          return;
+        }
+      }
+    } catch(e){ console.warn(e); }
+
+    // Fallback: só texto
     if(navigator.share){
       try { await navigator.share({ title:`OS ${os.numero}`, text: texto }); return; } catch(e){}
     }
@@ -1134,24 +1647,29 @@ const OS = (() => {
     if(os.realizado) t += `\n✅ Realizado:\n${os.realizado}\n`;
     if(os.pecas?.length){
       t += `\n🔩 Peças:\n`;
-      os.pecas.forEach(p => { if(p.codigo||p.desc) t += `- ${p.codigo||""} ${p.desc||""} (${p.qtd||"-"})\n`; });
+      os.pecas.forEach(p => { if(p.codigo||p.desc) t += `- ${p.codigo||""} ${p.desc||""} (${p.qtd||"-"})${p.valor?` R$ ${p.valor}`:""}\n`; });
     }
     if(os.maoObra?.length){
       t += `\n👷 Mão de obra:\n`;
       os.maoObra.forEach(m => { if(m.nome) t += `- ${m.nome} (${m.tempo||"-"})\n`; });
     }
+    const urlOS = `${location.origin}${location.pathname}?id=${os.id}`;
+    t += `\n🔗 Abrir OS: ${urlOS}\n`;
     t += `\n_${new Date().toLocaleString("pt-BR")}_`;
     return t;
   }
 
   return {
     renderHome, renderLista, renderDashboard,
-    novaOS, editarOS, duplicarOS, excluirOS,
+    novaOS, novaOSComEquipamento, editarOS, duplicarOS, duplicarUltimaOS, excluirOS,
     salvarOS, pdfDaLista, gerarPDFAtual,
     mostrarQuadroPecas, addMaoObra, addPeca,
     adicionarMidias, renderMidias, removerMidia,
     limparCanvas, ativarAssinatura, calcularTempos,
-    gerarQR, compartilharOS, compartilharWhatsApp
+    salvarAssinaturaPadrao, usarAssinaturaPadrao,
+    gerarQR, compartilharOS, compartilharWhatsApp,
+    aplicarTemplate, alternarModoTecnico, registrarHistoricoOS,
+    _state: state
   };
 })();
 
@@ -1169,9 +1687,7 @@ const Exportar = (() => {
     if(d) d.remove();
   }
 
-  function checkPDF(){
-    return !!(window.jspdf && window.jspdf.jsPDF);
-  }
+  function checkPDF(){ return !!(window.jspdf && window.jspdf.jsPDF); }
 
   function cabecalhoPDF(doc, titulo, sub=""){
     const w = doc.internal.pageSize.getWidth();
@@ -1230,21 +1746,26 @@ const Exportar = (() => {
     if(!window.XLSX) return toast("Excel não disponível.", "erro");
     const lista = await DB.all("ordens");
     if(!lista.length) return toast("Nenhuma OS.", "warning");
-    const dados = lista.map(o => ({
-      "Número": o.numero || "",
-      "Data": o.data || "",
-      "Status": o.status || "",
-      "Tipo": o.tipo || "",
-      "TAG": o.tag || "",
-      "Equipamento": o.equipamento || "",
-      "Solicitante": o.solicitante || "",
-      "Setor": o.setor || "",
-      "Descrição": (o.descricao || "").replace(/[\n;]/g, " "),
-      "Realizado": (o.realizado || "").replace(/[\n;]/g, " "),
-      "Início Ocorrência": o.iniOcor || "",
-      "Fim Ocorrência": o.fimOcor || "",
-      "MTTR(h)": diffHoras(o.iniCons, o.fimCons)?.toFixed(2) || ""
-    }));
+    const dados = lista.map(o => {
+      const custoTotal = (o.pecas||[]).reduce((s,p) => s + (parseFloat(p.qtd)||1)*(parseFloat((p.valor||"").replace(",","."))||0), 0);
+      return {
+        "Número": o.numero || "",
+        "Data": o.data || "",
+        "Status": o.status || "",
+        "Tipo": o.tipo || "",
+        "TAG": o.tag || "",
+        "Equipamento": o.equipamento || "",
+        "Solicitante": o.solicitante || "",
+        "Setor": o.setor || "",
+        "Descrição": (o.descricao || "").replace(/[\n;]/g, " "),
+        "Realizado": (o.realizado || "").replace(/[\n;]/g, " "),
+        "Início Ocorrência": o.iniOcor || "",
+        "Fim Ocorrência": o.fimOcor || "",
+        "MTTR(h)": diffHoras(o.iniCons, o.fimCons)?.toFixed(2) || "",
+        "Custo Peças (R$)": custoTotal.toFixed(2),
+        "Usuário": o.usuario || ""
+      };
+    });
     const ws = XLSX.utils.json_to_sheet(dados);
     const wb = XLSX.utils.book_new();
     XLSX.utils.book_append_sheet(wb, ws, "Ordens");
@@ -1253,6 +1774,33 @@ const Exportar = (() => {
   }
 
   return { pdfOS, excelOS };
+})();
+
+/* ---------- BACKUP ---------- */
+const Backup = (() => {
+  async function autoBackup(){
+    const ultima = await DB.getConfig("ultimoBackup", "");
+    const hoje = hojeISO();
+    if(ultima === hoje) return;
+
+    const dados = {
+      versao: "2.0-auto", gerado: new Date().toISOString(),
+      equipamentos: await DB.all("equipamentos"),
+      ordens: await DB.all("ordens"),
+      assistencias: await DB.all("assistencias"),
+      setores: await DB.all("setores"),
+      historico: await DB.all("historico"),
+      historicoOS: await DB.all("historicoOS")
+    };
+    await DB.put("backups", { data: new Date().toISOString(), conteudo: JSON.stringify(dados) });
+    // Mantém apenas 7 últimos
+    const todos = await DB.all("backups");
+    const ordenados = todos.sort((a,b) => (b.data||"").localeCompare(a.data||""));
+    for(let i = 7; i < ordenados.length; i++) await DB.del("backups", ordenados[i].id);
+    await DB.setConfig("ultimoBackup", hoje);
+    console.log("💾 Backup automático diário feito.");
+  }
+  return { autoBackup };
 })();
 
 /* ---------- PWA / SERVICE WORKER ---------- */
@@ -1274,11 +1822,7 @@ window.addEventListener("beforeinstallprompt", e => {
   b.innerHTML = "📲 Instalar App";
   document.body.appendChild(b);
   b.onclick = async () => {
-    if(deferredPrompt){
-      deferredPrompt.prompt();
-      deferredPrompt = null;
-      b.remove();
-    }
+    if(deferredPrompt){ deferredPrompt.prompt(); deferredPrompt = null; b.remove(); }
   };
 });
 
@@ -1300,6 +1844,21 @@ function mostrarBannerIOS(){
 document.addEventListener("DOMContentLoaded", async () => {
   try {
     await DB.open();
+    // Auto-preenchimento por TAG
+    document.getElementById("osTag").addEventListener("change", async e => {
+      const tag = e.target.value.trim();
+      if(!tag) return;
+      const lista = await DB.all("equipamentos");
+      const eq = lista.find(x => (x.tag||"").toLowerCase() === tag.toLowerCase());
+      if(eq){
+        document.getElementById("osEquip").value = eq.nome || "";
+        document.getElementById("osMarca").value = eq.fabricante || "";
+        document.getElementById("osSetor").value = eq.setor || "";
+        document.getElementById("osLocal").value = eq.local || "";
+        toast(`✅ Dados preenchidos de: ${eq.nome}`, "ok");
+      }
+    });
+
     OS.ativarAssinatura("canvasExec");
     OS.ativarAssinatura("canvasResp");
     await App.init();
