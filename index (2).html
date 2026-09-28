@@ -6,14 +6,13 @@
 <meta name="theme-color" content="#0a1a2e">
 <meta name="apple-mobile-web-app-capable" content="yes">
 <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
-<meta name="apple-mobile-web-app-title" content="Manutenção">
-<meta name="description" content="PCM de Ferramentas + Ordens de Serviço">
-<title>Manutenção Unificada — PCM + OS</title>
+<meta name="apple-mobile-web-app-title" content="Ordens de Serviço">
+<meta name="description" content="Sistema de Ordens de Serviço — Manutenção">
+<title>Ordens de Serviço</title>
 
 <script defer src="https://cdn.jsdelivr.net/npm/jspdf@2.5.1/dist/jspdf.umd.min.js"></script>
 <script defer src="https://cdn.jsdelivr.net/npm/jspdf-autotable@3.8.2/dist/jspdf.plugin.autotable.min.js"></script>
 <script defer src="https://cdn.jsdelivr.net/npm/chart.js@4.4.0/dist/chart.umd.min.js"></script>
-<script defer src="https://cdn.jsdelivr.net/npm/html5-qrcode@2.3.8/html5-qrcode.min.js"></script>
 <script defer src="https://cdn.jsdelivr.net/npm/xlsx@0.18.5/dist/xlsx.full.min.js"></script>
 <script defer src="https://cdnjs.cloudflare.com/ajax/libs/qrcodejs/1.0.0/qrcode.min.js"></script>
 
@@ -74,39 +73,20 @@ header{
 #statusRede{font-size:11px;font-weight:600;padding:4px 12px;border-radius:20px;background:rgba(0,0,0,0.2);border:1px solid var(--borda);white-space:nowrap}
 #usuarioAtual{font-size:12px;padding:4px 12px;border-radius:20px;background:rgba(30,184,201,0.15);border:1px solid rgba(30,184,201,0.3);color:var(--azul-claro);cursor:pointer}
 
-.mod-selector{display:flex;gap:6px;margin-top:10px;flex-wrap:wrap}
-.mod-btn{
-  border:1px solid var(--borda);background:var(--card);color:var(--cinza);
-  padding:9px 22px;border-radius:30px;font-weight:700;font-size:13px;
-  cursor:pointer;transition:var(--transition);
-}
-.mod-btn:hover{transform:translateY(-2px)}
-.mod-btn.ativo{
-  background:linear-gradient(135deg,var(--azul),var(--roxo),var(--rosa));
-  color:#fff;box-shadow:0 4px 20px rgba(30,184,201,0.3);border-color:transparent;
-}
-
 nav{display:flex;gap:5px;overflow-x:auto;padding-top:10px;scrollbar-width:thin}
 nav button{white-space:nowrap;border:none;background:transparent;color:var(--cinza);border-radius:30px;padding:8px 18px;font-weight:600;font-size:13px;cursor:pointer;transition:var(--transition);position:relative}
 nav button:hover{color:var(--texto);background:var(--card);transform:translateY(-3px)}
 nav button.ativo{color:#fff;background:linear-gradient(135deg,var(--azul),var(--roxo),var(--rosa));box-shadow:0 4px 35px rgba(30,184,201,0.3)}
-nav button.badge::after{content:attr(data-count);position:absolute;top:-4px;right:-4px;background:var(--laranja);color:#fff;font-size:10px;font-weight:700;width:20px;height:20px;border-radius:50%;display:flex;align-items:center;justify-content:center}
 
 .container{max-width:1260px;margin:auto;padding:18px 20px}
 .view{display:none}
 .view.active{display:block}
 .grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(220px,1fr));gap:20px}
 .card{background:var(--card);border:1px solid var(--borda);border-radius:var(--radius);padding:22px 24px;box-shadow:var(--sombra);backdrop-filter:blur(16px);transition:var(--transition);position:relative;overflow:hidden}
-.card h2,.card h3{margin-top:0;font-weight:600}
 .card h3{font-size:13px;color:var(--cinza);letter-spacing:.5px;text-transform:uppercase;font-weight:500;opacity:.7}
 
 .section-header{display:flex;justify-content:space-between;align-items:center;flex-wrap:wrap;gap:10px;margin:22px 0 16px}
 .section-header h2{font-weight:700;font-size:19px;background:linear-gradient(135deg,var(--texto) 30%,var(--azul-claro),var(--roxo));-webkit-background-clip:text;-webkit-text-fill-color:transparent;background-clip:text}
-
-.estatistica{text-align:center;padding:4px 2px}
-.estatistica .icon{font-size:34px;display:block;margin-bottom:2px}
-.estatistica .label{font-size:11px;color:var(--cinza);opacity:.7;text-transform:uppercase;letter-spacing:.8px}
-.estatistica strong{display:block;font-size:40px;font-weight:800;margin-top:2px;background:linear-gradient(135deg,var(--texto) 20%,var(--azul-claro),var(--roxo),var(--rosa));background-size:300% 300%;-webkit-background-clip:text;-webkit-text-fill-color:transparent;background-clip:text;line-height:1.1}
 
 button{border:none;background:var(--card);color:var(--texto);border-radius:30px;padding:9px 22px;font-weight:600;font-size:13px;cursor:pointer;transition:var(--transition);display:inline-flex;align-items:center;gap:6px;border:1px solid var(--borda);font-family:inherit}
 button:hover{transform:translateY(-3px);box-shadow:0 10px 40px rgba(0,0,0,0.3);border-color:rgba(30,184,201,0.4)}
@@ -117,28 +97,6 @@ button:disabled{opacity:0.5;cursor:not-allowed;transform:none}
 .btn-outline{background:transparent;border-color:var(--borda)}
 .btn-pdf{background:linear-gradient(135deg,#d32f2f,#ff5722);border-color:transparent;color:#fff}
 .btn-excel{background:linear-gradient(135deg,#1a8a5a,#4caf50);border-color:transparent;color:#fff}
-.btn-manut{background:linear-gradient(135deg,#ff6b82,#ffd14a);border-color:transparent;color:#fff}
-.btn-fora{background:linear-gradient(135deg,#7c5cbf,#ff6b9d);border-color:transparent;color:#fff}
-.btn-fora-pdf{background:linear-gradient(135deg,#7c5cbf,#1eb8c9);border-color:transparent;color:#fff}
-.btn-filtro{padding:6px 14px;font-size:12px;border-radius:20px;background:var(--card);border:1px solid var(--borda)}
-.btn-filtro.ativo{background:linear-gradient(135deg,var(--azul),var(--roxo));border-color:transparent;color:#fff}
-
-.item{display:grid;grid-template-columns:90px 1fr auto;gap:14px;align-items:center;padding:8px 10px}
-.imagem-mini{width:90px;height:72px;object-fit:cover;border-radius:12px;background:rgba(0,0,0,0.2);border:1px solid var(--borda)}
-.imagem-placeholder{width:90px;height:72px;border-radius:12px;background:rgba(255,255,255,0.02);border:1px dashed var(--borda);display:grid;place-items:center;font-size:32px;color:var(--cinza);opacity:.5}
-.item-info .nome{font-weight:600;font-size:15px}
-.item-info .detalhes{color:var(--cinza);font-size:12px;line-height:1.5;margin:2px 0 4px;opacity:.8}
-.item-info .tags{display:flex;flex-wrap:wrap;gap:4px;margin-top:4px}
-.item-actions{display:flex;gap:4px;flex-wrap:wrap;justify-content:flex-end}
-.item-actions button{padding:5px 10px;font-size:13px;border-radius:30px;min-width:34px;justify-content:center}
-
-.badge{display:inline-block;padding:3px 12px;margin:2px 2px 2px 0;border-radius:999px;font-size:11px;font-weight:500;border:1px solid transparent}
-.badge-success{background:rgba(45,219,122,0.15);color:var(--verde)}
-.badge-warning{background:rgba(255,209,74,0.15);color:var(--amarelo-texto)}
-.badge-danger{background:rgba(255,107,130,0.15);color:var(--vermelho)}
-.badge-info{background:rgba(30,184,201,0.15);color:var(--azul)}
-.badge-fora{background:rgba(124,92,191,0.2);color:var(--roxo);font-weight:600}
-.badge-qtd{background:rgba(124,92,191,0.15);color:var(--roxo);font-weight:600}
 
 dialog{width:min(800px,94vw);padding:0;border:1px solid var(--borda);border-radius:24px;background:var(--bg-header);backdrop-filter:blur(40px);color:var(--texto);box-shadow:0 50px 120px rgba(0,0,0,0.9);animation:modalBounce .5s cubic-bezier(0.34,1.56,0.64,1)}
 @keyframes modalBounce{from{opacity:0;transform:scale(.8) translateY(80px)}to{opacity:1;transform:scale(1) translateY(0)}}
@@ -149,8 +107,6 @@ dialog::backdrop{background:rgba(0,0,0,0.8);backdrop-filter:blur(12px)}
 .modal input,.modal select,.modal textarea{width:100%;padding:10px 14px;border-radius:12px;border:1px solid var(--borda);background:rgba(0,0,0,0.15);color:var(--texto);font-size:14px;font-family:inherit;outline:none}
 .modal input:focus,.modal select:focus,.modal textarea:focus{border-color:var(--azul);box-shadow:0 0 0 4px rgba(30,184,201,0.08)}
 .modal .acoes{display:flex;gap:10px;flex-wrap:wrap;margin-top:12px}
-.modal .preview{display:flex;flex-wrap:wrap;gap:10px;margin-top:10px}
-.modal .preview img{max-width:150px;max-height:150px;border-radius:12px;border:1px solid var(--borda);object-fit:cover}
 
 .hidden{display:none !important}
 .muted{color:var(--cinza)}
@@ -159,9 +115,6 @@ dialog::backdrop{background:rgba(0,0,0,0.8);backdrop-filter:blur(12px)}
 .flex-between{display:flex;justify-content:space-between;align-items:center;flex-wrap:wrap;gap:8px}
 .search-bar input{width:100%;padding:11px 16px;border-radius:12px;background:rgba(0,0,0,0.15);color:var(--texto);outline:none;font-size:14px;border:1px solid var(--borda);margin:4px 0 10px;font-family:inherit}
 .search-bar input:focus{border-color:var(--azul);box-shadow:0 0 0 4px rgba(30,184,201,0.08)}
-.filtros-rapidos{display:flex;gap:6px;flex-wrap:wrap;margin:8px 0 12px}
-.empty-state{text-align:center;padding:50px 20px;color:var(--cinza)}
-.empty-state .emoji{font-size:52px;display:block;margin-bottom:14px;opacity:.4}
 footer{text-align:center;padding:30px 20px;font-size:12px;color:var(--cinza);opacity:.4;border-top:1px solid var(--borda);margin-top:28px}
 
 .resumo-grid{display:grid;grid-template-columns:repeat(2,1fr);gap:10px;margin-bottom:20px}
@@ -235,7 +188,6 @@ canvas.assinatura.ativa{border-color:var(--azul);background:rgba(255,255,255,0.0
 .toast.erro,.toast.error{background:#c00}
 .toast.warning{background:#f5a623}
 
-#reader{width:100%;max-width:400px;margin:auto;border-radius:12px;overflow:hidden}
 #qrcodeBox{margin-top:12px;text-align:center}
 
 .pdf-loading{position:fixed;inset:0;background:rgba(0,0,0,0.85);backdrop-filter:blur(6px);display:flex;align-items:center;justify-content:center;z-index:99999;flex-direction:column;gap:16px;color:#fff}
@@ -248,14 +200,9 @@ canvas.assinatura.ativa{border-color:var(--azul);background:rgba(255,255,255,0.0
 #btnInstalarApp{position:fixed;bottom:20px;left:50%;transform:translateX(-50%);z-index:9999;background:linear-gradient(135deg,var(--azul),var(--roxo));color:#fff;padding:12px 28px;border-radius:30px;font-weight:700;font-size:15px;box-shadow:0 8px 40px rgba(30,184,201,0.4)}
 
 @media (max-width:768px){
-  .item{grid-template-columns:1fr;gap:8px;text-align:center}
-  .item .imagem-mini,.item .imagem-placeholder{width:100%;height:130px;margin:0 auto;max-width:200px}
-  .item-actions{justify-content:center}
   .modal{padding:16px 18px}
   .logo-icon{width:38px;height:38px;font-size:20px}
   .logo-text h1{font-size:17px}
-  .estatistica strong{font-size:30px}
-  .grid{grid-template-columns:repeat(auto-fit,minmax(155px,1fr));gap:12px}
   nav button{font-size:11.5px;padding:6px 12px}
   .header-actions button{padding:5px 10px;font-size:11px}
 }
@@ -272,10 +219,10 @@ canvas.assinatura.ativa{border-color:var(--azul);background:rgba(255,255,255,0.0
 <header>
   <div class="header-top">
     <div class="logo-area">
-      <div class="logo-icon">🛠</div>
+      <div class="logo-icon">📋</div>
       <div class="logo-text">
-        <h1>Manutenção Unificada</h1>
-        <div class="subtitulo">PCM de Ferramentas + Ordens de Serviço</div>
+        <h1>Ordens de Serviço</h1>
+        <div class="subtitulo">Manutenção • Indicadores • Histórico</div>
       </div>
     </div>
     <div class="header-actions">
@@ -285,127 +232,16 @@ canvas.assinatura.ativa{border-color:var(--azul);background:rgba(255,255,255,0.0
     </div>
   </div>
 
-  <div class="mod-selector">
-    <button class="mod-btn ativo" data-modulo="pcm" onclick="App.alternarModulo('pcm')">🛠 PCM</button>
-    <button class="mod-btn" data-modulo="os" onclick="App.alternarModulo('os')">📋 Ordens</button>
-  </div>
-
   <nav id="navPrincipal">
-    <button class="ativo nav-pcm" data-tela="painel">📊 Painel</button>
-    <button class="nav-pcm" data-tela="ferramentas">🔧 Ferramentas</button>
-    <button class="nav-pcm" data-tela="ativos">🏭 Ativos</button>
-    <button class="nav-pcm" data-tela="manutencao">🧰 Manutenção</button>
-    <button class="nav-pcm" data-tela="assistencia">☠️ Assistência</button>
-    <button class="nav-pcm" data-tela="setores">📍 Setores</button>
-    <button class="nav-pcm" data-tela="historico">📋 Histórico</button>
-    <button class="nav-pcm" data-tela="backup">💾 Backup</button>
-    <button class="hidden nav-os" data-tela="os-home">🏠 Início OS</button>
-    <button class="hidden nav-os" data-tela="os-lista">📋 OS Salvas</button>
-    <button class="hidden nav-os" data-tela="os-dash">📊 Produção</button>
+    <button class="ativo" data-tela="os-home">🏠 Início</button>
+    <button data-tela="os-lista">📋 OS Salvas</button>
+    <button data-tela="os-dash">📊 Produção</button>
   </nav>
 </header>
 
 <main class="container">
 
-<!-- ===== PCM ===== -->
-<section id="painel" class="view active" data-modulo="pcm">
-  <div id="estatisticas" class="grid"></div>
-  <div class="section-header">
-    <h2>📍 Setores</h2>
-    <button class="btn-primary" onclick="PCM.abrirFerramenta()">＋ Nova ferramenta</button>
-  </div>
-  <div id="cartoesSetores" class="grid"></div>
-</section>
-
-<section id="ferramentas" class="view" data-modulo="pcm">
-  <div class="flex-between">
-    <h2 class="section-header" style="margin:0">🔧 Ferramentas</h2>
-    <div style="display:flex;gap:6px;flex-wrap:wrap">
-      <button class="btn-outline" onclick="Scanner.abrir('ferramenta')">📷 Escanear</button>
-      <button class="btn-excel" onclick="Exportar.excelFerramentas()">📊 Excel</button>
-      <button class="btn-pdf" onclick="Exportar.pdfFerramentas()">📄 PDF</button>
-      <button class="btn-primary" onclick="PCM.abrirFerramenta()">＋ Cadastrar</button>
-    </div>
-  </div>
-  <div class="search-bar"><input id="pesquisaFerramenta" placeholder="🔎 Pesquisar..." oninput="PCM.renderFerramentas()"></div>
-  <div id="listaFerramentas" class="grid"></div>
-</section>
-
-<section id="ativos" class="view" data-modulo="pcm">
-  <div class="flex-between">
-    <h2 class="section-header" style="margin:0">🏭 Ativos</h2>
-    <div style="display:flex;gap:6px;flex-wrap:wrap">
-      <button class="btn-excel" onclick="Exportar.excelAtivos()">📊 Excel</button>
-      <button class="btn-pdf" onclick="Exportar.pdfAtivos()">📄 PDF</button>
-      <button class="btn-primary" onclick="PCM.abrirAtivo()">＋ Novo ativo</button>
-    </div>
-  </div>
-  <div class="search-bar"><input id="pesquisaAtivo" placeholder="🔎 Pesquisar ativo..." oninput="PCM.renderAtivos()"></div>
-  <div id="listaAtivos" class="grid"></div>
-</section>
-
-<section id="manutencao" class="view" data-modulo="pcm">
-  <div class="flex-between">
-    <h2 class="section-header" style="margin:0">🧰 Manutenção Interna</h2>
-    <button class="btn-manut" onclick="PCM.abrirAssistencia('interna')">＋ Nova manutenção</button>
-  </div>
-  <div id="listaManutencoes" class="grid"></div>
-</section>
-
-<section id="assistencia" class="view" data-modulo="pcm">
-  <div class="flex-between">
-    <h2 class="section-header" style="margin:0">☠️ Assistência Técnica</h2>
-    <div style="display:flex;gap:6px;flex-wrap:wrap">
-      <button class="btn-fora-pdf" onclick="Exportar.pdfAssistencias()">📄 PDF</button>
-      <button class="btn-fora" onclick="PCM.abrirAssistencia('externa')">＋ Nova assistência</button>
-    </div>
-  </div>
-  <div class="search-bar"><input id="pesquisaAssistencia" placeholder="🔎 Pesquisar..." oninput="PCM.renderAssistencias('externa')"></div>
-  <div id="listaAssistencias" class="grid"></div>
-</section>
-
-<section id="setores" class="view" data-modulo="pcm">
-  <div class="flex-between">
-    <h2 class="section-header" style="margin:0">📍 Setores</h2>
-    <button class="btn-primary" onclick="PCM.abrirSetorNovo()">＋ Novo setor</button>
-  </div>
-  <div id="mapaSetores" class="grid"></div>
-</section>
-
-<section id="historico" class="view" data-modulo="pcm">
-  <div class="flex-between">
-    <h2 class="section-header" style="margin:0">📋 Histórico</h2>
-    <button class="btn-danger" onclick="PCM.limparHistorico()">🗑️ Limpar</button>
-  </div>
-  <div id="listaHistorico" class="card mt-10" style="padding:8px 16px;"></div>
-</section>
-
-<section id="backup" class="view" data-modulo="pcm">
-  <h2 class="section-header">💾 Backup e Restauração</h2>
-  <div class="card">
-    <h3>Exportar</h3>
-    <p class="muted text-sm" style="opacity:.8;margin:8px 0">Salva TODOS os dados (equipamentos, ordens, assistências, setores, histórico) em um arquivo JSON.</p>
-    <button class="btn-success" onclick="Backup.exportar()">📤 Exportar Backup Completo</button>
-  </div>
-  <div class="card mt-16">
-    <h3>Restaurar</h3>
-    <p class="muted text-sm" style="opacity:.8;margin:8px 0">⚠️ Substitui TODOS os dados atuais.</p>
-    <input type="file" id="inputBackup" accept=".json" hidden onchange="Backup.importar(this.files[0])">
-    <button class="btn-primary" onclick="document.getElementById('inputBackup').click()">📥 Importar Backup</button>
-  </div>
-  <div class="card mt-16" style="border-left:3px solid var(--azul)">
-    <h3>Estatísticas do Banco</h3>
-    <div id="dbStats" class="mt-10"></div>
-  </div>
-  <div class="card mt-16" style="border-left:3px solid var(--vermelho)">
-    <h3>⚠️ Zona de Perigo</h3>
-    <p class="muted text-sm" style="opacity:.8;margin:8px 0">Apaga absolutamente tudo. Não tem volta.</p>
-    <button class="btn-danger" onclick="Backup.apagarTudo()">🗑️ Apagar Tudo</button>
-  </div>
-</section>
-
-<!-- ===== OS ===== -->
-<section id="os-home" class="view" data-modulo="os">
+<section id="os-home" class="view active">
   <div id="os-resumoGrid" class="resumo-grid"></div>
   <button class="btn-nova-os" onclick="OS.novaOS()">
     <span class="plus">+</span> Abrir Nova Ordem de Serviço
@@ -414,7 +250,7 @@ canvas.assinatura.ativa{border-color:var(--azul);background:rgba(255,255,255,0.0
   <div id="os-homeListaOS" class="lista-os"></div>
 </section>
 
-<section id="os-lista" class="view" data-modulo="os">
+<section id="os-lista" class="view">
   <div class="flex-between">
     <h2 class="section-header" style="margin:0">📋 OS Salvas</h2>
     <div style="display:flex;gap:6px;flex-wrap:wrap">
@@ -428,7 +264,7 @@ canvas.assinatura.ativa{border-color:var(--azul);background:rgba(255,255,255,0.0
   <div id="listaOS" class="lista-os"></div>
 </section>
 
-<section id="os-dash" class="view" data-modulo="os">
+<section id="os-dash" class="view">
   <h3 class="section-header">📊 Indicadores de Produção</h3>
   <div id="kpiGrid" class="kpi-grid"></div>
   <h3 class="section-header">📈 Análise</h3>
@@ -442,7 +278,7 @@ canvas.assinatura.ativa{border-color:var(--azul);background:rgba(255,255,255,0.0
   <div class="ranking-list"><h3>🔩 Top 5 Peças</h3><div id="rankPecas"></div></div>
 </section>
 
-<section id="os-form" class="view" data-modulo="os">
+<section id="os-form" class="view">
   <button class="btn-outline" onclick="App.mostrarView('os-home')">← Voltar</button>
 
   <div class="card mt-16">
@@ -540,120 +376,10 @@ canvas.assinatura.ativa{border-color:var(--azul);background:rgba(255,255,255,0.0
 
 </main>
 
-<footer>✦ Manutenção Unificada — PCM + OS ✦</footer>
+<footer>✦ Ordens de Serviço ✦</footer>
 </div>
 
 <!-- ========== MODAIS ========== -->
-<dialog id="dialogFerramenta">
-  <div class="modal">
-    <h2 id="tituloFerramenta">Cadastrar ferramenta</h2>
-    <input type="hidden" id="idFerramenta">
-    <label>Nome *</label><input id="nomeFerramenta">
-    <label>Código</label><input id="codigoFerramenta" placeholder="Deixe vazio para gerar">
-    <label>Quantidade</label><input id="quantidadeFerramenta" type="number" min="1" value="1">
-    <label>Setor</label><select id="setorFerramenta"></select>
-    <label>Categoria</label>
-    <select id="categoriaFerramenta">
-      <option value="roquite">⚙️ Roquete</option>
-      <option value="lixadeira">🔨 Lixadeira</option>
-      <option value="parafusadeira">🔩 Parafusadeira</option>
-      <option value="politriz">✨ Politriz</option>
-      <option value="retifica">🛠️ Retífica</option>
-      <option value="pistola_pintura">🎨 Pistola de Pintura</option>
-      <option value="outras">📦 Outras</option>
-    </select>
-    <label>Status</label>
-    <select id="statusFerramenta">
-      <option value="disponivel">Disponível</option>
-      <option value="emprestada">Emprestada</option>
-      <option value="manutencao">Manutenção</option>
-      <option value="assistencia">Assistência</option>
-    </select>
-    <label>Observações</label><textarea id="obsFerramenta" rows="3"></textarea>
-    <div class="acoes">
-      <button class="btn-outline" onclick="document.getElementById('dialogFerramenta').close()">Cancelar</button>
-      <button class="btn-primary" onclick="PCM.salvarFerramenta()">💾 Salvar</button>
-    </div>
-  </div>
-</dialog>
-
-<dialog id="dialogAtivo">
-  <div class="modal">
-    <h2 id="tituloAtivo">Cadastrar ativo</h2>
-    <input type="hidden" id="idAtivo">
-    <label>Nome *</label><input id="nomeAtivo">
-    <label>TAG</label><input id="codigoAtivo">
-    <label>Tipo</label>
-    <select id="tipoAtivo">
-      <option>Máquina</option><option>Equipamento</option>
-      <option>Veículo</option><option>Instalação</option>
-    </select>
-    <label>Fabricante</label><input id="fabricanteAtivo">
-    <label>Setor</label><select id="setorAtivo"></select>
-    <label>Status</label>
-    <select id="statusAtivo">
-      <option value="operando">Operando</option>
-      <option value="parado">Parado</option>
-      <option value="manutencao">Manutenção</option>
-      <option value="assistencia">Assistência</option>
-    </select>
-    <label>Observações</label><textarea id="obsAtivo" rows="3"></textarea>
-    <div class="acoes">
-      <button class="btn-outline" onclick="document.getElementById('dialogAtivo').close()">Cancelar</button>
-      <button class="btn-primary" onclick="PCM.salvarAtivo()">💾 Salvar</button>
-    </div>
-  </div>
-</dialog>
-
-<dialog id="dialogAssistencia">
-  <div class="modal">
-    <h2 id="tituloAssistencia">Assistência</h2>
-    <input type="hidden" id="idAssistencia">
-    <input type="hidden" id="tipoAssistenciaForm">
-    <label>Nome *</label><input id="nomeAssistencia">
-    <label>Código</label><input id="codigoAssistencia">
-    <label>Empresa</label><input id="empresaAssistencia">
-    <label>Responsável</label><input id="responsavelAssistencia">
-    <label>Setor</label><select id="setorAssistencia"></select>
-    <label>Tipo de serviço</label>
-    <select id="tipoServicoAssistencia">
-      <option>Reparo mecânico</option><option>Reparo elétrico</option>
-      <option>Retífica</option><option>Calibração</option>
-      <option>Preventiva</option><option>Outro</option>
-    </select>
-    <label>Data saída</label><input type="date" id="dataSaidaAssistencia">
-    <label>Data retorno</label><input type="date" id="dataRetornoAssistencia">
-    <label>Status</label>
-    <select id="statusAssistencia">
-      <option>Enviado</option><option>Em manutenção</option>
-      <option>Aguardando peça</option><option>Pronto para retorno</option>
-      <option>Retornado</option><option>Sem conserto</option>
-    </select>
-    <label>Nº OS</label><input id="osAssistencia">
-    <label>Valor (R$)</label><input id="valorAssistencia">
-    <label>Descrição</label><textarea id="descricaoAssistencia" rows="3"></textarea>
-    <label>Solução</label><textarea id="solucaoAssistencia" rows="3"></textarea>
-    <div class="acoes">
-      <button class="btn-outline" onclick="document.getElementById('dialogAssistencia').close()">Cancelar</button>
-      <button class="btn-primary" onclick="PCM.salvarAssistencia()">💾 Salvar</button>
-    </div>
-  </div>
-</dialog>
-
-<dialog id="dialogSetor">
-  <div class="modal" style="max-width:600px">
-    <h2 id="tituloSetor">Setor</h2>
-    <input type="hidden" id="idSetorOriginal">
-    <label>Nome do setor *</label><input id="nomeSetor">
-    <label>Anotações</label><textarea id="obsSetor" rows="3"></textarea>
-    <div class="acoes" style="margin-top:18px">
-      <button class="btn-outline" onclick="document.getElementById('dialogSetor').close()">Fechar</button>
-      <button class="btn-danger" onclick="PCM.excluirSetor()">🗑️ Excluir</button>
-      <button class="btn-primary" onclick="PCM.salvarSetor()">💾 Salvar</button>
-    </div>
-  </div>
-</dialog>
-
 <dialog id="dialogUsuario">
   <div class="modal" style="max-width:420px">
     <h2>👤 Quem está usando?</h2>
@@ -665,20 +391,9 @@ canvas.assinatura.ativa{border-color:var(--azul);background:rgba(255,255,255,0.0
   </div>
 </dialog>
 
-<dialog id="dialogScanner">
-  <div class="modal" style="max-width:500px">
-    <h2 id="tituloScanner">📷 Escanear código</h2>
-    <p class="muted text-sm" style="margin-bottom:14px;opacity:.8">Aponte a câmera para o código da ferramenta/ativo.</p>
-    <div id="reader"></div>
-    <div class="acoes" style="margin-top:18px">
-      <button class="btn-outline" onclick="Scanner.fechar()">Fechar</button>
-    </div>
-  </div>
-</dialog>
-
 <script>
 /* ============================================================
-   MANUTENÇÃO UNIFICADA v2 — DB + PCM + OS + EXTRAS
+   ORDENS DE SERVIÇO — App independente
    ============================================================ */
 
 /* ---------- DB ---------- */
@@ -722,114 +437,17 @@ const DB = (() => {
   const get = (s, k) => new Promise((res, rej) => { const r = tx(s).get(k); r.onsuccess = () => res(r.result); r.onerror = () => rej(r.error); });
   const all = (s) => new Promise((res, rej) => { const r = tx(s).getAll(); r.onsuccess = () => res(r.result||[]); r.onerror = () => rej(r.error); });
   const del = (s, k) => new Promise((res, rej) => { const r = tx(s,"readwrite").delete(k); r.onsuccess = () => res(); r.onerror = () => rej(r.error); });
-  const clear = (s) => new Promise((res, rej) => { const r = tx(s,"readwrite").clear(); r.onsuccess = () => res(); r.onerror = () => rej(r.error); });
 
   async function getConfig(k, def=null){ const r = await get("config", k); return r ? r.valor : def; }
   function setConfig(k, v){ return put("config", { chave:k, valor:v }); }
 
-  // Migração
-  async function migrarSeNecessario(){
-    if(await getConfig("migracao_v1", false)) return false;
-    const ler = (k, d) => { try { return JSON.parse(localStorage.getItem(k) || JSON.stringify(d)); } catch(e){ return d; } };
-    const ferr = ler("controleFerramentas", []);
-    const ativ = ler("controleAtivos", []);
-    const seto = ler("controleSetores", []);
-    const manu = ler("controleManutencoes", []);
-    const fora = ler("controleForaDaEmpresa", []);
-    const hist = ler("controleHistorico", []);
-
-    if(!ferr.length && !ativ.length && !fora.length){
-      // Inicializa setores padrão
-      const padrao = ["Acabamento 01","Acabamento 02","Laminação 01","Marcenaria","CNC","Manutenção","Almoxarifado"];
-      for(const n of padrao) await put("setores", { nome:n, observacoes:"" });
-      await setConfig("migracao_v1", true);
-      return false;
-    }
-
-    console.log("🔄 Migrando...");
-    for(const s of seto) await put("setores", { nome:s.nome, observacoes:s.observacoes||"" });
-    if(!seto.length){
-      const padrao = ["Acabamento 01","Acabamento 02","Laminação 01","Marcenaria","CNC","Manutenção"];
-      for(const n of padrao) await put("setores", { nome:n, observacoes:"" });
-    }
-
-    const mapa = {};
-    for(const f of ferr){
-      const id = await put("equipamentos", {
-        tag: f.codigo || "",
-        nome: f.nome || "",
-        categoria: "ferramenta",
-        subcategoria: f.categoria || "outras",
-        setor: f.setor || "",
-        quantidade: f.quantidade || 1,
-        status: (f.status||"disponivel").toLowerCase().normalize("NFD").replace(/[\u0300-\u036f]/g,""),
-        observacoes: f.observacoes || "",
-        fotos: f.fotos || [],
-        dataCriacao: new Date().toISOString()
-      });
-      mapa[f.id] = id;
-    }
-    for(const a of ativ){
-      const id = await put("equipamentos", {
-        tag: a.codigo || "",
-        nome: a.nome || "",
-        categoria: "ativo",
-        setor: a.setor || "",
-        tipo: a.tipo || "Máquina",
-        status: (a.status||"operando").toLowerCase(),
-        fabricante: a.fabricante || "",
-        observacoes: a.observacoes || "",
-        fotos: a.fotos || [],
-        dataCriacao: new Date().toISOString()
-      });
-      mapa[a.id] = id;
-    }
-    for(const m of manu){
-      await put("assistencias", {
-        tipo: "interna",
-        equipamentoId: mapa[m.id] || null,
-        nome: m.nome || "", tag: m.codigo || "",
-        empresa: "Interna", status: m.status || "Aberta",
-        descricao: m.descricao || "", solucao: m.solucao || "",
-        dataSaida: m.dataEntrada || "", dataRetorno: m.dataSaida || "",
-        valor: m.custo || "", fotos: m.fotos || []
-      });
-    }
-    for(const f of fora){
-      await put("assistencias", {
-        tipo: "externa",
-        equipamentoId: mapa[f.id] || null,
-        nome: f.nome || "", tag: f.codigo || "",
-        empresa: f.empresa || "", setor: f.setor || "",
-        tipoServico: f.tipoServico || "",
-        dataSaida: f.dataSaida || "", dataRetorno: f.dataRetorno || "",
-        status: f.status || "Enviado", os: f.os || "", valor: f.valor || "",
-        descricao: f.descricao || "", solucao: f.solucao || "",
-        observacoes: f.observacoes || "", fotos: f.fotos || []
-      });
-    }
-    for(const h of hist){
-      await put("historico", {
-        itemId: h.itemId ? (mapa[h.itemId] || null) : null,
-        tipo: h.tipo || "sistema", nome: h.nome || "",
-        acao: h.acao || "", data: h.data || new Date().toISOString(),
-        usuario: h.usuario || "—"
-      });
-    }
-    await setConfig("migracao_v1", true);
-    console.log("✅ Migração concluída");
-    return true;
-  }
-
-  return { open, put, get, all, del, clear, getConfig, setConfig, migrarSeNecessario };
+  return { open, put, get, all, del, getConfig, setConfig };
 })();
 
 /* ---------- UTILS ---------- */
 const escapar = t => String(t ?? "").replace(/[&<>"']/g, c => ({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[c]));
 const hojeISO = () => new Date().toISOString().substring(0,10);
-const agoraLocalISO = () => { const d = new Date(); d.setMinutes(d.getMinutes() - d.getTimezoneOffset()); return d.toISOString().slice(0,16); };
 const formatarDataBR = iso => { if(!iso) return "-"; const d = iso.length <= 10 ? new Date(iso+"T00:00:00") : new Date(iso); return isNaN(d) ? iso : d.toLocaleDateString("pt-BR"); };
-const formatarDataHoraBR = iso => { if(!iso) return "-"; const d = new Date(iso); return isNaN(d) ? iso : d.toLocaleString("pt-BR"); };
 const diffHoras = (a,b) => { if(!a||!b) return null; return (new Date(b) - new Date(a)) / 36e5; };
 const formatarDuracao = h => { if(h == null || isNaN(h)) return "-"; const H = Math.floor(h); const M = Math.round((h-H)*60); return `${H}h${String(M).padStart(2,"0")}min`; };
 
@@ -861,7 +479,7 @@ function lerArquivo(f){
 
 /* ---------- APP ---------- */
 const App = (() => {
-  const state = { moduloAtivo:"pcm", viewAtual:"painel", usuarioAtual:"" };
+  const state = { usuarioAtual:"" };
 
   function toast(msg, tipo="info"){
     const el = document.getElementById("toast");
@@ -874,39 +492,18 @@ const App = (() => {
 
   function mostrarView(view){
     document.querySelectorAll(".view").forEach(v => v.classList.remove("active"));
-    const el = document.getElementById("view-" + view) || document.getElementById(view);
+    const el = document.getElementById(view);
     if(el) el.classList.add("active");
-    state.viewAtual = view;
     document.querySelectorAll("#navPrincipal button").forEach(b => {
       b.classList.toggle("ativo", b.dataset.tela === view);
     });
     const renders = {
-      painel: ()=>PCM.renderPainel(),
-      ferramentas: ()=>PCM.renderFerramentas(),
-      ativos: ()=>PCM.renderAtivos(),
-      manutencao: ()=>PCM.renderAssistencias("interna"),
-      assistencia: ()=>PCM.renderAssistencias("externa"),
-      setores: ()=>PCM.renderSetores(),
-      historico: ()=>PCM.renderHistorico(),
-      backup: ()=>Backup.renderStats(),
       "os-home": ()=>OS.renderHome(),
       "os-lista": ()=>OS.renderLista(),
       "os-dash": ()=>OS.renderDashboard()
     };
     if(renders[view]) try { renders[view](); } catch(e){ console.warn(e); }
     window.scrollTo(0,0);
-  }
-
-  function alternarModulo(mod){
-    state.moduloAtivo = mod;
-    document.querySelectorAll(".mod-btn").forEach(b => b.classList.toggle("ativo", b.dataset.modulo === mod));
-    document.querySelectorAll(".view").forEach(v => {
-      v.style.display = v.dataset.modulo === mod ? "" : "none";
-      v.classList.remove("active");
-    });
-    document.querySelectorAll(".nav-pcm").forEach(b => b.classList.toggle("hidden", mod !== "pcm"));
-    document.querySelectorAll(".nav-os").forEach(b => b.classList.toggle("hidden", mod !== "os"));
-    mostrarView(mod === "pcm" ? "painel" : "os-home");
   }
 
   function alternarTema(){
@@ -931,17 +528,6 @@ const App = (() => {
     toast(`Bem-vindo, ${nome}!`, "ok");
   }
 
-  async function registrarHistorico(e){
-    await DB.put("historico", {
-      itemId: e.itemId || null,
-      tipo: e.tipo || "sistema",
-      nome: e.nome || "",
-      acao: `[${state.usuarioAtual || "—"}] ${e.acao}`,
-      data: new Date().toISOString(),
-      usuario: state.usuarioAtual || "—"
-    });
-  }
-
   async function init(){
     if(localStorage.getItem("tema") === "claro"){
       document.body.classList.add("tema-claro");
@@ -964,537 +550,16 @@ const App = (() => {
     window.addEventListener("offline", atualizarRede);
     atualizarRede();
 
-    alternarModulo("pcm");
-    await PCM.atualizarSelectsSetores();
+    mostrarView("os-home");
   }
 
-  return { state, toast, mostrarView, alternarModulo, alternarTema, trocarUsuario, salvarUsuario, registrarHistorico, init };
+  return { state, toast, mostrarView, alternarTema, trocarUsuario, salvarUsuario, init };
 })();
 const toast = (m, t) => App.toast(m, t);
 
-/* ---------- PCM ---------- */
-const PCM = (() => {
-  const CATS = [
-    {id:"roquite", nome:"Roquete", emoji:"⚙️"},
-    {id:"lixadeira", nome:"Lixadeira", emoji:"🔨"},
-    {id:"parafusadeira", nome:"Parafusadeira", emoji:"🔩"},
-    {id:"politriz", nome:"Politriz", emoji:"✨"},
-    {id:"retifica", nome:"Retífica", emoji:"🛠️"},
-    {id:"pistola_pintura", nome:"Pistola de Pintura", emoji:"🎨"},
-    {id:"outras", nome:"Outras", emoji:"📦"}
-  ];
-
-  let cache = { equipamentos:[], assistencias:[], setores:[], historico:[] };
-
-  async function carregar(){
-    cache.equipamentos = await DB.all("equipamentos");
-    cache.assistencias = await DB.all("assistencias");
-    cache.setores = await DB.all("setores");
-    cache.historico = await DB.all("historico");
-  }
-
-  async function atualizarSelectsSetores(){
-    let setores = await DB.all("setores");
-    if(!setores.length){
-      const padrao = ["Acabamento 01","Acabamento 02","Laminação 01","Marcenaria","CNC","Manutenção"];
-      for(const n of padrao) await DB.put("setores", { nome:n, observacoes:"" });
-      setores = await DB.all("setores");
-    }
-    const opts = setores.map(s => `<option>${escapar(s.nome)}</option>`).join("");
-    ["setorFerramenta","setorAtivo","setorAssistencia"].forEach(id => {
-      const el = document.getElementById(id);
-      if(el){ const v = el.value; el.innerHTML = opts; if(v) el.value = v; }
-    });
-  }
-
-  async function renderPainel(){
-    await carregar();
-    const ferr = cache.equipamentos.filter(e => e.categoria === "ferramenta");
-    const ativ = cache.equipamentos.filter(e => e.categoria === "ativo");
-    const assist = cache.assistencias;
-
-    const el = document.getElementById("estatisticas");
-    if(el){
-      el.innerHTML = `
-        <div class="card estatistica"><span class="icon">🔧</span><span class="label">Ferramentas</span><strong>${ferr.length}</strong></div>
-        <div class="card estatistica"><span class="icon">🟢</span><span class="label">Disponíveis</span><strong>${ferr.filter(f=>f.status==="disponivel").length}</strong></div>
-        <div class="card estatistica"><span class="icon">📤</span><span class="label">Emprestadas</span><strong>${ferr.filter(f=>f.status==="emprestada").length}</strong></div>
-        <div class="card estatistica"><span class="icon">🧰</span><span class="label">Manutenção</span><strong>${assist.filter(a=>a.tipo==="interna" && a.status!=="Retornado").length}</strong></div>
-        <div class="card estatistica"><span class="icon">☠️</span><span class="label">Assist. Téc.</span><strong>${assist.filter(a=>a.tipo==="externa" && a.status!=="Retornado").length}</strong></div>
-        <div class="card estatistica"><span class="icon">🏭</span><span class="label">Ativos</span><strong>${ativ.length}</strong></div>
-      `;
-    }
-
-    const setoresEl = document.getElementById("cartoesSetores");
-    if(setoresEl){
-      setoresEl.innerHTML = cache.setores.map(s => {
-        const f = ferr.filter(x => x.setor === s.nome).length;
-        const a = ativ.filter(x => x.setor === s.nome).length;
-        const m = assist.filter(x => x.setor === s.nome).length;
-        return `
-          <div class="card" onclick="PCM.abrirSetor('${escapar(s.nome)}')" style="cursor:pointer">
-            <h3>📍 ${escapar(s.nome)}</h3>
-            <div style="font-size:28px;font-weight:700;margin:2px 0;background:linear-gradient(135deg,var(--texto) 30%,var(--azul-claro),var(--amarelo));-webkit-background-clip:text;-webkit-text-fill-color:transparent;background-clip:text">${f+a+m}</div>
-            <div class="tags" style="margin-top:10px">
-              <span class="badge badge-success">🔧 ${f}</span>
-              <span class="badge badge-info">🏭 ${a}</span>
-              <span class="badge badge-warning">🧰 ${m}</span>
-            </div>
-          </div>
-        `;
-      }).join("");
-    }
-  }
-
-  async function renderFerramentas(){
-    await carregar();
-    const el = document.getElementById("listaFerramentas");
-    if(!el) return;
-    const busca = (document.getElementById("pesquisaFerramenta")?.value || "").toLowerCase();
-    const ferr = cache.equipamentos.filter(e => e.categoria === "ferramenta")
-      .filter(f => (f.nome+" "+f.tag+" "+f.setor).toLowerCase().includes(busca));
-
-    if(!ferr.length){
-      el.innerHTML = `<div class="card empty-state"><span class="emoji">🔍</span><span>Nenhuma ferramenta encontrada.</span></div>`;
-      return;
-    }
-    el.innerHTML = ferr.map(f => {
-      const cat = CATS.find(c => c.id === (f.subcategoria || "outras"));
-      const badgeStatus = {
-        disponivel:"badge-success", emprestada:"badge-warning",
-        manutencao:"badge-danger", assistencia:"badge-fora"
-      }[f.status] || "badge-info";
-      const foto = f.fotos?.[0] ? `<img class="imagem-mini" src="${f.fotos[0]}">` : `<div class="imagem-placeholder">${cat?.emoji || "🔧"}</div>`;
-      return `
-        <div class="card item">
-          ${foto}
-          <div class="item-info">
-            <div class="nome">${escapar(f.nome)}</div>
-            <div class="detalhes">Código: ${escapar(f.tag||"-")}<br>Setor: ${escapar(f.setor||"-")}</div>
-            <div class="tags">
-              <span class="badge badge-info">${cat?.emoji||""} ${cat?.nome||"Outras"}</span>
-              <span class="badge ${badgeStatus}">${escapar(f.status||"-")}</span>
-              ${f.quantidade > 1 ? `<span class="badge badge-qtd">📦 ${f.quantidade}</span>` : ""}
-            </div>
-          </div>
-          <div class="item-actions">
-            <button onclick="PCM.abrirFerramenta(${f.id})" title="Editar">✏️</button>
-            <button onclick="OS.novaOSComEquipamento(${f.id})" title="Abrir OS">📋</button>
-            <button onclick="PCM.enviarAssistencia(${f.id})" title="Assistência">☠️</button>
-            <button onclick="Exportar.fichaEquipamento(${f.id})" title="PDF ficha">📄</button>
-            <button onclick="PCM.excluirEquipamento(${f.id})" title="Excluir">🗑️</button>
-          </div>
-        </div>
-      `;
-    }).join("");
-  }
-
-  async function renderAtivos(){
-    await carregar();
-    const el = document.getElementById("listaAtivos");
-    if(!el) return;
-    const busca = (document.getElementById("pesquisaAtivo")?.value || "").toLowerCase();
-    const ativ = cache.equipamentos.filter(e => e.categoria === "ativo")
-      .filter(a => (a.nome+" "+a.tag+" "+a.setor+" "+(a.fabricante||"")).toLowerCase().includes(busca));
-
-    if(!ativ.length){
-      el.innerHTML = `<div class="card empty-state"><span class="emoji">🏭</span><span>Nenhum ativo encontrado.</span></div>`;
-      return;
-    }
-    el.innerHTML = ativ.map(a => {
-      const foto = a.fotos?.[0] ? `<img class="imagem-mini" src="${a.fotos[0]}">` : `<div class="imagem-placeholder">🏭</div>`;
-      return `
-        <div class="card item">
-          ${foto}
-          <div class="item-info">
-            <div class="nome">${escapar(a.nome)}</div>
-            <div class="detalhes">TAG: ${escapar(a.tag||"-")}<br>Tipo: ${escapar(a.tipo||"-")}<br>Setor: ${escapar(a.setor||"-")}${a.fabricante?`<br>Fab: ${escapar(a.fabricante)}`:""}</div>
-            <div class="tags"><span class="badge badge-info">${escapar(a.status||"-")}</span></div>
-          </div>
-          <div class="item-actions">
-            <button onclick="PCM.abrirAtivo(${a.id})" title="Editar">✏️</button>
-            <button onclick="OS.novaOSComEquipamento(${a.id})" title="Abrir OS">📋</button>
-            <button onclick="Exportar.fichaEquipamento(${a.id})" title="PDF ficha">📄</button>
-            <button onclick="PCM.excluirEquipamento(${a.id})" title="Excluir">🗑️</button>
-          </div>
-        </div>
-      `;
-    }).join("");
-  }
-
-  async function renderAssistencias(tipo=null){
-    await carregar();
-    const containerId = tipo === "interna" ? "listaManutencoes" : "listaAssistencias";
-    const el = document.getElementById(containerId);
-    if(!el) return;
-    const busca = (document.getElementById("pesquisaAssistencia")?.value || "").toLowerCase();
-    let lista = cache.assistencias;
-    if(tipo) lista = lista.filter(a => a.tipo === tipo);
-    if(busca) lista = lista.filter(a => (a.nome+" "+a.tag+" "+(a.empresa||"")).toLowerCase().includes(busca));
-
-    if(!lista.length){
-      el.innerHTML = `<div class="card empty-state"><span class="emoji">${tipo === "interna" ? "🧰" : "☠️"}</span><span>Nenhum item.</span></div>`;
-      return;
-    }
-    el.innerHTML = lista.slice().reverse().map(a => {
-      const badge = a.status === "Retornado" ? "badge-success" : "badge-warning";
-      return `
-        <div class="card item">
-          <div class="imagem-placeholder">${a.tipo === "interna" ? "🧰" : "☠️"}</div>
-          <div class="item-info">
-            <div class="nome">${escapar(a.nome)}</div>
-            <div class="detalhes">
-              ${a.tipo === "interna" ? "🔧 Interna" : "🏢 " + escapar(a.empresa||"-")}<br>
-              Código: ${escapar(a.tag||"-")}<br>
-              Saída: ${formatarDataBR(a.dataSaida)}${a.dataRetorno?` | Retorno: ${formatarDataBR(a.dataRetorno)}`:""}
-              ${a.valor?`<br>💰 R$ ${escapar(a.valor)}`:""}
-            </div>
-            <div class="tags">
-              <span class="badge ${badge}">${escapar(a.status||"-")}</span>
-              ${a.tipoServico?`<span class="badge badge-info">${escapar(a.tipoServico)}</span>`:""}
-            </div>
-          </div>
-          <div class="item-actions">
-            <button onclick="PCM.abrirAssistencia('${a.tipo}', ${a.id})" title="Editar">✏️</button>
-            <button onclick="PCM.marcarRetornado(${a.id})" title="Retornado">✅</button>
-            <button onclick="PCM.excluirAssistencia(${a.id})" title="Excluir">🗑️</button>
-          </div>
-        </div>
-      `;
-    }).join("");
-  }
-
-  async function renderSetores(){
-    await carregar();
-    const el = document.getElementById("mapaSetores");
-    if(!el) return;
-    if(!cache.setores.length){
-      el.innerHTML = `<div class="card empty-state"><span class="emoji">📍</span><span>Nenhum setor.</span></div>`;
-      return;
-    }
-    el.innerHTML = cache.setores.map(s => {
-      const f = cache.equipamentos.filter(e => e.setor === s.nome && e.categoria === "ferramenta");
-      const a = cache.equipamentos.filter(e => e.setor === s.nome && e.categoria === "ativo");
-      const m = cache.assistencias.filter(x => x.setor === s.nome);
-      return `
-        <div class="card" onclick="PCM.abrirSetor('${escapar(s.nome)}')" style="cursor:pointer">
-          <h3>📍 ${escapar(s.nome)}</h3>
-          <div style="font-size:28px;font-weight:700;margin:2px 0;background:linear-gradient(135deg,var(--texto) 30%,var(--azul-claro),var(--amarelo));-webkit-background-clip:text;-webkit-text-fill-color:transparent;background-clip:text">${f.length+a.length+m.length}</div>
-          <div class="tags" style="margin-top:10px">
-            <span class="badge badge-success">🔧 ${f.length}</span>
-            <span class="badge badge-info">🏭 ${a.length}</span>
-            <span class="badge badge-warning">🧰 ${m.length}</span>
-          </div>
-        </div>
-      `;
-    }).join("");
-  }
-
-  async function renderHistorico(){
-    await carregar();
-    const el = document.getElementById("listaHistorico");
-    if(!el) return;
-    const lista = [...cache.historico].reverse().slice(0, 150);
-    if(!lista.length){
-      el.innerHTML = `<div class="empty-state"><span class="emoji">📭</span><span>Nenhum registro.</span></div>`;
-      return;
-    }
-    el.innerHTML = lista.map(h => `
-      <div style="display:flex;justify-content:space-between;padding:10px 0;border-bottom:1px solid var(--borda);gap:12px">
-        <div>
-          <div style="font-weight:600">${escapar(h.nome)}</div>
-          <div class="text-sm muted">${escapar(h.acao)}</div>
-        </div>
-        <div class="text-sm muted" style="opacity:.6;white-space:nowrap">${new Date(h.data).toLocaleString("pt-BR")}</div>
-      </div>
-    `).join("");
-  }
-
-  /* ---- Forms ---- */
-  async function abrirFerramenta(id=null){
-    await atualizarSelectsSetores();
-    document.getElementById("idFerramenta").value = id || "";
-    if(id){
-      const f = await DB.get("equipamentos", id);
-      if(!f) return;
-      document.getElementById("tituloFerramenta").textContent = "✏️ Editar ferramenta";
-      document.getElementById("nomeFerramenta").value = f.nome || "";
-      document.getElementById("codigoFerramenta").value = f.tag || "";
-      document.getElementById("quantidadeFerramenta").value = f.quantidade || 1;
-      document.getElementById("setorFerramenta").value = f.setor || "";
-      document.getElementById("categoriaFerramenta").value = f.subcategoria || "outras";
-      document.getElementById("statusFerramenta").value = f.status || "disponivel";
-      document.getElementById("obsFerramenta").value = f.observacoes || "";
-    } else {
-      document.getElementById("tituloFerramenta").textContent = "📦 Cadastrar ferramenta";
-      ["nomeFerramenta","codigoFerramenta","obsFerramenta"].forEach(i => document.getElementById(i).value = "");
-      document.getElementById("quantidadeFerramenta").value = 1;
-      document.getElementById("categoriaFerramenta").value = "outras";
-      document.getElementById("statusFerramenta").value = "disponivel";
-    }
-    document.getElementById("dialogFerramenta").showModal();
-  }
-
-  async function salvarFerramenta(){
-    const nome = document.getElementById("nomeFerramenta").value.trim();
-    if(!nome) return toast("Digite o nome.", "erro");
-    const id = parseInt(document.getElementById("idFerramenta").value) || null;
-    let codigo = document.getElementById("codigoFerramenta").value.trim();
-    if(!codigo){
-      const count = (await DB.all("equipamentos")).length + 1;
-      codigo = `FER-${String(count).padStart(3,"0")}`;
-    }
-    const obj = {
-      tag: codigo, nome,
-      categoria: "ferramenta",
-      subcategoria: document.getElementById("categoriaFerramenta").value,
-      quantidade: parseInt(document.getElementById("quantidadeFerramenta").value) || 1,
-      setor: document.getElementById("setorFerramenta").value,
-      status: document.getElementById("statusFerramenta").value,
-      observacoes: document.getElementById("obsFerramenta").value,
-      dataCriacao: new Date().toISOString()
-    };
-    if(id) obj.id = id;
-    await DB.put("equipamentos", obj);
-    await App.registrarHistorico({ itemId:id, tipo:"equipamento", nome, acao:id?"editou":"cadastrou" });
-    toast("✅ Ferramenta salva!", "ok");
-    document.getElementById("dialogFerramenta").close();
-    renderFerramentas(); renderPainel();
-  }
-
-  async function abrirAtivo(id=null){
-    await atualizarSelectsSetores();
-    document.getElementById("idAtivo").value = id || "";
-    if(id){
-      const a = await DB.get("equipamentos", id);
-      if(!a) return;
-      document.getElementById("tituloAtivo").textContent = "✏️ Editar ativo";
-      document.getElementById("nomeAtivo").value = a.nome || "";
-      document.getElementById("codigoAtivo").value = a.tag || "";
-      document.getElementById("tipoAtivo").value = a.tipo || "Máquina";
-      document.getElementById("fabricanteAtivo").value = a.fabricante || "";
-      document.getElementById("setorAtivo").value = a.setor || "";
-      document.getElementById("statusAtivo").value = a.status || "operando";
-      document.getElementById("obsAtivo").value = a.observacoes || "";
-    } else {
-      document.getElementById("tituloAtivo").textContent = "🏭 Cadastrar ativo";
-      ["nomeAtivo","codigoAtivo","fabricanteAtivo","obsAtivo"].forEach(i => document.getElementById(i).value = "");
-      document.getElementById("tipoAtivo").value = "Máquina";
-      document.getElementById("statusAtivo").value = "operando";
-    }
-    document.getElementById("dialogAtivo").showModal();
-  }
-
-  async function salvarAtivo(){
-    const nome = document.getElementById("nomeAtivo").value.trim();
-    if(!nome) return toast("Digite o nome.", "erro");
-    const id = parseInt(document.getElementById("idAtivo").value) || null;
-    let codigo = document.getElementById("codigoAtivo").value.trim();
-    if(!codigo){
-      const count = (await DB.all("equipamentos")).length + 1;
-      codigo = `AT-${String(count).padStart(3,"0")}`;
-    }
-    const obj = {
-      tag: codigo, nome,
-      categoria: "ativo",
-      tipo: document.getElementById("tipoAtivo").value,
-      fabricante: document.getElementById("fabricanteAtivo").value,
-      setor: document.getElementById("setorAtivo").value,
-      status: document.getElementById("statusAtivo").value,
-      observacoes: document.getElementById("obsAtivo").value,
-      dataCriacao: new Date().toISOString()
-    };
-    if(id) obj.id = id;
-    await DB.put("equipamentos", obj);
-    await App.registrarHistorico({ itemId:id, tipo:"equipamento", nome, acao:id?"editou":"cadastrou ativo" });
-    toast("✅ Ativo salvo!", "ok");
-    document.getElementById("dialogAtivo").close();
-    renderAtivos(); renderPainel();
-  }
-
-  async function excluirEquipamento(id){
-    const eq = await DB.get("equipamentos", id);
-    if(!eq) return;
-    if(!confirm(`Excluir "${eq.nome}"?`)) return;
-    await DB.del("equipamentos", id);
-    await App.registrarHistorico({ itemId:id, tipo:"equipamento", nome:eq.nome, acao:"excluiu" });
-    toast("Excluído.", "ok");
-    renderFerramentas(); renderAtivos(); renderPainel();
-  }
-
-  async function abrirAssistencia(tipo="externa", id=null){
-    await atualizarSelectsSetores();
-    document.getElementById("idAssistencia").value = id || "";
-    document.getElementById("tipoAssistenciaForm").value = tipo;
-    document.getElementById("tituloAssistencia").textContent = tipo === "interna" ? "🧰 Manutenção Interna" : "☠️ Assistência Técnica";
-    if(id){
-      const a = await DB.get("assistencias", id);
-      if(!a) return;
-      document.getElementById("nomeAssistencia").value = a.nome || "";
-      document.getElementById("codigoAssistencia").value = a.tag || "";
-      document.getElementById("empresaAssistencia").value = a.empresa || "";
-      document.getElementById("responsavelAssistencia").value = a.responsavel || "";
-      document.getElementById("setorAssistencia").value = a.setor || "";
-      document.getElementById("tipoServicoAssistencia").value = a.tipoServico || "Reparo mecânico";
-      document.getElementById("dataSaidaAssistencia").value = a.dataSaida || "";
-      document.getElementById("dataRetornoAssistencia").value = a.dataRetorno || "";
-      document.getElementById("statusAssistencia").value = a.status || "Enviado";
-      document.getElementById("osAssistencia").value = a.os || "";
-      document.getElementById("valorAssistencia").value = a.valor || "";
-      document.getElementById("descricaoAssistencia").value = a.descricao || "";
-      document.getElementById("solucaoAssistencia").value = a.solucao || "";
-    } else {
-      ["nomeAssistencia","codigoAssistencia","empresaAssistencia","responsavelAssistencia",
-       "osAssistencia","valorAssistencia","descricaoAssistencia","solucaoAssistencia"].forEach(i => {
-        document.getElementById(i).value = "";
-      });
-      document.getElementById("dataSaidaAssistencia").value = hojeISO();
-      document.getElementById("dataRetornoAssistencia").value = "";
-      document.getElementById("statusAssistencia").value = "Enviado";
-      document.getElementById("tipoServicoAssistencia").value = "Reparo mecânico";
-    }
-    document.getElementById("dialogAssistencia").showModal();
-  }
-
-  async function salvarAssistencia(){
-    const nome = document.getElementById("nomeAssistencia").value.trim();
-    if(!nome) return toast("Digite o nome.", "erro");
-    const id = parseInt(document.getElementById("idAssistencia").value) || null;
-    const tipo = document.getElementById("tipoAssistenciaForm").value || "externa";
-    const obj = {
-      tipo, nome,
-      tag: document.getElementById("codigoAssistencia").value,
-      empresa: document.getElementById("empresaAssistencia").value,
-      responsavel: document.getElementById("responsavelAssistencia").value,
-      setor: document.getElementById("setorAssistencia").value,
-      tipoServico: document.getElementById("tipoServicoAssistencia").value,
-      dataSaida: document.getElementById("dataSaidaAssistencia").value,
-      dataRetorno: document.getElementById("dataRetornoAssistencia").value,
-      status: document.getElementById("statusAssistencia").value,
-      os: document.getElementById("osAssistencia").value,
-      valor: document.getElementById("valorAssistencia").value,
-      descricao: document.getElementById("descricaoAssistencia").value,
-      solucao: document.getElementById("solucaoAssistencia").value,
-      dataCriacao: new Date().toISOString()
-    };
-    if(id) obj.id = id;
-    await DB.put("assistencias", obj);
-    await App.registrarHistorico({ itemId:id, tipo:"assistencia", nome, acao:id?"editou":"cadastrou" });
-    toast("✅ Salvo!", "ok");
-    document.getElementById("dialogAssistencia").close();
-    renderAssistencias(tipo); renderPainel();
-  }
-
-  async function enviarAssistencia(equipamentoId){
-    const eq = await DB.get("equipamentos", equipamentoId);
-    if(!eq) return;
-    await abrirAssistencia("externa");
-    document.getElementById("nomeAssistencia").value = eq.nome || "";
-    document.getElementById("codigoAssistencia").value = eq.tag || "";
-    document.getElementById("setorAssistencia").value = eq.setor || "";
-    eq.status = "assistencia";
-    await DB.put("equipamentos", eq);
-    toast("Preencha os dados da assistência.", "info");
-  }
-
-  async function marcarRetornado(id){
-    const a = await DB.get("assistencias", id);
-    if(!a) return;
-    if(!confirm(`Marcar "${a.nome}" como retornado?`)) return;
-    a.status = "Retornado";
-    a.dataRetorno = hojeISO();
-    await DB.put("assistencias", a);
-    if(a.equipamentoId){
-      const eq = await DB.get("equipamentos", a.equipamentoId);
-      if(eq){
-        eq.status = eq.categoria === "ferramenta" ? "disponivel" : "operando";
-        await DB.put("equipamentos", eq);
-      }
-    }
-    toast("✅ Retornado.", "ok");
-    renderAssistencias(a.tipo);
-  }
-
-  async function excluirAssistencia(id){
-    const a = await DB.get("assistencias", id);
-    if(!a) return;
-    if(!confirm(`Excluir "${a.nome}"?`)) return;
-    await DB.del("assistencias", id);
-    toast("Excluído.", "ok");
-    renderAssistencias(a.tipo);
-  }
-
-  function abrirSetorNovo(){
-    document.getElementById("idSetorOriginal").value = "";
-    document.getElementById("nomeSetor").value = "";
-    document.getElementById("obsSetor").value = "";
-    document.getElementById("tituloSetor").textContent = "➕ Novo setor";
-    document.getElementById("dialogSetor").showModal();
-  }
-
-  async function abrirSetor(nome){
-    const s = await DB.get("setores", nome);
-    if(!s) return;
-    document.getElementById("idSetorOriginal").value = nome;
-    document.getElementById("nomeSetor").value = s.nome;
-    document.getElementById("obsSetor").value = s.observacoes || "";
-    document.getElementById("tituloSetor").textContent = "📍 Editar setor";
-    document.getElementById("dialogSetor").showModal();
-  }
-
-  async function salvarSetor(){
-    const original = document.getElementById("idSetorOriginal").value;
-    const nome = document.getElementById("nomeSetor").value.trim();
-    const obs = document.getElementById("obsSetor").value.trim();
-    if(!nome) return toast("Digite o nome.", "erro");
-    if(original && original !== nome){
-      await DB.del("setores", original);
-      await DB.put("setores", { nome, observacoes:obs });
-      const eqs = await DB.all("equipamentos");
-      for(const e of eqs){
-        if(e.setor === original){ e.setor = nome; await DB.put("equipamentos", e); }
-      }
-    } else {
-      await DB.put("setores", { nome, observacoes:obs });
-    }
-    toast("✅ Setor salvo!", "ok");
-    document.getElementById("dialogSetor").close();
-    await atualizarSelectsSetores();
-    renderSetores(); renderPainel();
-  }
-
-  async function excluirSetor(){
-    const nome = document.getElementById("idSetorOriginal").value;
-    if(!nome) return;
-    if(!confirm(`Excluir setor "${nome}"?`)) return;
-    await DB.del("setores", nome);
-    toast("Setor excluído.", "ok");
-    document.getElementById("dialogSetor").close();
-    await atualizarSelectsSetores();
-    renderSetores(); renderPainel();
-  }
-
-  async function limparHistorico(){
-    if(!confirm("Apagar todo o histórico?")) return;
-    await DB.clear("historico");
-    toast("Histórico limpo.", "ok");
-    renderHistorico();
-  }
-
-  return {
-    carregar, atualizarSelectsSetores,
-    renderPainel, renderFerramentas, renderAtivos, renderAssistencias, renderSetores, renderHistorico,
-    abrirFerramenta, salvarFerramenta, excluirEquipamento,
-    abrirAtivo, salvarAtivo,
-    abrirAssistencia, salvarAssistencia, enviarAssistencia, marcarRetornado, excluirAssistencia,
-    abrirSetorNovo, abrirSetor, salvarSetor, excluirSetor, limparHistorico,
-    CATS
-  };
-})();
-
 /* ---------- OS ---------- */
 const OS = (() => {
-  const state = { osAtual:{ id:null, midias:[], maoObra:[], pecas:[] }, filtroStatus:"todos" };
+  const state = { osAtual:{ id:null, midias:[], maoObra:[], pecas:[] } };
 
   function badgeStatus(status){
     const map = {
@@ -1572,18 +637,6 @@ const OS = (() => {
     App.mostrarView("os-form");
   }
 
-  async function novaOSComEquipamento(id){
-    await novaOS();
-    const eq = await DB.get("equipamentos", id);
-    if(!eq) return;
-    document.getElementById("osTag").value = eq.tag || "";
-    document.getElementById("osEquip").value = eq.nome || "";
-    document.getElementById("osMarca").value = eq.fabricante || eq.marca || "";
-    document.getElementById("osLocal").value = eq.local || "";
-    document.getElementById("osSetor").value = eq.setor || "";
-    toast(`OS aberta para: ${eq.nome}`, "ok");
-  }
-
   async function editarOS(id){
     const os = await DB.get("ordens", id);
     if(!os) return;
@@ -1622,9 +675,6 @@ const OS = (() => {
     const lista = await DB.all("ordens");
     const busca = (document.getElementById("buscaOS")?.value || "").toLowerCase();
     let filtradas = lista;
-    if(state.filtroStatus !== "todos"){
-      filtradas = filtradas.filter(o => (o.status||"Aberta") === state.filtroStatus);
-    }
     if(busca){
       filtradas = filtradas.filter(o =>
         [o.numero,o.tag,o.equipamento,o.solicitante,o.setor,o.descricao].some(v => (v||"").toLowerCase().includes(busca))
@@ -1857,7 +907,6 @@ const OS = (() => {
     };
     if(state.osAtual.id) os.id = state.osAtual.id;
     await DB.put("ordens", os);
-    await App.registrarHistorico({ tipo:"ordem", nome:`OS ${numero}`, acao: state.osAtual.id ? "editou OS" : "criou OS" });
     toast("✅ OS salva!", "ok");
     setTimeout(() => App.mostrarView("os-lista"), 600);
   }
@@ -1953,7 +1002,6 @@ const OS = (() => {
       }
     }
 
-    // Rankings
     const eqC = {}; lista.forEach(o => { if(o.equipamento) eqC[o.equipamento] = (eqC[o.equipamento]||0)+1; });
     renderRank("rankEquip", eqC, "OS");
     const tecC = {}; lista.forEach(o => (o.maoObra||[]).forEach(m => { if(m.nome) tecC[m.nome] = (tecC[m.nome]||0)+1; }));
@@ -2056,7 +1104,6 @@ const OS = (() => {
     if(navigator.share){
       try { await navigator.share({ title:`OS ${os.numero}`, text: texto }); return; } catch(e){}
     }
-    // Fallback
     try { await navigator.clipboard.writeText(texto); toast("📋 Texto copiado!", "ok"); } catch(e){}
     const url = `https://wa.me/?text=${encodeURIComponent(texto)}`;
     window.open(url, "_blank");
@@ -2099,55 +1146,13 @@ const OS = (() => {
 
   return {
     renderHome, renderLista, renderDashboard,
-    novaOS, novaOSComEquipamento, editarOS, duplicarOS, excluirOS,
+    novaOS, editarOS, duplicarOS, excluirOS,
     salvarOS, pdfDaLista, gerarPDFAtual,
     mostrarQuadroPecas, addMaoObra, addPeca,
     adicionarMidias, renderMidias, removerMidia,
     limparCanvas, ativarAssinatura, calcularTempos,
-    gerarQR, compartilharOS, compartilharWhatsApp,
-    _state: state
+    gerarQR, compartilharOS, compartilharWhatsApp
   };
-})();
-
-/* ---------- SCANNER QR ---------- */
-const Scanner = (() => {
-  let scanner = null;
-  let modo = "ferramenta";
-
-  function abrir(target="ferramenta"){
-    if(!window.Html5Qrcode){ toast("Leitor não disponível.", "erro"); return; }
-    modo = target;
-    document.getElementById("dialogScanner").showModal();
-    scanner = new Html5Qrcode("reader");
-    scanner.start(
-      { facingMode:"environment" },
-      { fps:10, qrbox:{ width:250, height:250 } },
-      async (texto) => {
-        const codigo = texto.trim();
-        fechar();
-        const equip = (await DB.all("equipamentos")).find(e => (e.tag||"").toLowerCase() === codigo.toLowerCase());
-        if(equip){
-          if(equip.categoria === "ferramenta") PCM.abrirFerramenta(equip.id);
-          else PCM.abrirAtivo(equip.id);
-          toast(`Encontrado: ${equip.nome}`, "ok");
-        } else {
-          toast(`Nenhum equipamento com TAG "${codigo}".`, "warning");
-        }
-      },
-      () => {}
-    ).catch(err => { toast("Erro: " + err, "erro"); fechar(); });
-  }
-
-  function fechar(){
-    if(scanner){
-      try { scanner.stop().then(()=>scanner?.clear()).catch(()=>{}); } catch(e){}
-      scanner = null;
-    }
-    const d = document.getElementById("dialogScanner");
-    if(d && d.open) d.close();
-  }
-
-  return { abrir, fechar };
 })();
 
 /* ---------- EXPORTAR ---------- */
@@ -2165,8 +1170,7 @@ const Exportar = (() => {
   }
 
   function checkPDF(){
-    if(!window.jspdf || !window.jspdf.jsPDF) return false;
-    return true;
+    return !!(window.jspdf && window.jspdf.jsPDF);
   }
 
   function cabecalhoPDF(doc, titulo, sub=""){
@@ -2201,72 +1205,6 @@ const Exportar = (() => {
     finally { esconderLoading(); }
   }
 
-  async function pdfFerramentas(){
-    if(!checkPDF()) return toast("PDF não disponível.", "erro");
-    const lista = (await DB.all("equipamentos")).filter(e => e.categoria === "ferramenta");
-    if(!lista.length) return toast("Nenhuma ferramenta.", "warning");
-    const { jsPDF } = window.jspdf;
-    const doc = new jsPDF();
-    cabecalhoPDF(doc, "FERRAMENTAS", `Total: ${lista.length}`);
-    if(doc.autoTable){
-      doc.autoTable({
-        startY:38,
-        head:[["Nome","Código","Categoria","Setor","Qtd","Status"]],
-        body: lista.map(f => {
-          const cat = PCM.CATS.find(c => c.id === (f.subcategoria||"outras"));
-          return [f.nome, f.tag||"-", cat?.nome||"Outras", f.setor||"-", f.quantidade||1, f.status||"-"];
-        }),
-        theme:"grid",
-        headStyles:{ fillColor:[30,184,201], textColor:255 },
-        styles:{ fontSize:9, cellPadding:2 },
-        margin:{ left:14, right:14 }
-      });
-    }
-    salvarPDF(doc, `Ferramentas_${hojeISO()}.pdf`);
-  }
-
-  async function pdfAtivos(){
-    if(!checkPDF()) return toast("PDF não disponível.", "erro");
-    const lista = (await DB.all("equipamentos")).filter(e => e.categoria === "ativo");
-    if(!lista.length) return toast("Nenhum ativo.", "warning");
-    const { jsPDF } = window.jspdf;
-    const doc = new jsPDF();
-    cabecalhoPDF(doc, "ATIVOS", `Total: ${lista.length}`);
-    if(doc.autoTable){
-      doc.autoTable({
-        startY:38,
-        head:[["Nome","TAG","Tipo","Setor","Fabricante","Status"]],
-        body: lista.map(a => [a.nome, a.tag||"-", a.tipo||"-", a.setor||"-", a.fabricante||"-", a.status||"-"]),
-        theme:"grid",
-        headStyles:{ fillColor:[124,92,191], textColor:255 },
-        styles:{ fontSize:9, cellPadding:2 },
-        margin:{ left:14, right:14 }
-      });
-    }
-    salvarPDF(doc, `Ativos_${hojeISO()}.pdf`);
-  }
-
-  async function pdfAssistencias(){
-    if(!checkPDF()) return toast("PDF não disponível.", "erro");
-    const lista = (await DB.all("assistencias")).filter(a => a.tipo === "externa");
-    if(!lista.length) return toast("Nenhuma assistência.", "warning");
-    const { jsPDF } = window.jspdf;
-    const doc = new jsPDF();
-    cabecalhoPDF(doc, "ASSISTÊNCIA TÉCNICA", `Total: ${lista.length}`);
-    if(doc.autoTable){
-      doc.autoTable({
-        startY:38,
-        head:[["Item","Empresa","Saída","Retorno","Status","Valor"]],
-        body: lista.map(a => [a.nome, a.empresa||"-", formatarDataBR(a.dataSaida), formatarDataBR(a.dataRetorno), a.status||"-", a.valor?`R$ ${a.valor}`:"-"]),
-        theme:"grid",
-        headStyles:{ fillColor:[124,92,191], textColor:255 },
-        styles:{ fontSize:9, cellPadding:2 },
-        margin:{ left:14, right:14 }
-      });
-    }
-    salvarPDF(doc, `Assistencias_${hojeISO()}.pdf`);
-  }
-
   async function pdfOS(){
     if(!checkPDF()) return toast("PDF não disponível.", "erro");
     const lista = await DB.all("ordens");
@@ -2286,89 +1224,6 @@ const Exportar = (() => {
       });
     }
     salvarPDF(doc, `Ordens_${hojeISO()}.pdf`);
-  }
-
-  async function fichaEquipamento(id){
-    if(!checkPDF()) return toast("PDF não disponível.", "erro");
-    const eq = await DB.get("equipamentos", id);
-    if(!eq) return;
-    const { jsPDF } = window.jspdf;
-    const doc = new jsPDF();
-    cabecalhoPDF(doc, "FICHA DO EQUIPAMENTO", eq.nome);
-    let y = 45;
-    doc.setFontSize(11); doc.setTextColor(20,20,20);
-    const linhas = [
-      ["Nome", eq.nome],["TAG/Código", eq.tag],["Categoria", eq.categoria],
-      ["Tipo", eq.tipo || "-"],["Fabricante", eq.fabricante || "-"],
-      ["Setor", eq.setor],["Status", eq.status],
-      ["Qtd", eq.quantidade || 1],
-      ["Observações", eq.observacoes || "-"],
-      ["Criado em", formatarDataHoraBR(eq.dataCriacao)]
-    ];
-    linhas.forEach(l => {
-      if(y > 270){ doc.addPage(); y = 20; }
-      doc.setFont(undefined,"bold"); doc.text(l[0]+":", 14, y);
-      doc.setFont(undefined,"normal");
-      const txt = doc.splitTextToSize(String(l[1]), 150);
-      doc.text(txt, 55, y); y += txt.length * 6 + 2;
-    });
-
-    // Histórico de OS
-    const todas = await DB.all("ordens");
-    const oss = todas.filter(o => o.tag && eq.tag && o.tag === eq.tag);
-    if(oss.length){
-      y += 5;
-      doc.setFontSize(12); doc.setFont(undefined,"bold");
-      doc.text("Ordens de Serviço relacionadas:", 14, y); y += 6;
-      doc.setFontSize(10); doc.setFont(undefined,"normal");
-      oss.forEach(o => {
-        if(y > 270){ doc.addPage(); y = 20; }
-        doc.text(`• OS ${o.numero} | ${formatarDataBR(o.data)} | ${o.status || "Aberta"} | ${o.tipo || "-"}`, 18, y);
-        y += 5;
-      });
-    }
-    salvarPDF(doc, `Ficha_${(eq.nome||"equip").replace(/\s+/g,"_")}.pdf`);
-  }
-
-  // Excel
-  async function excelFerramentas(){
-    if(!window.XLSX) return toast("Excel não disponível.", "erro");
-    const lista = (await DB.all("equipamentos")).filter(e => e.categoria === "ferramenta");
-    if(!lista.length) return toast("Nenhuma ferramenta.", "warning");
-    const dados = lista.map(f => ({
-      "Código": f.tag || "",
-      "Nome": f.nome,
-      "Categoria": PCM.CATS.find(c => c.id === (f.subcategoria||"outras"))?.nome || "Outras",
-      "Setor": f.setor || "",
-      "Quantidade": f.quantidade || 1,
-      "Status": f.status || "",
-      "Observações": f.observacoes || ""
-    }));
-    const ws = XLSX.utils.json_to_sheet(dados);
-    const wb = XLSX.utils.book_new();
-    XLSX.utils.book_append_sheet(wb, ws, "Ferramentas");
-    XLSX.writeFile(wb, `Ferramentas_${hojeISO()}.xlsx`);
-    toast("✅ Excel gerado!", "ok");
-  }
-
-  async function excelAtivos(){
-    if(!window.XLSX) return toast("Excel não disponível.", "erro");
-    const lista = (await DB.all("equipamentos")).filter(e => e.categoria === "ativo");
-    if(!lista.length) return toast("Nenhum ativo.", "warning");
-    const dados = lista.map(a => ({
-      "TAG": a.tag || "",
-      "Nome": a.nome,
-      "Tipo": a.tipo || "",
-      "Setor": a.setor || "",
-      "Fabricante": a.fabricante || "",
-      "Status": a.status || "",
-      "Observações": a.observacoes || ""
-    }));
-    const ws = XLSX.utils.json_to_sheet(dados);
-    const wb = XLSX.utils.book_new();
-    XLSX.utils.book_append_sheet(wb, ws, "Ativos");
-    XLSX.writeFile(wb, `Ativos_${hojeISO()}.xlsx`);
-    toast("✅ Excel gerado!", "ok");
   }
 
   async function excelOS(){
@@ -2397,134 +1252,16 @@ const Exportar = (() => {
     toast("✅ Excel gerado!", "ok");
   }
 
-  return { pdfFerramentas, pdfAtivos, pdfAssistencias, pdfOS, fichaEquipamento, excelFerramentas, excelAtivos, excelOS };
-})();
-
-/* ---------- BACKUP ---------- */
-const Backup = (() => {
-  async function exportar(){
-    const dados = {
-      versao: "2.0",
-      gerado: new Date().toISOString(),
-      usuario: App.state.usuarioAtual || "—",
-      equipamentos: await DB.all("equipamentos"),
-      ordens: await DB.all("ordens"),
-      assistencias: await DB.all("assistencias"),
-      pedidos: await DB.all("pedidos"),
-      criados: await DB.all("criados"),
-      externas: await DB.all("externas"),
-      setores: await DB.all("setores"),
-      historico: await DB.all("historico"),
-      alarmes: await DB.all("alarmes")
-    };
-    const json = JSON.stringify(dados, null, 2);
-    const blob = new Blob([json], { type:"application/json" });
-    const a = document.createElement("a");
-    a.href = URL.createObjectURL(blob);
-    a.download = `backup_manutencao_${hojeISO()}.json`;
-    a.click();
-    URL.revokeObjectURL(a.href);
-    toast("✅ Backup exportado!", "ok");
-  }
-
-  async function importar(file){
-    if(!file) return;
-    const reader = new FileReader();
-    reader.onload = async function(e){
-      try {
-        const dados = JSON.parse(e.target.result);
-        if(!dados.versao && !dados.equipamentos){
-          return toast("Arquivo inválido.", "erro");
-        }
-        if(!confirm("⚠️ Isso vai SUBSTITUIR todos os dados atuais. Continuar?")) return;
-
-        // Limpa tudo
-        for(const s of ["equipamentos","ordens","assistencias","pedidos","criados","externas","setores","historico","alarmes"]){
-          await DB.clear(s);
-        }
-
-        // Reimporta
-        const map = {
-          equipamentos: dados.equipamentos || [],
-          ordens: dados.ordens || [],
-          assistencias: dados.assistencias || [],
-          pedidos: dados.pedidos || [],
-          criados: dados.criados || [],
-          externas: dados.externas || [],
-          setores: dados.setores || [],
-          historico: dados.historico || [],
-          alarmes: dados.alarmes || []
-        };
-        for(const [store, lista] of Object.entries(map)){
-          for(const item of lista) await DB.put(store, item);
-        }
-        toast("✅ Backup restaurado!", "ok");
-        setTimeout(() => location.reload(), 800);
-      } catch(err){ toast("Erro: " + err.message, "erro"); }
-    };
-    reader.readAsText(file);
-    const inp = document.getElementById("inputBackup");
-    if(inp) inp.value = "";
-  }
-
-  async function apagarTudo(){
-    if(!confirm("⚠️ Apagar TODOS os dados?")) return;
-    if(!confirm("🚨 ÚLTIMA CONFIRMAÇÃO!")) return;
-    for(const s of ["equipamentos","ordens","assistencias","pedidos","criados","externas","setores","historico","alarmes","config"]){
-      await DB.clear(s);
-    }
-    localStorage.clear();
-    toast("🗑️ Tudo apagado.", "ok");
-    setTimeout(() => location.reload(), 800);
-  }
-
-  async function renderStats(){
-    const el = document.getElementById("dbStats");
-    if(!el) return;
-    const eq = await DB.all("equipamentos");
-    const os = await DB.all("ordens");
-    const ass = await DB.all("assistencias");
-    const set = await DB.all("setores");
-    const hist = await DB.all("historico");
-
-    let bytes = 0;
-    for(const k in localStorage) if(Object.prototype.hasOwnProperty.call(localStorage, k)) bytes += (localStorage[k]||"").length;
-    const mb = (bytes/1024/1024).toFixed(2);
-
-    el.innerHTML = `
-      <div class="grid" style="grid-template-columns:repeat(auto-fit,minmax(140px,1fr));gap:10px">
-        <div class="card" style="padding:14px"><strong style="font-size:24px">${eq.length}</strong><div class="text-sm muted">Equipamentos</div></div>
-        <div class="card" style="padding:14px"><strong style="font-size:24px">${os.length}</strong><div class="text-sm muted">Ordens</div></div>
-        <div class="card" style="padding:14px"><strong style="font-size:24px">${ass.length}</strong><div class="text-sm muted">Assistências</div></div>
-        <div class="card" style="padding:14px"><strong style="font-size:24px">${set.length}</strong><div class="text-sm muted">Setores</div></div>
-        <div class="card" style="padding:14px"><strong style="font-size:24px">${hist.length}</strong><div class="text-sm muted">Histórico</div></div>
-        <div class="card" style="padding:14px"><strong style="font-size:24px">${mb}MB</strong><div class="text-sm muted">localStorage</div></div>
-      </div>
-    `;
-  }
-
-  return { exportar, importar, apagarTudo, renderStats };
+  return { pdfOS, excelOS };
 })();
 
 /* ---------- PWA / SERVICE WORKER ---------- */
 if("serviceWorker" in navigator){
-  const swCode = `
-    const CACHE = "manutencao-v2";
-    self.addEventListener("install", e => { self.skipWaiting(); });
-    self.addEventListener("activate", e => { e.waitUntil(self.clients.claim()); });
-    self.addEventListener("fetch", e => {
-      if(e.request.method !== "GET") return;
-      e.respondWith(
-        caches.match(e.request).then(c => c || fetch(e.request).then(res => {
-          const copy = res.clone();
-          caches.open(CACHE).then(cc => cc.put(e.request, copy)).catch(()=>{});
-          return res;
-        }).catch(() => c))
-      );
-    });
-  `;
-  const blob = new Blob([swCode], { type:"application/javascript" });
-  navigator.serviceWorker.register(URL.createObjectURL(blob)).catch(()=>{});
+  window.addEventListener("load", () => {
+    navigator.serviceWorker.register("./sw.js", { scope: "./" })
+      .then(reg => console.log("✅ Service Worker registrado:", reg.scope))
+      .catch(err => console.warn("⚠️ Falha ao registrar SW:", err.message));
+  });
 }
 
 let deferredPrompt;
@@ -2545,7 +1282,6 @@ window.addEventListener("beforeinstallprompt", e => {
   };
 });
 
-// iOS banner
 function mostrarBannerIOS(){
   const isIOS = /iPad|iPhone|iPod/.test(navigator.userAgent) && !window.MSStream;
   if(!isIOS) return;
@@ -2564,16 +1300,10 @@ function mostrarBannerIOS(){
 document.addEventListener("DOMContentLoaded", async () => {
   try {
     await DB.open();
-    const migrou = await DB.migrarSeNecessario();
-    if(migrou) setTimeout(() => toast("✅ Dados migrados do PCM antigo!", "ok"), 1500);
-
     OS.ativarAssinatura("canvasExec");
     OS.ativarAssinatura("canvasResp");
-
     await App.init();
     mostrarBannerIOS();
-
-    // Sincroniza erros
     window.addEventListener("error", e => console.error("Erro:", e.error || e.message));
   } catch(e){
     console.error("Erro ao iniciar:", e);
